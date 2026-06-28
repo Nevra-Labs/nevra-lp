@@ -43,22 +43,13 @@ export default function Home() {
         muted
         loop
         playsInline
-        style={{
-          position: 'fixed',
-          inset: 0,
-          width: '100%',
-          height: '100%',
-          objectFit: 'cover',
-          zIndex: 0,
-        }}
+        style={{ position: 'fixed', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 0 }}
       />
 
-      {/* Nav — at root level so zIndex is not scoped to a stacking context */}
+      {/* Nav — at root level so zIndex is not trapped in a stacking context */}
       <header style={{
         position: 'fixed',
-        top: 0,
-        left: 0,
-        right: 0,
+        top: 0, left: 0, right: 0,
         zIndex: 20,
         display: 'flex',
         alignItems: 'center',
@@ -71,11 +62,7 @@ export default function Home() {
         borderBottom: navDark ? '1px solid rgba(0,0,0,0.09)' : '1px solid transparent',
       }}>
         <Link to="/">
-          <img
-            src="/logo.png"
-            alt="Nevra"
-            style={{ width: 24, height: 24, display: 'block', filter: logoFilter, transition: 'filter 0.3s ease' }}
-          />
+          <img src="/logo.png" alt="Nevra" style={{ width: 24, height: 24, display: 'block', filter: logoFilter, transition: 'filter 0.3s ease' }} />
         </Link>
         <div style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
           <Link to="/blog" className="nav-text-links" style={{ fontSize: 14, fontWeight: 500, color: navLinkColor, letterSpacing: '0.01em', transition: 'color 0.3s ease' }}>
@@ -84,7 +71,7 @@ export default function Home() {
           <a href="/pdf/whitepaper.pdf" target="_blank" rel="noopener noreferrer" className="nav-text-links" style={{ fontSize: 14, fontWeight: 500, color: navLinkColor, letterSpacing: '0.01em', transition: 'color 0.3s ease' }}>
             Whitepaper
           </a>
-          <a href="#" style={{
+          <Link to="/apply" style={{
             background: applyBg,
             color: applyColor,
             fontSize: 14,
@@ -97,13 +84,12 @@ export default function Home() {
             transition: 'background 0.3s ease, color 0.3s ease',
           }}>
             Apply
-          </a>
+          </Link>
         </div>
       </header>
 
       {/* Hero section */}
       <section style={{ position: 'relative', minHeight: '100vh', zIndex: 5 }}>
-        {/* Hero copy */}
         <div className="hero-copy" style={{
           position: 'absolute',
           top: '36%',
@@ -133,7 +119,7 @@ export default function Home() {
             Nevra is real undercollateralized credit for crypto. Connect your wallet, verify your identity, get scored, borrow against it.
           </p>
           <div className="hero-ctas" style={{ display: 'flex', gap: 10 }}>
-            <a href="#" style={{
+            <Link to="/apply" style={{
               background: '#EEEDFF',
               color: '#333',
               fontSize: 14,
@@ -145,7 +131,7 @@ export default function Home() {
               boxShadow: '0 1px 4px rgba(0,0,0,0.15)',
             }}>
               Apply Now →
-            </a>
+            </Link>
             <Link to="/blog" style={{
               background: 'rgba(255,255,255,0.14)',
               color: '#EEEDFF',
@@ -172,7 +158,6 @@ export default function Home() {
         background: '#EEEDFF',
         padding: '120px 52px 140px',
       }}>
-        {/* Centered header */}
         <div style={{ textAlign: 'center', marginBottom: 64 }}>
           <h2 style={{
             fontWeight: 700,
@@ -185,18 +170,11 @@ export default function Home() {
           }}>
             How it works
           </h2>
-          <p style={{
-            fontSize: 15,
-            color: 'rgba(0,0,0,0.45)',
-            lineHeight: 1.6,
-            maxWidth: 440,
-            margin: '0 auto',
-          }}>
+          <p style={{ fontSize: 15, color: 'rgba(0,0,0,0.45)', lineHeight: 1.6, maxWidth: 440, margin: '0 auto' }}>
             From wallet to credit line in three steps.
           </p>
         </div>
 
-        {/* Cards */}
         <div className="how-it-works-grid" style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(3, 1fr)',
@@ -215,22 +193,9 @@ export default function Home() {
               flexDirection: 'column',
               minHeight: 400,
             }}>
-              {/* Image — fixed height so all images sit at the same level */}
-              <div style={{
-                height: 160,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                marginBottom: 28,
-              }}>
-                <img
-                  src={step.image}
-                  alt={step.title}
-                  style={{ maxHeight: '100%', maxWidth: '80%', objectFit: 'contain' }}
-                />
+              <div style={{ height: 160, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 28 }}>
+                <img src={step.image} alt={step.title} style={{ maxHeight: '100%', maxWidth: '80%', objectFit: 'contain' }} />
               </div>
-
-              {/* Text */}
               <h3 style={{
                 fontWeight: 600,
                 fontSize: 17,
@@ -242,12 +207,7 @@ export default function Home() {
               }}>
                 {step.title}
               </h3>
-              <p style={{
-                fontSize: 14,
-                color: 'rgba(0,0,0,0.48)',
-                lineHeight: 1.7,
-                margin: 0,
-              }}>
+              <p style={{ fontSize: 14, color: 'rgba(0,0,0,0.48)', lineHeight: 1.7, margin: 0 }}>
                 {step.description}
               </p>
             </div>
@@ -274,10 +234,9 @@ export default function Home() {
                 ©Nevra Inc. 2026<br />All rights reserved.
               </p>
             </div>
-
             <div className="footer-cols" style={{ display: 'flex', gap: 64, flex: 1, justifyContent: 'flex-end' }}>
               <FooterCol title="Product" links={[
-                { label: 'Apply', href: '#' },
+                { label: 'Apply', href: '/apply', internal: true },
                 { label: 'Whitepaper', href: '/pdf/whitepaper.pdf' },
                 { label: 'Blog', href: '/blog', internal: true },
               ]} />
@@ -295,7 +254,6 @@ export default function Home() {
             </div>
           </div>
         </div>
-
         <div className="footer-wordmark" style={{
           fontSize: 'clamp(80px, 14vw, 180px)',
           fontWeight: 700,
