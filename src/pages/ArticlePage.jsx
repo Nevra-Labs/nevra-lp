@@ -1,6 +1,7 @@
 import { useParams, Link } from 'react-router-dom'
 import Nav from '../components/Nav'
 import { articles } from '../data/articles'
+import '../responsive.css'
 
 export default function ArticlePage() {
   const { id } = useParams()
@@ -24,7 +25,7 @@ export default function ArticlePage() {
     <div style={{ background: '#EEEDFF', minHeight: '100vh', color: '#111' }}>
       <Nav dark />
 
-      <main style={{ maxWidth: 680, margin: '0 auto', padding: '48px 32px 120px' }}>
+      <main className="page-main" style={{ maxWidth: 680, margin: '0 auto', padding: '48px 32px 120px' }}>
         <Link to="/blog" style={{
           fontSize: 13,
           fontWeight: 500,

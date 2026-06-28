@@ -7,7 +7,7 @@ export default function Nav({ dark = false }) {
   const logoFilter = dark ? 'none' : 'invert(1)'
 
   return (
-    <header style={{
+    <header className="blog-nav" style={{
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'space-between',

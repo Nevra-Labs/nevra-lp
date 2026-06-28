@@ -1,0 +1,60 @@
+@media (max-width: 768px) {
+  /* Home nav */
+  .nav-text-links {
+    display: none !important;
+  }
+
+  /* Hero copy block */
+  .hero-copy {
+    left: 5% !important;
+    right: 5% !important;
+    max-width: none !important;
+    top: 50% !important;
+  }
+
+  /* Hero CTA buttons — allow wrap */
+  .hero-ctas {
+    flex-wrap: wrap !important;
+  }
+
+  /* Footer inner row → column */
+  .footer-inner {
+    flex-direction: column !important;
+    gap: 36px !important;
+  }
+
+  /* Footer link columns → column */
+  .footer-cols {
+    flex-direction: column !important;
+    gap: 28px !important;
+    justify-content: flex-start !important;
+  }
+
+  /* Footer wordmark — prevent overflow */
+  .footer-wordmark {
+    font-size: 18vw !important;
+  }
+
+  /* Footer outer padding */
+  .footer-root {
+    padding-left: 24px !important;
+    padding-right: 24px !important;
+  }
+
+  /* Blog / article page main */
+  .page-main {
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+  }
+
+  /* Blog nav */
+  .blog-nav {
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+  }
+
+  /* Blog card cover — shorter on small screens */
+  .card-cover {
+    aspect-ratio: 16 / 9 !important;
+  }
+}
