@@ -2,6 +2,7 @@ export const articles = [
   {
     id: 'crypto-backed-loans-explained',
     title: 'How crypto-backed loans work',
+    category: 'Education',
     date: 'June 28, 2026',
     readTime: '5 min read',
     excerpt:

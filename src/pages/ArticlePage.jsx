@@ -46,7 +46,9 @@ export default function ArticlePage() {
           {article.title}
         </h1>
 
-        <div style={{ display: 'flex', gap: 16, marginBottom: 56, color: 'rgba(0,0,0,0.4)', fontSize: 13 }}>
+        <div style={{ display: 'flex', gap: 6, marginBottom: 56, color: 'rgba(0,0,0,0.4)', fontSize: 13 }}>
+          <span style={{ fontWeight: 500 }}>{article.category}</span>
+          <span>·</span>
           <span>{article.date}</span>
           <span>·</span>
           <span>{article.readTime}</span>
