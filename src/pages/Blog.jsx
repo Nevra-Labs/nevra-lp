@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import Nav from '../components/Nav'
 import { articles } from '../data/articles'
+import '../responsive.css'
 
 const COVER_COLORS = [
   'linear-gradient(135deg, #c9c6f0 0%, #a8a4e0 100%)',
@@ -13,7 +14,7 @@ export default function Blog() {
     <div style={{ background: '#EEEDFF', minHeight: '100vh', color: '#111' }}>
       <Nav dark />
 
-      <main style={{ maxWidth: 760, margin: '0 auto', padding: '48px 32px 120px' }}>
+      <main className="page-main" style={{ maxWidth: 760, margin: '0 auto', padding: '48px 32px 120px' }}>
         <h1 style={{
           fontWeight: 700,
           fontSize: 'clamp(28px, 4vw, 42px)',
@@ -31,7 +32,7 @@ export default function Blog() {
             <li key={article.id}>
               <Link to={`/blog/${article.id}`} style={{ display: 'block', textDecoration: 'none', color: 'inherit', marginBottom: 56 }}>
                 {/* Cover block */}
-                <div style={{
+                <div className="card-cover" style={{
                   width: '100%',
                   aspectRatio: '16 / 7',
                   borderRadius: 12,

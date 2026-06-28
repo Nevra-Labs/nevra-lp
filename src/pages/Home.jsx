@@ -1,4 +1,6 @@
 import { Link } from 'react-router-dom'
+import '../responsive.css'
+
 
 export default function Home() {
   return (
@@ -42,17 +44,22 @@ export default function Home() {
             />
           </Link>
           <div style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
-            <Link to="/blog" style={{ fontSize: 14, fontWeight: 500, color: 'rgba(255,255,255,0.85)', letterSpacing: '0.01em' }}>
+            <Link to="/blog" className="nav-text-links" style={{ fontSize: 14, fontWeight: 500, color: 'rgba(255,255,255,0.85)', letterSpacing: '0.01em' }}>
               Blog
             </Link>
+            <a href="#" className="nav-text-links" style={{ fontSize: 14, fontWeight: 500, color: 'rgba(255,255,255,0.85)', letterSpacing: '0.01em' }}>
+              Whitepaper
+            </a>
             <a href="#" style={{
               background: '#EEEDFF',
-              color: '#111',
+              color: '#333',
               fontSize: 14,
               fontWeight: 500,
               padding: '9px 18px',
-              borderRadius: 999,
+              borderRadius: 10,
               lineHeight: 1,
+              border: '1px solid rgba(255,255,255,0.3)',
+              boxShadow: '0 1px 3px rgba(0,0,0,0.12)',
             }}>
               Apply
             </a>
@@ -60,7 +67,7 @@ export default function Home() {
         </header>
 
         {/* Hero copy */}
-        <div style={{
+        <div className="hero-copy" style={{
           position: 'absolute',
           top: '36%',
           transform: 'translateY(-50%)',
@@ -86,40 +93,44 @@ export default function Home() {
             marginBottom: 28,
             textShadow: '0 1px 4px rgba(0,0,0,0.2)',
           }}>
-            Borrow against your portfolio. Repay on your terms,<br />
-            no banks, no paperwork, no surprises.
+            Nevra is real undercollateralized credit for crypto. Connect your wallet, verify your identity, get scored, borrow against it.
           </p>
-          <div style={{ display: 'flex', gap: 10 }}>
+          <div className="hero-ctas" style={{ display: 'flex', gap: 10 }}>
             <a href="#" style={{
               background: '#EEEDFF',
-              color: '#111',
+              color: '#333',
               fontSize: 14,
               fontWeight: 500,
               padding: '11px 20px',
-              borderRadius: 999,
+              borderRadius: 10,
               lineHeight: 1,
+              border: '1px solid rgba(255,255,255,0.3)',
+              boxShadow: '0 1px 4px rgba(0,0,0,0.15)',
             }}>
               Apply Now →
             </a>
-            <a href="#" style={{
-              background: 'rgba(255,255,255,0.15)',
+            <Link to="/blog" style={{
+              background: 'rgba(255,255,255,0.14)',
               color: '#EEEDFF',
               fontSize: 14,
               fontWeight: 500,
               padding: '11px 20px',
-              borderRadius: 999,
+              borderRadius: 10,
               lineHeight: 1,
+              border: '1px solid rgba(255,255,255,0.22)',
+              boxShadow: '0 1px 4px rgba(0,0,0,0.1)',
               backdropFilter: 'blur(6px)',
               WebkitBackdropFilter: 'blur(6px)',
             }}>
-              Learn more
-            </a>
+              Blog
+            </Link>
           </div>
         </div>
       </section>
 
+
       {/* Footer */}
-      <footer style={{
+      <footer className="footer-root" style={{
         position: 'relative',
         zIndex: 5,
         background: '#EEEDFF',
@@ -128,7 +139,7 @@ export default function Home() {
         overflow: 'hidden',
       }}>
         <div style={{ borderTop: '1px solid rgba(0,0,0,0.12)', paddingTop: 52 }}>
-          <div style={{ display: 'flex', gap: 64, marginBottom: 64 }}>
+          <div className="footer-inner" style={{ display: 'flex', gap: 64, marginBottom: 64 }}>
             <div style={{ minWidth: 200 }}>
               <div style={{ marginBottom: 12 }}>
                 <img src="/logo.png" alt="" style={{ width: 22, height: 22 }} />
@@ -138,9 +149,10 @@ export default function Home() {
               </p>
             </div>
 
-            <div style={{ display: 'flex', gap: 64, flex: 1, justifyContent: 'flex-end' }}>
+            <div className="footer-cols" style={{ display: 'flex', gap: 64, flex: 1, justifyContent: 'flex-end' }}>
               <FooterCol title="Product" links={[
                 { label: 'Apply', href: '#' },
+                { label: 'Whitepaper', href: '#' },
                 { label: 'Blog', href: '/blog', internal: true },
               ]} />
               <FooterCol title="Socials" links={[
@@ -158,7 +170,7 @@ export default function Home() {
           </div>
         </div>
 
-        <div style={{
+        <div className="footer-wordmark" style={{
           fontSize: 'clamp(80px, 14vw, 180px)',
           fontWeight: 700,
           letterSpacing: '-0.04em',
