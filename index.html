@@ -13,41 +13,29 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <div class="page">
-      <header class="nav">
-        <a class="brand" href="#">
-          <img src="assets/logo.png" alt="" class="brand-mark" />
-          <span class="brand-word">OSLO</span>
-        </a>
-        <nav class="nav-links">
-          <a href="#">Features</a>
-          <a href="#">Pricing</a>
-          <a href="#">Reviews</a>
-        </nav>
-        <div class="nav-actions">
-          <a href="#" class="signin">Sign in</a>
-          <a href="#" class="btn btn-light">Sign up for free</a>
-        </div>
-      </header>
+    <video class="bg-video" src="assets/hero.mp4" autoplay muted loop playsinline></video>
+    <div class="overlay"></div>
 
-      <section class="hero-media">
-        <video
-          src="assets/hero.mp4"
-          autoplay
-          muted
-          loop
-          playsinline
-        ></video>
-      </section>
+    <header class="nav">
+      <a class="brand" href="#">
+        <img src="assets/logo.png" alt="Oslo" class="brand-mark" />
+      </a>
+      <div class="nav-actions">
+        <a href="#" class="nav-link">Blog</a>
+        <a href="#" class="btn btn-apply">Apply</a>
+      </div>
+    </header>
 
-      <section class="hero-copy">
-        <h1>Consumer loans<br />for crypto-native people.</h1>
-        <p class="sub">
-          Borrow against your portfolio. Repay on your terms — no banks,
-          no paperwork, no surprises.
-        </p>
-        <a href="#" class="btn btn-dark">Get Early Access</a>
-      </section>
-    </div>
+    <main class="hero">
+      <h1>Consumer loans<br />for crypto-native people.</h1>
+      <p class="sub">
+        Borrow against your portfolio. Repay on your terms,<br />
+        no banks, no paperwork, no surprises.
+      </p>
+      <div class="hero-ctas">
+        <a href="#" class="btn btn-primary">Apply Now →</a>
+        <a href="#" class="btn btn-ghost">Learn more</a>
+      </div>
+    </main>
   </body>
 </html>
