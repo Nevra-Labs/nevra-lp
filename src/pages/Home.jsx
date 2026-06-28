@@ -47,7 +47,7 @@ export default function Home() {
             <Link to="/blog" className="nav-text-links" style={{ fontSize: 14, fontWeight: 500, color: 'rgba(255,255,255,0.85)', letterSpacing: '0.01em' }}>
               Blog
             </Link>
-            <a href="#" className="nav-text-links" style={{ fontSize: 14, fontWeight: 500, color: 'rgba(255,255,255,0.85)', letterSpacing: '0.01em' }}>
+            <a href="/pdf/whitepaper.pdf" target="_blank" rel="noopener noreferrer" className="nav-text-links" style={{ fontSize: 14, fontWeight: 500, color: 'rgba(255,255,255,0.85)', letterSpacing: '0.01em' }}>
               Whitepaper
             </a>
             <a href="#" style={{
@@ -152,7 +152,7 @@ export default function Home() {
             <div className="footer-cols" style={{ display: 'flex', gap: 64, flex: 1, justifyContent: 'flex-end' }}>
               <FooterCol title="Product" links={[
                 { label: 'Apply', href: '#' },
-                { label: 'Whitepaper', href: '#' },
+                { label: 'Whitepaper', href: '/pdf/whitepaper.pdf' },
                 { label: 'Blog', href: '/blog', internal: true },
               ]} />
               <FooterCol title="Socials" links={[
