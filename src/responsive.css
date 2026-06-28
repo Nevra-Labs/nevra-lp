@@ -57,4 +57,15 @@
   .card-cover {
     aspect-ratio: 16 / 9 !important;
   }
+
+  /* How it works grid → single column */
+  .how-it-works-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* How it works section padding */
+  .how-it-works-section {
+    padding-left: 24px !important;
+    padding-right: 24px !important;
+  }
 }
