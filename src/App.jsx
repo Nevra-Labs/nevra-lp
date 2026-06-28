@@ -60,7 +60,7 @@ export default function App() {
         {/* Hero copy — shifted right and slightly above center */}
         <div style={{
           position: 'absolute',
-          top: '42%',
+          top: '36%',
           transform: 'translateY(-50%)',
           left: '10%',
           maxWidth: 560,
@@ -140,10 +140,21 @@ export default function App() {
 
             {/* Columns */}
             <div style={{ display: 'flex', gap: 64, flex: 1, justifyContent: 'flex-end' }}>
-              <FooterCol title="Product" links={['How it works', 'Apply', 'Pricing', 'FAQ', 'Blog']} />
-              <FooterCol title="Socials" links={['Twitter', 'LinkedIn', 'Telegram', 'Discord']} />
-              <FooterCol title="Legal" links={['Privacy Policy', 'Terms of Service', 'Cookie Policy']} />
-              <FooterCol title="Company" links={['About', 'Careers', 'Press', 'Contact']} />
+              <FooterCol title="Product" links={[
+                { label: 'Apply', href: '#' },
+                { label: 'Blog', href: '#' },
+              ]} />
+              <FooterCol title="Socials" links={[
+                { label: 'Twitter', href: 'https://x.com/nevralabs' },
+                { label: 'LinkedIn', href: 'https://www.linkedin.com/company/nevralabs' },
+                { label: 'Telegram', href: 'https://t.me/nevragenesis' },
+                { label: 'Discord', href: 'https://discord.gg/XYfzRs9PM' },
+              ]} />
+              <FooterCol title="Legal" links={[
+                { label: 'Privacy Policy', href: '#' },
+                { label: 'Terms of Service', href: '#' },
+                { label: 'Cookie Policy', href: '#' },
+              ]} />
             </div>
           </div>
         </div>
@@ -171,9 +182,9 @@ function FooterCol({ title, links }) {
     <div>
       <p style={{ fontSize: 13, fontWeight: 600, marginBottom: 16, color: '#111' }}>{title}</p>
       <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 10 }}>
-        {links.map(link => (
-          <li key={link}>
-            <a href="#" style={{ fontSize: 13, color: 'rgba(0,0,0,0.55)', fontWeight: 400 }}>{link}</a>
+        {links.map(({ label, href }) => (
+          <li key={label}>
+            <a href={href} target="_blank" rel="noopener noreferrer" style={{ fontSize: 13, color: 'rgba(0,0,0,0.55)', fontWeight: 400 }}>{label}</a>
           </li>
         ))}
       </ul>
