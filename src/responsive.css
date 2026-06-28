@@ -1,10 +1,10 @@
 @media (max-width: 768px) {
-  /* Home nav */
+  /* ── Nav ── */
   .nav-text-links {
     display: none !important;
   }
 
-  /* Hero copy block */
+  /* ── Hero copy block ── */
   .hero-copy {
     left: 5% !important;
     right: 5% !important;
@@ -12,60 +12,57 @@
     top: 50% !important;
   }
 
-  /* Hero CTA buttons — allow wrap */
+  /* Wrap CTA buttons if they overflow */
   .hero-ctas {
     flex-wrap: wrap !important;
   }
 
-  /* Footer inner row → column */
-  .footer-inner {
-    flex-direction: column !important;
-    gap: 36px !important;
+  /* ── How it works section ── */
+  .how-it-works-section {
+    padding: 72px 20px 80px !important;
   }
 
-  /* Footer link columns → column */
+  .how-it-works-grid {
+    grid-template-columns: 1fr !important;
+    max-width: 100% !important;
+  }
+
+  /* ── Footer ── */
+  .footer-root {
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+    padding-top: 48px !important;
+  }
+
+  .footer-inner {
+    flex-direction: column !important;
+    gap: 32px !important;
+  }
+
   .footer-cols {
     flex-direction: column !important;
     gap: 28px !important;
     justify-content: flex-start !important;
   }
 
-  /* Footer wordmark — prevent overflow */
   .footer-wordmark {
-    font-size: 18vw !important;
+    font-size: 22vw !important;
+    margin-left: -0.02em !important;
   }
 
-  /* Footer outer padding */
-  .footer-root {
-    padding-left: 24px !important;
-    padding-right: 24px !important;
-  }
-
-  /* Blog / article page main */
-  .page-main {
-    padding-left: 20px !important;
-    padding-right: 20px !important;
-  }
-
-  /* Blog nav */
+  /* ── Blog / Article pages ── */
   .blog-nav {
     padding-left: 20px !important;
     padding-right: 20px !important;
   }
 
-  /* Blog card cover — shorter on small screens */
+  .page-main {
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+    padding-top: 32px !important;
+  }
+
   .card-cover {
     aspect-ratio: 16 / 9 !important;
-  }
-
-  /* How it works grid → single column */
-  .how-it-works-grid {
-    grid-template-columns: 1fr !important;
-  }
-
-  /* How it works section padding */
-  .how-it-works-section {
-    padding-left: 24px !important;
-    padding-right: 24px !important;
   }
 }
