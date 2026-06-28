@@ -4,22 +4,19 @@ import '../responsive.css'
 
 const STEPS = [
   {
-    number: '01',
     title: 'Connect your wallet',
-    description: 'Link any EVM wallet in one click. No forms, no delays. Your onchain history starts building your profile instantly.',
-    icon: '⬡',
+    description: 'Link any wallet in one click. No forms, no delays. Your onchain history starts building your profile instantly.',
+    image: '/cards/wallet.png',
   },
   {
-    number: '02',
     title: 'Verify your identity',
-    description: 'Confirm who you are with a quick KYC check. Connect your bank account and submit your credit score for verification. Your offchain identity + onchain history combine into a real credit score.',
-    icon: '✓',
+    description: 'Complete KYC and link your bank account. We combine your offchain financial data with your onchain history into one real credit score.',
+    image: '/cards/score.png',
   },
   {
-    number: '03',
     title: 'Access your credit line',
     description: 'Post less than you borrow. Your score unlocks a credit line you can draw from anytime, no overcollateral, no waiting.',
-    icon: '$',
+    image: '/cards/credit.png',
   },
 ]
 
@@ -46,66 +43,53 @@ export default function Home() {
         muted
         loop
         playsInline
-        style={{
-          position: 'fixed',
-          inset: 0,
-          width: '100%',
-          height: '100%',
-          objectFit: 'cover',
-          zIndex: 0,
-        }}
+        style={{ position: 'fixed', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 0 }}
       />
+
+      {/* Nav — at root level so zIndex is not trapped in a stacking context */}
+      <header style={{
+        position: 'fixed',
+        top: 0, left: 0, right: 0,
+        zIndex: 20,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        padding: '22px 32px',
+        transition: 'background 0.3s ease, border-color 0.3s ease',
+        background: navDark ? 'rgba(238,237,255,0.92)' : 'transparent',
+        backdropFilter: navDark ? 'blur(16px)' : 'none',
+        WebkitBackdropFilter: navDark ? 'blur(16px)' : 'none',
+        borderBottom: navDark ? '1px solid rgba(0,0,0,0.09)' : '1px solid transparent',
+      }}>
+        <Link to="/">
+          <img src="/logo.png" alt="Nevra" style={{ width: 24, height: 24, display: 'block', filter: logoFilter, transition: 'filter 0.3s ease' }} />
+        </Link>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
+          <Link to="/blog" className="nav-text-links" style={{ fontSize: 14, fontWeight: 500, color: navLinkColor, letterSpacing: '0.01em', transition: 'color 0.3s ease' }}>
+            Blog
+          </Link>
+          <a href="/pdf/whitepaper.pdf" target="_blank" rel="noopener noreferrer" className="nav-text-links" style={{ fontSize: 14, fontWeight: 500, color: navLinkColor, letterSpacing: '0.01em', transition: 'color 0.3s ease' }}>
+            Whitepaper
+          </a>
+          <Link to="/apply" style={{
+            background: applyBg,
+            color: applyColor,
+            fontSize: 14,
+            fontWeight: 500,
+            padding: '9px 18px',
+            borderRadius: 10,
+            lineHeight: 1,
+            border: '1px solid rgba(0,0,0,0.08)',
+            boxShadow: '0 1px 3px rgba(0,0,0,0.12)',
+            transition: 'background 0.3s ease, color 0.3s ease',
+          }}>
+            Apply
+          </Link>
+        </div>
+      </header>
 
       {/* Hero section */}
       <section style={{ position: 'relative', minHeight: '100vh', zIndex: 5 }}>
-        {/* Nav */}
-        <header style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          right: 0,
-          zIndex: 10,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          padding: '22px 32px',
-          transition: 'background 0.3s ease',
-          background: navDark ? 'rgba(238,237,255,0.85)' : 'transparent',
-          backdropFilter: navDark ? 'blur(12px)' : 'none',
-          WebkitBackdropFilter: navDark ? 'blur(12px)' : 'none',
-        }}>
-          <Link to="/">
-            <img
-              src="/logo.png"
-              alt="Nevra"
-              style={{ width: 24, height: 24, display: 'block', filter: logoFilter, transition: 'filter 0.3s ease' }}
-            />
-          </Link>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
-            <Link to="/blog" className="nav-text-links" style={{ fontSize: 14, fontWeight: 500, color: navLinkColor, letterSpacing: '0.01em', transition: 'color 0.3s ease' }}>
-              Blog
-            </Link>
-            <a href="/pdf/whitepaper.pdf" target="_blank" rel="noopener noreferrer" className="nav-text-links" style={{ fontSize: 14, fontWeight: 500, color: navLinkColor, letterSpacing: '0.01em', transition: 'color 0.3s ease' }}>
-              Whitepaper
-            </a>
-            <a href="#" style={{
-              background: applyBg,
-              color: applyColor,
-              fontSize: 14,
-              fontWeight: 500,
-              padding: '9px 18px',
-              borderRadius: 10,
-              lineHeight: 1,
-              border: '1px solid rgba(0,0,0,0.08)',
-              boxShadow: '0 1px 3px rgba(0,0,0,0.12)',
-              transition: 'background 0.3s ease, color 0.3s ease',
-            }}>
-              Apply
-            </a>
-          </div>
-        </header>
-
-        {/* Hero copy */}
         <div className="hero-copy" style={{
           position: 'absolute',
           top: '36%',
@@ -135,7 +119,7 @@ export default function Home() {
             Nevra is real undercollateralized credit for crypto. Connect your wallet, verify your identity, get scored, borrow against it.
           </p>
           <div className="hero-ctas" style={{ display: 'flex', gap: 10 }}>
-            <a href="#" style={{
+            <Link to="/apply" style={{
               background: '#EEEDFF',
               color: '#333',
               fontSize: 14,
@@ -147,7 +131,7 @@ export default function Home() {
               boxShadow: '0 1px 4px rgba(0,0,0,0.15)',
             }}>
               Apply Now →
-            </a>
+            </Link>
             <Link to="/blog" style={{
               background: 'rgba(255,255,255,0.14)',
               color: '#EEEDFF',
@@ -174,7 +158,6 @@ export default function Home() {
         background: '#EEEDFF',
         padding: '120px 52px 140px',
       }}>
-        {/* Centered header */}
         <div style={{ textAlign: 'center', marginBottom: 64 }}>
           <h2 style={{
             fontWeight: 700,
@@ -187,82 +170,44 @@ export default function Home() {
           }}>
             How it works
           </h2>
-          <p style={{
-            fontSize: 15,
-            color: 'rgba(0,0,0,0.45)',
-            lineHeight: 1.6,
-            maxWidth: 440,
-            margin: '0 auto',
-          }}>
-            From wallet to credit line in three steps. No banks, no branches, no collateral requirements.
+          <p style={{ fontSize: 15, color: 'rgba(0,0,0,0.45)', lineHeight: 1.6, maxWidth: 440, margin: '0 auto' }}>
+            From wallet to credit line in three steps.
           </p>
         </div>
 
-        {/* Cards */}
         <div className="how-it-works-grid" style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(3, 1fr)',
-          gap: 2,
-          background: 'rgba(0,0,0,0.06)',
-          borderRadius: 20,
-          overflow: 'hidden',
-          maxWidth: 680,
+          gap: 16,
+          maxWidth: 960,
           margin: '0 auto',
         }}>
           {STEPS.map(step => (
-            <div key={step.number} style={{
+            <div key={step.title} style={{
               background: '#fff',
-              padding: '24px 20px 32px',
+              borderRadius: 16,
+              border: '1px solid rgba(0,0,0,0.06)',
+              boxShadow: '0 4px 24px rgba(0,0,0,0.07), 0 1px 4px rgba(0,0,0,0.05)',
+              padding: '32px 28px 36px',
               display: 'flex',
               flexDirection: 'column',
+              minHeight: 400,
             }}>
-              {/* Step number top-right */}
-              <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 40 }}>
-                <span style={{
-                  fontSize: 12,
-                  fontWeight: 500,
-                  letterSpacing: '0.06em',
-                  color: 'rgba(0,0,0,0.25)',
-                }}>
-                  {step.number}
-                </span>
+              <div style={{ height: 160, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 28 }}>
+                <img src={step.image} alt={step.title} style={{ maxHeight: '100%', maxWidth: '80%', objectFit: 'contain' }} />
               </div>
-
-              {/* Icon box */}
-              <div style={{
-                width: 64,
-                height: 64,
-                borderRadius: 16,
-                background: '#EEEDFF',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: 24,
-                color: '#555',
-                marginBottom: 48,
-                fontWeight: 400,
-              }}>
-                {step.icon}
-              </div>
-
-              {/* Title + description */}
               <h3 style={{
-                fontWeight: 700,
-                fontSize: 18,
+                fontWeight: 600,
+                fontSize: 17,
                 letterSpacing: '-0.015em',
                 color: '#111',
-                marginBottom: 12,
-                lineHeight: 1.25,
-                textShadow: '0 1px 0 rgba(255,255,255,0.7), 0 2px 5px rgba(0,0,0,0.15), 0 1px 2px rgba(0,0,0,0.1)',
+                marginBottom: 10,
+                lineHeight: 1.3,
+                textShadow: '0 1px 0 rgba(255,255,255,0.6), 0 2px 6px rgba(0,0,0,0.18), 0 1px 2px rgba(0,0,0,0.12)',
               }}>
                 {step.title}
               </h3>
-              <p style={{
-                fontSize: 14,
-                color: 'rgba(0,0,0,0.5)',
-                lineHeight: 1.65,
-                margin: 0,
-              }}>
+              <p style={{ fontSize: 14, color: 'rgba(0,0,0,0.48)', lineHeight: 1.7, margin: 0 }}>
                 {step.description}
               </p>
             </div>
@@ -289,10 +234,9 @@ export default function Home() {
                 ©Nevra Inc. 2026<br />All rights reserved.
               </p>
             </div>
-
             <div className="footer-cols" style={{ display: 'flex', gap: 64, flex: 1, justifyContent: 'flex-end' }}>
               <FooterCol title="Product" links={[
-                { label: 'Apply', href: '#' },
+                { label: 'Apply', href: '/apply', internal: true },
                 { label: 'Whitepaper', href: '/pdf/whitepaper.pdf' },
                 { label: 'Blog', href: '/blog', internal: true },
               ]} />
@@ -310,7 +254,6 @@ export default function Home() {
             </div>
           </div>
         </div>
-
         <div className="footer-wordmark" style={{
           fontSize: 'clamp(80px, 14vw, 180px)',
           fontWeight: 700,
