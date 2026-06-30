@@ -40,49 +40,59 @@ const QUESTIONS = [
   },
 ]
 
-// Hero-style button shared style
-const heroBtn = {
-  background: '#EEEDFF',
-  color: '#333',
+// Glassy button style
+const glassBtn = {
+  background: 'rgba(255,255,255,0.45)',
+  color: '#1a1a1a',
   fontSize: 14,
   fontWeight: 500,
-  padding: '11px 20px',
-  borderRadius: 10,
+  padding: '13px 20px',
+  borderRadius: 12,
   lineHeight: 1,
-  border: '1px solid rgba(0,0,0,0.13)',
-  boxShadow: '0 1px 4px rgba(0,0,0,0.15)',
+  border: '1px solid rgba(255,255,255,0.7)',
+  boxShadow: '0 2px 12px rgba(0,0,0,0.07), inset 0 1px 0 rgba(255,255,255,0.8)',
+  backdropFilter: 'blur(8px)',
+  WebkitBackdropFilter: 'blur(8px)',
   cursor: 'pointer',
   transition: 'box-shadow 0.15s, background 0.15s',
+  textAlign: 'left',
+  width: '100%',
 }
 
 export default function Apply() {
   const privy = PRIVY_ENABLED
     ? usePrivy()
-    : { authenticated: false, user: null, login: () => alert('Set VITE_PRIVY_APP_ID and VITE_PRIVY_CLIENT_ID in .env') }
-  const { authenticated, user, login } = privy
+    : { ready: true, authenticated: false, user: null, login: () => alert('Set VITE_PRIVY_APP_ID and VITE_PRIVY_CLIENT_ID in .env'), logout: () => {} }
+  const { ready, authenticated, user, login, logout } = privy
 
   const [answers, setAnswers] = useState({})
   const [step, setStep] = useState(0)
   const [animKey, setAnimKey] = useState(0)
-  const [phase, setPhase] = useState('landing') // landing | questionnaire | done
+  const [phase, setPhase] = useState('loading') // loading | landing | questionnaire | done
 
-  // Once authenticated, check if user already answered
+  // Once Privy is ready, show landing or check existing submission
   useEffect(() => {
-    if (!authenticated || !user || !supabase) return
+    if (!ready) return
+    if (!authenticated) {
+      setPhase('landing')
+      return
+    }
+    if (!supabase || !user) {
+      setPhase('questionnaire')
+      return
+    }
     supabase
       .from('applications')
       .select('id')
       .eq('privy_user_id', user.id)
       .maybeSingle()
       .then(({ data }) => {
-        if (data) setPhase('done')
-        else if (phase === 'landing') setPhase('questionnaire')
+        setPhase(data ? 'done' : 'questionnaire')
       })
-  }, [authenticated, user])
+  }, [ready, authenticated, user])
 
   const handleLogin = async () => {
     await login()
-    // phase transition handled by the useEffect above
   }
 
   const handleOption = async (questionId, option) => {
@@ -93,7 +103,6 @@ export default function Apply() {
       setStep(s => s + 1)
       setAnimKey(k => k + 1)
     } else {
-      // Last question — save to Supabase
       if (supabase && user) {
         await supabase.from('applications').upsert({
           privy_user_id: user.id,
@@ -135,6 +144,27 @@ export default function Apply() {
           <a href="/pdf/whitepaper.pdf" target="_blank" rel="noopener noreferrer" style={{ fontSize: 14, fontWeight: 500, color: 'rgba(0,0,0,0.45)', letterSpacing: '0.01em' }}>
             Whitepaper
           </a>
+          {authenticated && (
+            <button
+              onClick={logout}
+              className="fade-in"
+              style={{
+                fontSize: 13,
+                fontWeight: 500,
+                color: 'rgba(0,0,0,0.35)',
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                padding: 0,
+                letterSpacing: '0.01em',
+                transition: 'color 0.15s',
+              }}
+              onMouseEnter={e => e.currentTarget.style.color = 'rgba(0,0,0,0.7)'}
+              onMouseLeave={e => e.currentTarget.style.color = 'rgba(0,0,0,0.35)'}
+            >
+              Disconnect
+            </button>
+          )}
         </div>
       </header>
 
@@ -148,6 +178,20 @@ export default function Apply() {
         paddingBottom: '14vh',
         gap: 28,
       }}>
+
+        {phase === 'loading' && (
+          <div className="fade-in" style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
+            {[0, 1, 2].map(i => (
+              <div key={i} style={{
+                width: 6,
+                height: 6,
+                borderRadius: '50%',
+                background: 'rgba(0,0,0,0.25)',
+                animation: `pulse 1.2s ease-in-out ${i * 0.2}s infinite`,
+              }} />
+            ))}
+          </div>
+        )}
 
         {phase === 'landing' && (
           <div key="landing" className="fade-up" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 28 }}>
@@ -164,9 +208,9 @@ export default function Apply() {
             </h1>
             <button
               onClick={handleLogin}
-              style={heroBtn}
-              onMouseEnter={e => { e.currentTarget.style.boxShadow = '0 3px 10px rgba(0,0,0,0.18)'; e.currentTarget.style.background = '#e8e7f8' }}
-              onMouseLeave={e => { e.currentTarget.style.boxShadow = heroBtn.boxShadow; e.currentTarget.style.background = heroBtn.background }}
+              style={{ ...glassBtn, width: 'auto', textAlign: 'center', padding: '11px 24px' }}
+              onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.65)'; e.currentTarget.style.boxShadow = '0 4px 18px rgba(0,0,0,0.11), inset 0 1px 0 rgba(255,255,255,0.9)' }}
+              onMouseLeave={e => { e.currentTarget.style.background = glassBtn.background; e.currentTarget.style.boxShadow = glassBtn.boxShadow }}
             >
               Apply now
             </button>
@@ -219,15 +263,9 @@ export default function Apply() {
                   key={opt}
                   onClick={() => handleOption(currentQuestion.id, opt)}
                   className="fade-up"
-                  style={{
-                    ...heroBtn,
-                    padding: '13px 20px',
-                    textAlign: 'left',
-                    width: '100%',
-                    animationDelay: `${i * 0.06}s`,
-                  }}
-                  onMouseEnter={e => { e.currentTarget.style.boxShadow = '0 3px 10px rgba(0,0,0,0.18)'; e.currentTarget.style.background = '#e8e7f8' }}
-                  onMouseLeave={e => { e.currentTarget.style.boxShadow = heroBtn.boxShadow; e.currentTarget.style.background = heroBtn.background }}
+                  style={{ ...glassBtn, animationDelay: `${i * 0.06}s` }}
+                  onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.65)'; e.currentTarget.style.boxShadow = '0 4px 18px rgba(0,0,0,0.11), inset 0 1px 0 rgba(255,255,255,0.9)' }}
+                  onMouseLeave={e => { e.currentTarget.style.background = glassBtn.background; e.currentTarget.style.boxShadow = glassBtn.boxShadow }}
                 >
                   {opt}
                 </button>
