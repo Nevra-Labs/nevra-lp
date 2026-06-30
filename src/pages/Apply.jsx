@@ -1,6 +1,7 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { usePrivy } from '@privy-io/react-auth'
+import { supabase } from '../lib/supabase'
 import '../responsive.css'
 
 const PRIVY_APP_ID = import.meta.env.VITE_PRIVY_APP_ID
@@ -30,7 +31,7 @@ const QUESTIONS = [
   {
     id: 'collateral',
     question: 'Are you comfortable borrowing without posting collateral?',
-    options: ['Yes, that\'s the appeal', 'I\'d prefer some collateral option', 'Not sure yet'],
+    options: ["Yes, that's the appeal", "I'd prefer some collateral option", 'Not sure yet'],
   },
   {
     id: 'timeline',
@@ -39,30 +40,74 @@ const QUESTIONS = [
   },
 ]
 
+// Hero-style button shared style
+const heroBtn = {
+  background: '#EEEDFF',
+  color: '#333',
+  fontSize: 14,
+  fontWeight: 500,
+  padding: '11px 20px',
+  borderRadius: 10,
+  lineHeight: 1,
+  border: '1px solid rgba(0,0,0,0.13)',
+  boxShadow: '0 1px 4px rgba(0,0,0,0.15)',
+  cursor: 'pointer',
+  transition: 'box-shadow 0.15s, background 0.15s',
+}
+
 export default function Apply() {
   const privy = PRIVY_ENABLED
     ? usePrivy()
-    : { authenticated: false, login: () => alert('Set VITE_PRIVY_APP_ID and VITE_PRIVY_CLIENT_ID in .env') }
-  const { authenticated, login } = privy
+    : { authenticated: false, user: null, login: () => alert('Set VITE_PRIVY_APP_ID and VITE_PRIVY_CLIENT_ID in .env') }
+  const { authenticated, user, login } = privy
 
   const [answers, setAnswers] = useState({})
-  const [step, setStep] = useState(0) // 0 = not started, 1–5 = questions, 6 = done
-  const [started, setStarted] = useState(false)
+  const [step, setStep] = useState(0)
+  const [animKey, setAnimKey] = useState(0)
+  const [phase, setPhase] = useState('landing') // landing | questionnaire | done
+
+  // Once authenticated, check if user already answered
+  useEffect(() => {
+    if (!authenticated || !user || !supabase) return
+    supabase
+      .from('applications')
+      .select('id')
+      .eq('privy_user_id', user.id)
+      .maybeSingle()
+      .then(({ data }) => {
+        if (data) setPhase('done')
+        else if (phase === 'landing') setPhase('questionnaire')
+      })
+  }, [authenticated, user])
 
   const handleLogin = async () => {
     await login()
+    // phase transition handled by the useEffect above
   }
 
-  const handleOption = (questionId, option) => {
+  const handleOption = async (questionId, option) => {
     const next = { ...answers, [questionId]: option }
     setAnswers(next)
-    if (step < QUESTIONS.length) {
-      setStep(step + 1)
+
+    if (step < QUESTIONS.length - 1) {
+      setStep(s => s + 1)
+      setAnimKey(k => k + 1)
+    } else {
+      // Last question — save to Supabase
+      if (supabase && user) {
+        await supabase.from('applications').upsert({
+          privy_user_id: user.id,
+          email: user.email?.address ?? null,
+          ...next,
+          [questionId]: option,
+        }, { onConflict: 'privy_user_id' })
+      }
+      setPhase('done')
+      setAnimKey(k => k + 1)
     }
   }
 
-  const currentQuestion = QUESTIONS[step - 1]
-  const isDone = step >= QUESTIONS.length && started
+  const currentQuestion = QUESTIONS[step]
 
   return (
     <div style={{
@@ -104,9 +149,8 @@ export default function Apply() {
         gap: 28,
       }}>
 
-        {!started || (!authenticated && started) ? (
-          /* Pre-auth: title + connect button */
-          <>
+        {phase === 'landing' && (
+          <div key="landing" className="fade-up" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 28 }}>
             <h1 style={{
               fontWeight: 700,
               fontSize: 32,
@@ -119,26 +163,81 @@ export default function Apply() {
               Apply for the closed beta
             </h1>
             <button
-              onClick={async () => { setStarted(true); setStep(1); await handleLogin() }}
-              style={{
-                background: '#EEEDFF',
-                color: '#333',
-                fontSize: 14,
-                fontWeight: 500,
-                padding: '11px 20px',
-                borderRadius: 10,
-                lineHeight: 1,
-                border: '1px solid rgba(0,0,0,0.13)',
-                boxShadow: '0 1px 4px rgba(0,0,0,0.15)',
-                cursor: 'pointer',
-              }}
+              onClick={handleLogin}
+              style={heroBtn}
+              onMouseEnter={e => { e.currentTarget.style.boxShadow = '0 3px 10px rgba(0,0,0,0.18)'; e.currentTarget.style.background = '#e8e7f8' }}
+              onMouseLeave={e => { e.currentTarget.style.boxShadow = heroBtn.boxShadow; e.currentTarget.style.background = heroBtn.background }}
             >
               Apply now
             </button>
-          </>
-        ) : isDone ? (
-          /* Done state */
-          <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12 }}>
+          </div>
+        )}
+
+        {phase === 'questionnaire' && currentQuestion && (
+          <div
+            key={`q-${animKey}`}
+            className="fade-up"
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: 20,
+              width: '100%',
+              maxWidth: 420,
+              padding: '0 24px',
+            }}
+          >
+            {/* Progress dots */}
+            <div style={{ display: 'flex', gap: 6 }}>
+              {QUESTIONS.map((_, i) => (
+                <div key={i} style={{
+                  width: 6,
+                  height: 6,
+                  borderRadius: '50%',
+                  background: i <= step ? '#111' : 'rgba(0,0,0,0.18)',
+                  transition: 'background 0.3s',
+                }} />
+              ))}
+            </div>
+
+            <h2 style={{
+              fontWeight: 700,
+              fontSize: 22,
+              letterSpacing: '-0.025em',
+              color: '#111',
+              margin: 0,
+              textAlign: 'center',
+              lineHeight: 1.35,
+              textShadow: '0 1px 0 rgba(255,255,255,0.6), 0 2px 6px rgba(0,0,0,0.18), 0 1px 2px rgba(0,0,0,0.12)',
+            }}>
+              {currentQuestion.question}
+            </h2>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 10, width: '100%' }}>
+              {currentQuestion.options.map((opt, i) => (
+                <button
+                  key={opt}
+                  onClick={() => handleOption(currentQuestion.id, opt)}
+                  className="fade-up"
+                  style={{
+                    ...heroBtn,
+                    padding: '13px 20px',
+                    textAlign: 'left',
+                    width: '100%',
+                    animationDelay: `${i * 0.06}s`,
+                  }}
+                  onMouseEnter={e => { e.currentTarget.style.boxShadow = '0 3px 10px rgba(0,0,0,0.18)'; e.currentTarget.style.background = '#e8e7f8' }}
+                  onMouseLeave={e => { e.currentTarget.style.boxShadow = heroBtn.boxShadow; e.currentTarget.style.background = heroBtn.background }}
+                >
+                  {opt}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {phase === 'done' && (
+          <div key="done" className="fade-up" style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12 }}>
             <h2 style={{
               fontWeight: 700,
               fontSize: 28,
@@ -152,61 +251,6 @@ export default function Apply() {
             <p style={{ fontSize: 14, color: 'rgba(0,0,0,0.45)', margin: 0 }}>
               We'll reach out when your spot opens up.
             </p>
-          </div>
-        ) : (
-          /* Questionnaire */
-          <div style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            gap: 20,
-            width: '100%',
-            maxWidth: 480,
-            padding: '0 24px',
-          }}>
-            {/* Progress */}
-            <p style={{ fontSize: 12, color: 'rgba(0,0,0,0.35)', margin: 0, letterSpacing: '0.05em' }}>
-              {step} / {QUESTIONS.length}
-            </p>
-
-            <h2 style={{
-              fontWeight: 700,
-              fontSize: 22,
-              letterSpacing: '-0.025em',
-              color: '#111',
-              margin: 0,
-              textAlign: 'center',
-              lineHeight: 1.3,
-              textShadow: '0 1px 0 rgba(255,255,255,0.6), 0 2px 6px rgba(0,0,0,0.18), 0 1px 2px rgba(0,0,0,0.12)',
-            }}>
-              {currentQuestion.question}
-            </h2>
-
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 10, width: '100%' }}>
-              {currentQuestion.options.map(opt => (
-                <button
-                  key={opt}
-                  onClick={() => handleOption(currentQuestion.id, opt)}
-                  style={{
-                    background: '#EEEDFF',
-                    color: '#333',
-                    fontSize: 14,
-                    fontWeight: 500,
-                    padding: '13px 20px',
-                    borderRadius: 10,
-                    border: '1px solid rgba(0,0,0,0.13)',
-                    boxShadow: '0 1px 4px rgba(0,0,0,0.08)',
-                    cursor: 'pointer',
-                    textAlign: 'left',
-                    transition: 'background 0.12s, box-shadow 0.12s',
-                  }}
-                  onMouseEnter={e => { e.currentTarget.style.background = '#e4e3f7'; e.currentTarget.style.boxShadow = '0 2px 8px rgba(0,0,0,0.13)' }}
-                  onMouseLeave={e => { e.currentTarget.style.background = '#EEEDFF'; e.currentTarget.style.boxShadow = '0 1px 4px rgba(0,0,0,0.08)' }}
-                >
-                  {opt}
-                </button>
-              ))}
-            </div>
           </div>
         )}
 
