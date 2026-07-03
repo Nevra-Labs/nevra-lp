@@ -83,4 +83,12 @@
   .card-cover {
     aspect-ratio: 16 / 9 !important;
   }
+
+  .blog-grid {
+    grid-template-columns: 1fr !important;
+    gap: 40px !important;
+  }
+  .blog-grid > li {
+    grid-column: auto !important;
+  }
 }

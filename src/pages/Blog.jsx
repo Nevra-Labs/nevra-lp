@@ -1,99 +1,121 @@
 import { Link } from 'react-router-dom'
 import Nav from '../components/Nav'
 import { articles } from '../data/articles'
+import BlogCover from '../components/BlogCover'
 import '../responsive.css'
-
-const COVER_COLORS = [
-  'linear-gradient(135deg, #c9c6f0 0%, #a8a4e0 100%)',
-  'linear-gradient(135deg, #b8d4f0 0%, #8fb8e8 100%)',
-  'linear-gradient(135deg, #d0c6f0 0%, #b0a0e0 100%)',
-]
 
 export default function Blog() {
   return (
     <div style={{ background: '#EEEDFF', minHeight: '100vh', color: '#111' }}>
       <Nav dark />
 
-      <main className="page-main" style={{ maxWidth: 760, margin: '0 auto', padding: '48px 32px 120px' }}>
-        <h1 style={{
-          fontWeight: 700,
-          fontSize: 'clamp(28px, 4vw, 42px)',
-          letterSpacing: '-0.025em',
-          marginBottom: 8,
-        }}>
-          Blog
-        </h1>
-        <p style={{ fontSize: 15, color: 'rgba(0,0,0,0.45)', marginBottom: 56 }}>
-          Insights, updates, and education from the Nevra team.
-        </p>
+      <main className="page-main" style={{ maxWidth: 960, margin: '0 auto', padding: '64px 32px 140px' }}>
+        {/* Header */}
+        <div style={{ marginBottom: 72, maxWidth: 640 }}>
+          <p className="enter-up" style={{
+            fontSize: 11,
+            fontWeight: 600,
+            letterSpacing: '0.18em',
+            textTransform: 'uppercase',
+            color: 'rgba(0,0,0,0.4)',
+            marginBottom: 20,
+          }}>
+            The Nevra journal
+          </p>
+          <h1 className="enter-up enter-delay-1" style={{
+            fontWeight: 700,
+            fontSize: 'clamp(34px, 5vw, 56px)',
+            letterSpacing: '-0.03em',
+            lineHeight: 1.05,
+            marginBottom: 20,
+          }}>
+            Notes on credit,<br />collateral, and the crypto economy.
+          </h1>
+          <p className="enter-up enter-delay-2" style={{
+            fontSize: 16,
+            color: 'rgba(0,0,0,0.5)',
+            lineHeight: 1.6,
+            maxWidth: 520,
+          }}>
+            Deep dives, product updates, and plain-English explainers from the team building undercollateralized credit for crypto.
+          </p>
+        </div>
 
-        <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+        {/* Article grid */}
+        <ul className="blog-grid" style={{
+          listStyle: 'none',
+          padding: 0,
+          margin: 0,
+          display: 'grid',
+          gridTemplateColumns: 'repeat(2, 1fr)',
+          gap: '56px 32px',
+        }}>
           {articles.map((article, i) => (
-            <li key={article.id}>
-              <Link to={`/blog/${article.id}`} style={{ display: 'block', textDecoration: 'none', color: 'inherit', marginBottom: 56 }}>
-                {/* Cover block */}
-                <div className="card-cover" style={{
+            <li
+              key={article.id}
+              className={`enter-up enter-delay-${Math.min(i + 3, 5)}`}
+              style={i === 0 ? { gridColumn: '1 / -1' } : undefined}
+            >
+              <Link
+                to={`/blog/${article.id}`}
+                className="blog-card focus-ring"
+                style={{ display: 'block', textDecoration: 'none', color: 'inherit' }}
+              >
+                <div className="blog-card-cover card-cover" style={{
                   width: '100%',
-                  aspectRatio: '16 / 7',
-                  borderRadius: 12,
-                  background: COVER_COLORS[i % COVER_COLORS.length],
-                  marginBottom: 20,
+                  aspectRatio: i === 0 ? '21 / 9' : '16 / 10',
+                  borderRadius: 16,
                   overflow: 'hidden',
-                  display: 'flex',
-                  alignItems: 'flex-end',
-                  padding: '20px 24px',
+                  marginBottom: 24,
+                  boxShadow: '0 8px 32px rgba(0,0,0,0.08), 0 2px 6px rgba(0,0,0,0.04)',
                 }}>
-                  <span style={{
-                    fontSize: 11,
-                    fontWeight: 600,
-                    letterSpacing: '0.1em',
-                    textTransform: 'uppercase',
-                    color: 'rgba(255,255,255,0.7)',
-                  }}>
-                    Nevra
-                  </span>
+                  <BlogCover variant={i % 3} featured={i === 0} />
                 </div>
 
-                {/* Meta */}
                 <div style={{
                   display: 'flex',
                   alignItems: 'center',
-                  gap: 6,
-                  fontSize: 13,
-                  color: 'rgba(0,0,0,0.45)',
-                  marginBottom: 10,
+                  gap: 10,
+                  marginBottom: 14,
                 }}>
-                  <span style={{ fontWeight: 500 }}>{article.category}</span>
-                  <span>·</span>
-                  <span>{article.date}</span>
+                  <span style={{
+                    display: 'inline-block',
+                    fontSize: 11,
+                    fontWeight: 600,
+                    letterSpacing: '0.08em',
+                    textTransform: 'uppercase',
+                    color: 'rgba(0,0,0,0.7)',
+                    background: 'rgba(0,0,0,0.06)',
+                    padding: '5px 10px',
+                    borderRadius: 999,
+                  }}>
+                    {article.category}
+                  </span>
+                  <span style={{ fontSize: 13, color: 'rgba(0,0,0,0.4)' }}>{article.date}</span>
+                  <span style={{ fontSize: 13, color: 'rgba(0,0,0,0.3)' }}>·</span>
+                  <span style={{ fontSize: 13, color: 'rgba(0,0,0,0.4)' }}>{article.readTime}</span>
                 </div>
 
-                {/* Title */}
-                <h2 style={{
+                <h2 className="blog-card-title" style={{
                   fontWeight: 700,
-                  fontSize: 'clamp(20px, 2.5vw, 26px)',
+                  fontSize: i === 0 ? 'clamp(24px, 3vw, 32px)' : 'clamp(19px, 2vw, 22px)',
                   letterSpacing: '-0.02em',
                   lineHeight: 1.15,
-                  margin: '0 0 10px',
+                  margin: '0 0 12px',
+                  color: '#111',
                 }}>
                   {article.title}
                 </h2>
 
-                {/* Excerpt */}
                 <p style={{
                   fontSize: 15,
                   lineHeight: 1.6,
                   color: 'rgba(0,0,0,0.55)',
                   margin: 0,
-                  maxWidth: 620,
                 }}>
                   {article.excerpt}
                 </p>
               </Link>
-
-              {i < articles.length - 1 && (
-                <div style={{ borderTop: '1px solid rgba(0,0,0,0.1)', marginBottom: 56 }} />
-              )}
             </li>
           ))}
         </ul>
