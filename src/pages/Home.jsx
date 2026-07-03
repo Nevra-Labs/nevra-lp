@@ -12,7 +12,7 @@ const PARTNER_LOGOS = [
 const FAQS = [
   {
     question: 'How is my credit score calculated?',
-    answer: 'Your score blends your onchain history — wallet age, repayment behavior, protocol activity — with offchain signals from your linked bank account. Both sides count, so a thin file on one can be carried by the other.',
+    answer: 'Your score blends your onchain history (wallet age, repayment behavior, protocol activity) with offchain signals from your linked bank account. Both sides count, so a thin file on one can be carried by the other.',
   },
   {
     question: 'Do I really borrow more than I post?',
@@ -20,7 +20,7 @@ const FAQS = [
   },
   {
     question: 'What do you do with my bank data?',
-    answer: 'We read balances and cash-flow history to score you — nothing else. Bank access is read-only, handled through Plaid, and we never see your credentials. Your keys stay yours; we never take custody of your wallet.',
+    answer: 'We read balances and cash-flow history to score you, nothing else. Bank access is read-only, handled through Plaid, and we never see your credentials. Your keys stay yours; we never take custody of your wallet.',
   },
   {
     question: 'What happens if I miss a payment?',
@@ -28,7 +28,7 @@ const FAQS = [
   },
   {
     question: 'When can I get access?',
-    answer: 'We are onboarding in cohorts. Apply now, finish verification, and you will be scored and placed in the next cohort — early applicants get priority.',
+    answer: 'We are onboarding in cohorts. Apply now, finish verification, and you will be scored and placed in the next cohort. Early applicants get priority.',
   },
 ]
 
@@ -76,7 +76,7 @@ export default function Home() {
         style={{ position: 'fixed', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 0 }}
       />
 
-      {/* Nav — at root level so zIndex is not trapped in a stacking context */}
+      {/* Nav lives at root level so zIndex is not trapped in a stacking context */}
       <header style={{
         position: 'fixed',
         top: 0, left: 0, right: 0,
@@ -101,7 +101,7 @@ export default function Home() {
           <a href="/pdf/whitepaper.pdf" target="_blank" rel="noopener noreferrer" className="nav-text-links" style={{ fontSize: 14, fontWeight: 500, color: navLinkColor, letterSpacing: '0.01em', transition: 'color 0.3s ease' }}>
             Whitepaper
           </a>
-          <Link to="/apply" style={{
+          <Link to="/apply" className="btn-hover focus-ring" style={{
             background: applyBg,
             color: applyColor,
             fontSize: 14,
@@ -146,10 +146,10 @@ export default function Home() {
             marginBottom: 28,
             textShadow: '0 1px 4px rgba(0,0,0,0.2)',
           }}>
-            Nevra is real undercollateralized credit for crypto. Connect your wallet, verify your identity, get scored, borrow against it.
+            Verify your identity, connect your bank and wallet, and get one real credit score from your entire financial life. Then borrow against it.
           </p>
           <div className="hero-ctas" style={{ display: 'flex', gap: 10 }}>
-            <Link to="/apply" style={{
+            <Link to="/apply" className="btn-hover focus-ring-light" style={{
               background: '#EEEDFF',
               color: '#333',
               fontSize: 14,
@@ -162,7 +162,7 @@ export default function Home() {
             }}>
               Apply Now →
             </Link>
-            <Link to="/blog" style={{
+            <Link to="/blog" className="btn-hover focus-ring-light" style={{
               background: 'rgba(255,255,255,0.14)',
               color: '#EEEDFF',
               fontSize: 14,
@@ -181,7 +181,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Built with — logo carousel */}
+      {/* Built with logo carousel */}
       <section className="built-with-section" style={{
         position: 'relative',
         zIndex: 15,
@@ -210,6 +210,7 @@ export default function Home() {
                   PARTNER_LOGOS.map(logo => (
                     <img
                       key={`${rep}-${logo.name}`}
+                      className="partner-logo"
                       src={logo.src}
                       alt={half === 0 && rep === 0 ? logo.name : ''}
                       style={{
@@ -367,10 +368,10 @@ export default function Home() {
               maxWidth: 460,
               margin: '0 auto 32px',
             }}>
-              Stop locking up more than you borrow. Connect a wallet, get scored, and open a real credit line.
+              Stop locking up more than you borrow. Verify once, link your accounts, and open a credit line backed by your real score.
             </p>
             <div style={{ display: 'flex', gap: 10, justifyContent: 'center', flexWrap: 'wrap' }}>
-              <Link to="/apply" className="focus-ring-light" style={{
+              <Link to="/apply" className="btn-hover focus-ring-light" style={{
                 background: '#EEEDFF',
                 color: '#333',
                 fontSize: 14,
@@ -383,7 +384,7 @@ export default function Home() {
               }}>
                 Apply Now →
               </Link>
-              <a href="/pdf/whitepaper.pdf" target="_blank" rel="noopener noreferrer" className="focus-ring-light" style={{
+              <a href="/pdf/whitepaper.pdf" target="_blank" rel="noopener noreferrer" className="btn-hover focus-ring-light" style={{
                 background: 'rgba(255,255,255,0.1)',
                 color: '#EEEDFF',
                 fontSize: 14,
@@ -469,7 +470,7 @@ function FaqItem({ faq, index }) {
     }}>
       <button
         type="button"
-        className="focus-ring"
+        className="focus-ring faq-toggle"
         onClick={() => setOpen(v => !v)}
         aria-expanded={open}
         aria-controls={contentId}
@@ -528,8 +529,8 @@ function FooterCol({ title, links }) {
         {links.map(({ label, href, internal }) => (
           <li key={label}>
             {internal
-              ? <Link to={href} style={{ fontSize: 13, color: 'rgba(0,0,0,0.55)', fontWeight: 400, textDecoration: 'none' }}>{label}</Link>
-              : <a href={href} target="_blank" rel="noopener noreferrer" style={{ fontSize: 13, color: 'rgba(0,0,0,0.55)', fontWeight: 400 }}>{label}</a>
+              ? <Link to={href} className="footer-link" style={{ fontSize: 13, color: 'rgba(0,0,0,0.55)', fontWeight: 400, textDecoration: 'none' }}>{label}</Link>
+              : <a href={href} target="_blank" rel="noopener noreferrer" className="footer-link" style={{ fontSize: 13, color: 'rgba(0,0,0,0.55)', fontWeight: 400 }}>{label}</a>
             }
           </li>
         ))}

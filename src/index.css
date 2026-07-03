@@ -70,6 +70,48 @@ a {
   }
 }
 
+/* Hover states. !important is required because component styles are inline,
+   and inline declarations otherwise win over these pseudo-class rules. */
+.btn-hover {
+  transition: transform 0.18s ease, filter 0.18s ease, background 0.3s ease, color 0.3s ease !important;
+}
+.btn-hover:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.05);
+}
+.btn-hover:active {
+  transform: translateY(0);
+  filter: brightness(0.97);
+}
+
+.nav-text-links {
+  transition: color 0.3s ease, opacity 0.2s ease !important;
+}
+.nav-text-links:hover {
+  opacity: 0.65;
+}
+
+.faq-toggle:hover {
+  background: rgba(0, 0, 0, 0.03) !important;
+}
+
+.footer-link {
+  transition: color 0.15s ease;
+}
+.footer-link:hover {
+  color: rgba(0, 0, 0, 0.85) !important;
+}
+
+.logo-track:hover {
+  animation-play-state: paused;
+}
+.partner-logo {
+  transition: opacity 0.2s ease;
+}
+.partner-logo:hover {
+  opacity: 0.6 !important;
+}
+
 .focus-ring:focus-visible {
   outline: 2px solid rgba(0, 0, 0, 0.55);
   outline-offset: 3px;
