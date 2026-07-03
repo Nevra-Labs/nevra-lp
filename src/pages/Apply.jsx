@@ -21,7 +21,7 @@ const QUESTIONS = [
   {
     id: 'crypto_holdings',
     question: 'What best describes your crypto portfolio?',
-    options: ['Under $10k', '$10k – $50k', '$50k – $200k', 'Over $200k'],
+    options: ['Under $10k', '$10k to $50k', '$50k to $200k', 'Over $200k'],
   },
   {
     id: 'loan_purpose',
