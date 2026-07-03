@@ -27,6 +27,24 @@
     max-width: 100% !important;
   }
 
+  /* ── Built with carousel ── */
+  .built-with-section {
+    padding-top: 40px !important;
+    padding-bottom: 40px !important;
+  }
+
+  /* ── FAQ + CTA sections ── */
+  .faq-section,
+  .cta-section {
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+    padding-bottom: 80px !important;
+  }
+
+  .cta-section > div {
+    padding: 56px 24px !important;
+  }
+
   /* ── Footer ── */
   .footer-root {
     padding-left: 20px !important;
