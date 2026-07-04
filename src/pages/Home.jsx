@@ -1,6 +1,37 @@
 import { Link } from 'react-router-dom'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import '../responsive.css'
+
+function Reveal({ children, delay = 0, className = '', style }) {
+  const ref = useRef(null)
+  const [visible, setVisible] = useState(false)
+
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisible(true)
+          observer.disconnect()
+        }
+      },
+      { threshold: 0.15, rootMargin: '0px 0px -40px 0px' }
+    )
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [])
+
+  return (
+    <div
+      ref={ref}
+      className={`reveal ${visible ? 'is-visible' : ''} ${className}`}
+      style={{ ...style, transitionDelay: visible ? `${delay}ms` : '0ms' }}
+    >
+      {children}
+    </div>
+  )
+}
 
 const PARTNER_LOGOS = [
   { name: 'Plaid', src: '/logos/plaid_logo.svg' },
@@ -128,7 +159,7 @@ export default function Home() {
           maxWidth: 560,
           color: '#EEEDFF',
         }}>
-          <h1 style={{
+          <h1 className="enter-up" style={{
             fontWeight: 600,
             fontSize: 'clamp(28px, 3.4vw, 48px)',
             lineHeight: 1.1,
@@ -138,7 +169,7 @@ export default function Home() {
           }}>
             Consumer loans<br />for crypto-native people.
           </h1>
-          <p style={{
+          <p className="enter-up enter-delay-2" style={{
             fontSize: 14,
             fontWeight: 400,
             lineHeight: 1.6,
@@ -148,7 +179,7 @@ export default function Home() {
           }}>
             Verify your identity, connect your bank and wallet, and get one real credit score from your entire financial life. Then borrow against it.
           </p>
-          <div className="hero-ctas" style={{ display: 'flex', gap: 10 }}>
+          <div className="hero-ctas enter-up enter-delay-3" style={{ display: 'flex', gap: 10 }}>
             <Link to="/apply" className="btn-hover focus-ring-light" style={{
               background: '#EEEDFF',
               color: '#333',
@@ -238,7 +269,7 @@ export default function Home() {
         background: '#EEEDFF',
         padding: '120px 52px 140px',
       }}>
-        <div style={{ textAlign: 'center', marginBottom: 64 }}>
+        <Reveal style={{ textAlign: 'center', marginBottom: 64 }}>
           <h2 style={{
             fontWeight: 700,
             fontSize: 'clamp(26px, 3.5vw, 42px)',
@@ -253,7 +284,7 @@ export default function Home() {
           <p style={{ fontSize: 15, color: 'rgba(0,0,0,0.45)', lineHeight: 1.6, maxWidth: 440, margin: '0 auto' }}>
             From wallet to credit line in three steps.
           </p>
-        </div>
+        </Reveal>
 
         <div className="how-it-works-grid" style={{
           display: 'grid',
@@ -262,8 +293,10 @@ export default function Home() {
           maxWidth: 960,
           margin: '0 auto',
         }}>
-          {STEPS.map(step => (
-            <div key={step.title} style={{
+          {STEPS.map((step, i) => (
+            <Reveal key={step.title} delay={i * 90} style={{ display: 'flex' }}>
+            <div style={{
+              flex: 1,
               background: '#fff',
               borderRadius: 16,
               border: '1px solid rgba(0,0,0,0.06)',
@@ -291,6 +324,7 @@ export default function Home() {
                 {step.description}
               </p>
             </div>
+            </Reveal>
           ))}
         </div>
       </section>
@@ -302,7 +336,7 @@ export default function Home() {
         background: '#EEEDFF',
         padding: '0 52px 140px',
       }}>
-        <div style={{ textAlign: 'center', marginBottom: 56 }}>
+        <Reveal style={{ textAlign: 'center', marginBottom: 56 }}>
           <h2 style={{
             fontWeight: 700,
             fontSize: 'clamp(26px, 3.5vw, 42px)',
@@ -317,11 +351,13 @@ export default function Home() {
           <p style={{ fontSize: 15, color: 'rgba(0,0,0,0.45)', lineHeight: 1.6, maxWidth: 440, margin: '0 auto' }}>
             Everything you need to know before you apply.
           </p>
-        </div>
+        </Reveal>
 
         <div style={{ maxWidth: 720, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 12 }}>
           {FAQS.map((faq, i) => (
-            <FaqItem key={faq.question} faq={faq} index={i} />
+            <Reveal key={faq.question} delay={i * 60}>
+              <FaqItem faq={faq} index={i} />
+            </Reveal>
           ))}
         </div>
       </section>
@@ -333,6 +369,7 @@ export default function Home() {
         background: '#EEEDFF',
         padding: '0 52px 140px',
       }}>
+        <Reveal>
         <div style={{
           maxWidth: 960,
           margin: '0 auto',
@@ -399,6 +436,7 @@ export default function Home() {
             </div>
           </div>
         </div>
+        </Reveal>
       </section>
 
       {/* Footer */}

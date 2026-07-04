@@ -64,6 +64,16 @@ a {
 .enter-delay-4 { animation-delay: 0.24s; }
 .enter-delay-5 { animation-delay: 0.32s; }
 
+.reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 0.65s ease, transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 .blog-card {
   transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
   will-change: transform;
