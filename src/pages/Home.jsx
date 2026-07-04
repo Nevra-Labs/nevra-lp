@@ -260,6 +260,96 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Problem section */}
+      <section className="problem-section" style={{
+        position: 'relative',
+        zIndex: 15,
+        background: 'radial-gradient(120% 130% at 50% 0%, #17123a 0%, #0c0a24 55%, #070614 100%)',
+        padding: '120px 32px 110px',
+        overflow: 'hidden',
+      }}>
+        <Reveal style={{ textAlign: 'center', marginBottom: 24 }}>
+          <h2 style={{
+            fontWeight: 500,
+            fontSize: 'clamp(30px, 4vw, 52px)',
+            letterSpacing: '-0.02em',
+            lineHeight: 1.12,
+            margin: 0,
+          }}>
+            <span style={{ display: 'block', color: '#EEEDFF' }}>Your wallet can't vouch for you.</span>
+            <span style={{ display: 'block', color: 'rgba(238,237,255,0.38)' }}>Lenders can't read it.</span>
+          </h2>
+        </Reveal>
+
+        <Reveal delay={120}>
+          <svg
+            viewBox="0 0 1000 380"
+            style={{ display: 'block', width: '100%', maxWidth: 900, margin: '0 auto' }}
+            role="img"
+            aria-label="Diagram: onchain history and lender capital exist as two disconnected pools with no credit score between them"
+          >
+            {(() => {
+              const line = 'rgba(201,198,240,0.35)'
+              const lineSoft = 'rgba(201,198,240,0.18)'
+              const accent = '#c9c6f0'
+              return (
+                <g fill="none" strokeWidth="1.2">
+                  {/* Left cylinder: onchain history */}
+                  <ellipse cx="120" cy="190" rx="42" ry="110" stroke={lineSoft} />
+                  <ellipse cx="155" cy="190" rx="42" ry="110" stroke={lineSoft} />
+                  <ellipse cx="190" cy="190" rx="42" ry="110" stroke={line} />
+                  <path d="M120 80 H235 M120 300 H235" stroke={lineSoft} />
+                  <ellipse cx="235" cy="190" rx="42" ry="110" stroke={accent} strokeOpacity="0.7" strokeDasharray="3 6" fill="rgba(201,198,240,0.04)" />
+
+                  {/* Right cylinder: lender capital, with liquidity dots */}
+                  <ellipse cx="880" cy="190" rx="42" ry="110" stroke={lineSoft} />
+                  <path d="M765 80 H880 M765 300 H880" stroke={lineSoft} />
+                  <ellipse cx="765" cy="190" rx="42" ry="110" stroke={accent} strokeOpacity="0.7" strokeDasharray="3 6" fill="rgba(201,198,240,0.04)" />
+                  <g fill={accent}>
+                    <circle cx="775" cy="140" r="3" opacity="0.85" />
+                    <circle cx="800" cy="180" r="2.5" opacity="0.5" />
+                    <circle cx="762" cy="225" r="3.5" opacity="0.9" />
+                    <circle cx="820" cy="240" r="2.5" opacity="0.6" />
+                    <circle cx="845" cy="160" r="3" opacity="0.75" />
+                    <circle cx="838" cy="205" r="2" opacity="0.45" />
+                    <circle cx="790" cy="265" r="2" opacity="0.55" />
+                    <circle cx="862" cy="130" r="2" opacity="0.4" />
+                  </g>
+
+                  {/* Broken link */}
+                  <path d="M280 190 H375" stroke={line} />
+                  <path d="M625 190 H720" stroke={line} />
+                  <path d="M410 190 H590" stroke={line} strokeDasharray="10 12" />
+                  <circle cx="392" cy="190" r="9" stroke={accent} strokeOpacity="0.8" />
+                  <path d="M387.5 185.5 l9 9 M396.5 185.5 l-9 9" stroke={accent} strokeOpacity="0.8" />
+                  <circle cx="608" cy="190" r="9" stroke={accent} strokeOpacity="0.8" />
+                  <path d="M603.5 185.5 l9 9 M612.5 185.5 l-9 9" stroke={accent} strokeOpacity="0.8" />
+
+                  {/* Labels */}
+                  <g fontFamily="inherit" fontSize="15" fill="rgba(238,237,255,0.55)" textAnchor="middle" stroke="none">
+                    <text x="178" y="340">Your onchain history</text>
+                    <text x="822" y="340">Lender capital</text>
+                    <text x="500" y="235" fill="rgba(238,237,255,0.8)">No shared credit score</text>
+                  </g>
+                </g>
+              )
+            })()}
+          </svg>
+        </Reveal>
+
+        <Reveal delay={200} style={{ textAlign: 'center', marginTop: 40 }}>
+          <p style={{
+            fontSize: 16,
+            lineHeight: 1.65,
+            color: 'rgba(238,237,255,0.6)',
+            maxWidth: 480,
+            margin: '0 auto',
+          }}>
+            Years of onchain behavior, invisible to every lender. So everyone gets the same deal: lock up more than you borrow. Nevra is the score in between.
+          </p>
+        </Reveal>
+      </section>
+
       {/* How it works section */}
       <section className="how-it-works-section" style={{
         position: 'relative',
