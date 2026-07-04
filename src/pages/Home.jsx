@@ -1,6 +1,38 @@
 import { Link } from 'react-router-dom'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
+import StepArt from '../components/StepArt'
 import '../responsive.css'
+
+function Reveal({ children, delay = 0, className = '', style }) {
+  const ref = useRef(null)
+  const [visible, setVisible] = useState(false)
+
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisible(true)
+          observer.disconnect()
+        }
+      },
+      { threshold: 0.15, rootMargin: '0px 0px -40px 0px' }
+    )
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [])
+
+  return (
+    <div
+      ref={ref}
+      className={`reveal ${visible ? 'is-visible' : ''} ${className}`}
+      style={{ ...style, transitionDelay: visible ? `${delay}ms` : '0ms' }}
+    >
+      {children}
+    </div>
+  )
+}
 
 const PARTNER_LOGOS = [
   { name: 'Plaid', src: '/logos/plaid_logo.svg' },
@@ -36,17 +68,14 @@ const STEPS = [
   {
     title: 'Connect your wallet',
     description: 'Link any wallet in one click. No forms, no delays. Your onchain history starts building your profile instantly.',
-    image: '/cards/wallet.png',
   },
   {
     title: 'Verify your identity',
     description: 'Complete KYC and link your bank account. We combine your offchain financial data with your onchain history into one real credit score.',
-    image: '/cards/score.png',
   },
   {
     title: 'Access your credit line',
     description: 'Post less than you borrow. Your score unlocks a credit line you can draw from anytime, no overcollateral, no waiting.',
-    image: '/cards/credit.png',
   },
 ]
 
@@ -65,7 +94,7 @@ export default function Home() {
   const applyColor = navDark ? '#EEEDFF' : '#333'
 
   return (
-    <div style={{ fontFamily: "'Inter', system-ui, sans-serif" }}>
+    <div style={{ fontFamily: "'Onest', 'Inter', system-ui, sans-serif" }}>
       {/* Fixed fullscreen video */}
       <video
         src="/hero.mp4"
@@ -101,7 +130,7 @@ export default function Home() {
           <a href="/pdf/whitepaper.pdf" target="_blank" rel="noopener noreferrer" className="nav-text-links" style={{ fontSize: 14, fontWeight: 500, color: navLinkColor, letterSpacing: '0.01em', transition: 'color 0.3s ease' }}>
             Whitepaper
           </a>
-          <Link to="/apply" className="btn-hover focus-ring" style={{
+          <Link to="/apply" className={`btn-hover focus-ring ${navDark ? 'key-dark' : 'key-light'}`} style={{
             background: applyBg,
             color: applyColor,
             fontSize: 14,
@@ -128,17 +157,17 @@ export default function Home() {
           maxWidth: 560,
           color: '#EEEDFF',
         }}>
-          <h1 style={{
-            fontWeight: 600,
-            fontSize: 'clamp(28px, 3.4vw, 48px)',
-            lineHeight: 1.1,
-            letterSpacing: '-0.025em',
+          <h1 className="enter-up" style={{
+            fontWeight: 500,
+            fontSize: 'clamp(32px, 4.2vw, 58px)',
+            lineHeight: 1.08,
+            letterSpacing: '-0.02em',
             marginBottom: 16,
             textShadow: '0 1px 6px rgba(0,0,0,0.25)',
           }}>
             Consumer loans<br />for crypto-native people.
           </h1>
-          <p style={{
+          <p className="enter-up enter-delay-2" style={{
             fontSize: 14,
             fontWeight: 400,
             lineHeight: 1.6,
@@ -148,8 +177,8 @@ export default function Home() {
           }}>
             Verify your identity, connect your bank and wallet, and get one real credit score from your entire financial life. Then borrow against it.
           </p>
-          <div className="hero-ctas" style={{ display: 'flex', gap: 10 }}>
-            <Link to="/apply" className="btn-hover focus-ring-light" style={{
+          <div className="hero-ctas enter-up enter-delay-3" style={{ display: 'flex', gap: 10 }}>
+            <Link to="/apply" className="btn-hover focus-ring-light key-light" style={{
               background: '#EEEDFF',
               color: '#333',
               fontSize: 14,
@@ -231,6 +260,96 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Problem section */}
+      <section className="problem-section" style={{
+        position: 'relative',
+        zIndex: 15,
+        background: 'radial-gradient(120% 130% at 50% 0%, #17123a 0%, #0c0a24 55%, #070614 100%)',
+        padding: '120px 32px 110px',
+        overflow: 'hidden',
+      }}>
+        <Reveal style={{ textAlign: 'center', marginBottom: 24 }}>
+          <h2 style={{
+            fontWeight: 500,
+            fontSize: 'clamp(30px, 4vw, 52px)',
+            letterSpacing: '-0.02em',
+            lineHeight: 1.12,
+            margin: 0,
+          }}>
+            <span style={{ display: 'block', color: '#EEEDFF' }}>Your wallet can't vouch for you.</span>
+            <span style={{ display: 'block', color: 'rgba(238,237,255,0.38)' }}>Lenders can't read it.</span>
+          </h2>
+        </Reveal>
+
+        <Reveal delay={120}>
+          <svg
+            viewBox="0 0 1000 380"
+            style={{ display: 'block', width: '100%', maxWidth: 900, margin: '0 auto' }}
+            role="img"
+            aria-label="Diagram: onchain history and lender capital exist as two disconnected pools with no credit score between them"
+          >
+            {(() => {
+              const line = 'rgba(201,198,240,0.35)'
+              const lineSoft = 'rgba(201,198,240,0.18)'
+              const accent = '#c9c6f0'
+              return (
+                <g fill="none" strokeWidth="1.2">
+                  {/* Left cylinder: onchain history */}
+                  <ellipse cx="120" cy="190" rx="42" ry="110" stroke={lineSoft} />
+                  <ellipse cx="155" cy="190" rx="42" ry="110" stroke={lineSoft} />
+                  <ellipse cx="190" cy="190" rx="42" ry="110" stroke={line} />
+                  <path d="M120 80 H235 M120 300 H235" stroke={lineSoft} />
+                  <ellipse cx="235" cy="190" rx="42" ry="110" stroke={accent} strokeOpacity="0.7" strokeDasharray="3 6" fill="rgba(201,198,240,0.04)" />
+
+                  {/* Right cylinder: lender capital, with liquidity dots */}
+                  <ellipse cx="880" cy="190" rx="42" ry="110" stroke={lineSoft} />
+                  <path d="M765 80 H880 M765 300 H880" stroke={lineSoft} />
+                  <ellipse cx="765" cy="190" rx="42" ry="110" stroke={accent} strokeOpacity="0.7" strokeDasharray="3 6" fill="rgba(201,198,240,0.04)" />
+                  <g fill={accent}>
+                    <circle cx="775" cy="140" r="3" opacity="0.85" />
+                    <circle cx="800" cy="180" r="2.5" opacity="0.5" />
+                    <circle cx="762" cy="225" r="3.5" opacity="0.9" />
+                    <circle cx="820" cy="240" r="2.5" opacity="0.6" />
+                    <circle cx="845" cy="160" r="3" opacity="0.75" />
+                    <circle cx="838" cy="205" r="2" opacity="0.45" />
+                    <circle cx="790" cy="265" r="2" opacity="0.55" />
+                    <circle cx="862" cy="130" r="2" opacity="0.4" />
+                  </g>
+
+                  {/* Broken link */}
+                  <path d="M280 190 H375" stroke={line} />
+                  <path d="M625 190 H720" stroke={line} />
+                  <path d="M410 190 H590" stroke={line} strokeDasharray="10 12" />
+                  <circle cx="392" cy="190" r="9" stroke={accent} strokeOpacity="0.8" />
+                  <path d="M387.5 185.5 l9 9 M396.5 185.5 l-9 9" stroke={accent} strokeOpacity="0.8" />
+                  <circle cx="608" cy="190" r="9" stroke={accent} strokeOpacity="0.8" />
+                  <path d="M603.5 185.5 l9 9 M612.5 185.5 l-9 9" stroke={accent} strokeOpacity="0.8" />
+
+                  {/* Labels */}
+                  <g fontFamily="inherit" fontSize="15" fill="rgba(238,237,255,0.55)" textAnchor="middle" stroke="none">
+                    <text x="178" y="340">Your onchain history</text>
+                    <text x="822" y="340">Lender capital</text>
+                    <text x="500" y="235" fill="rgba(238,237,255,0.8)">No shared credit score</text>
+                  </g>
+                </g>
+              )
+            })()}
+          </svg>
+        </Reveal>
+
+        <Reveal delay={200} style={{ textAlign: 'center', marginTop: 40 }}>
+          <p style={{
+            fontSize: 16,
+            lineHeight: 1.65,
+            color: 'rgba(238,237,255,0.6)',
+            maxWidth: 480,
+            margin: '0 auto',
+          }}>
+            Years of onchain behavior, invisible to every lender. So everyone gets the same deal: lock up more than you borrow. Nevra is the score in between.
+          </p>
+        </Reveal>
+      </section>
+
       {/* How it works section */}
       <section className="how-it-works-section" style={{
         position: 'relative',
@@ -238,22 +357,21 @@ export default function Home() {
         background: '#EEEDFF',
         padding: '120px 52px 140px',
       }}>
-        <div style={{ textAlign: 'center', marginBottom: 64 }}>
+        <Reveal style={{ textAlign: 'center', marginBottom: 64 }}>
           <h2 style={{
-            fontWeight: 700,
-            fontSize: 'clamp(26px, 3.5vw, 42px)',
-            letterSpacing: '-0.025em',
+            fontWeight: 500,
+            fontSize: 'clamp(28px, 3.6vw, 46px)',
+            letterSpacing: '-0.02em',
             color: '#111',
             marginBottom: 16,
-            lineHeight: 1.1,
-            textShadow: '0 1px 0 rgba(255,255,255,0.6), 0 2px 6px rgba(0,0,0,0.18), 0 1px 2px rgba(0,0,0,0.12)',
+            lineHeight: 1.08,
           }}>
             How it works
           </h2>
           <p style={{ fontSize: 15, color: 'rgba(0,0,0,0.45)', lineHeight: 1.6, maxWidth: 440, margin: '0 auto' }}>
             From wallet to credit line in three steps.
           </p>
-        </div>
+        </Reveal>
 
         <div className="how-it-works-grid" style={{
           display: 'grid',
@@ -262,8 +380,10 @@ export default function Home() {
           maxWidth: 960,
           margin: '0 auto',
         }}>
-          {STEPS.map(step => (
-            <div key={step.title} style={{
+          {STEPS.map((step, i) => (
+            <Reveal key={step.title} delay={i * 90} style={{ display: 'flex' }}>
+            <div style={{
+              flex: 1,
               background: '#fff',
               borderRadius: 16,
               border: '1px solid rgba(0,0,0,0.06)',
@@ -273,8 +393,8 @@ export default function Home() {
               flexDirection: 'column',
               minHeight: 400,
             }}>
-              <div style={{ height: 160, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 28 }}>
-                <img src={step.image} alt={step.title} style={{ maxHeight: '100%', maxWidth: '80%', objectFit: 'contain' }} />
+              <div style={{ height: 170, borderRadius: 12, overflow: 'hidden', marginBottom: 28 }}>
+                <StepArt variant={i} />
               </div>
               <h3 style={{
                 fontWeight: 600,
@@ -283,7 +403,6 @@ export default function Home() {
                 color: '#111',
                 marginBottom: 10,
                 lineHeight: 1.3,
-                textShadow: '0 1px 0 rgba(255,255,255,0.6), 0 2px 6px rgba(0,0,0,0.18), 0 1px 2px rgba(0,0,0,0.12)',
               }}>
                 {step.title}
               </h3>
@@ -291,6 +410,7 @@ export default function Home() {
                 {step.description}
               </p>
             </div>
+            </Reveal>
           ))}
         </div>
       </section>
@@ -302,26 +422,27 @@ export default function Home() {
         background: '#EEEDFF',
         padding: '0 52px 140px',
       }}>
-        <div style={{ textAlign: 'center', marginBottom: 56 }}>
+        <Reveal style={{ textAlign: 'center', marginBottom: 56 }}>
           <h2 style={{
-            fontWeight: 700,
-            fontSize: 'clamp(26px, 3.5vw, 42px)',
-            letterSpacing: '-0.025em',
+            fontWeight: 500,
+            fontSize: 'clamp(28px, 3.6vw, 46px)',
+            letterSpacing: '-0.02em',
             color: '#111',
             marginBottom: 16,
-            lineHeight: 1.1,
-            textShadow: '0 1px 0 rgba(255,255,255,0.6), 0 2px 6px rgba(0,0,0,0.18), 0 1px 2px rgba(0,0,0,0.12)',
+            lineHeight: 1.08,
           }}>
             Questions, answered
           </h2>
           <p style={{ fontSize: 15, color: 'rgba(0,0,0,0.45)', lineHeight: 1.6, maxWidth: 440, margin: '0 auto' }}>
             Everything you need to know before you apply.
           </p>
-        </div>
+        </Reveal>
 
         <div style={{ maxWidth: 720, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 12 }}>
           {FAQS.map((faq, i) => (
-            <FaqItem key={faq.question} faq={faq} index={i} />
+            <Reveal key={faq.question} delay={i * 60}>
+              <FaqItem faq={faq} index={i} />
+            </Reveal>
           ))}
         </div>
       </section>
@@ -333,6 +454,7 @@ export default function Home() {
         background: '#EEEDFF',
         padding: '0 52px 140px',
       }}>
+        <Reveal>
         <div style={{
           maxWidth: 960,
           margin: '0 auto',
@@ -352,11 +474,11 @@ export default function Home() {
           }} />
           <div style={{ position: 'relative' }}>
             <h2 style={{
-              fontWeight: 700,
-              fontSize: 'clamp(26px, 3.5vw, 42px)',
-              letterSpacing: '-0.025em',
+              fontWeight: 500,
+              fontSize: 'clamp(28px, 3.6vw, 46px)',
+              letterSpacing: '-0.02em',
               color: '#EEEDFF',
-              lineHeight: 1.1,
+              lineHeight: 1.08,
               marginBottom: 16,
             }}>
               Your history is your collateral.
@@ -371,7 +493,7 @@ export default function Home() {
               Stop locking up more than you borrow. Verify once, link your accounts, and open a credit line backed by your real score.
             </p>
             <div style={{ display: 'flex', gap: 10, justifyContent: 'center', flexWrap: 'wrap' }}>
-              <Link to="/apply" className="btn-hover focus-ring-light" style={{
+              <Link to="/apply" className="btn-hover focus-ring-light key-light" style={{
                 background: '#EEEDFF',
                 color: '#333',
                 fontSize: 14,
@@ -399,6 +521,7 @@ export default function Home() {
             </div>
           </div>
         </div>
+        </Reveal>
       </section>
 
       {/* Footer */}

@@ -12,7 +12,7 @@ html, body, #root {
   width: 100%;
   min-height: 100%;
   -webkit-text-size-adjust: 100%;
-  font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  font-family: 'Onest', 'Inter', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
 }
@@ -32,12 +32,94 @@ a {
   to   { opacity: 1; }
 }
 
+@keyframes fadeUpBig {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes coverReveal {
+  from { opacity: 0; transform: translateY(24px) scale(0.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
 .fade-up {
   animation: fadeUp 0.38s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 .fade-in {
   animation: fadeIn 0.3s ease both;
+}
+
+.enter-cover {
+  animation: coverReveal 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.enter-up {
+  animation: fadeUpBig 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.enter-delay-1 { animation-delay: 0.06s; }
+.enter-delay-2 { animation-delay: 0.12s; }
+.enter-delay-3 { animation-delay: 0.18s; }
+.enter-delay-4 { animation-delay: 0.24s; }
+.enter-delay-5 { animation-delay: 0.32s; }
+
+.reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 0.65s ease, transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.blog-card {
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+.blog-card:hover .blog-card-cover {
+  transform: scale(1.02);
+}
+.blog-card:hover .blog-card-title {
+  color: rgba(0, 0, 0, 0.7) !important;
+}
+.blog-card-cover {
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+.blog-card-title {
+  transition: color 0.2s ease;
+}
+
+.reading-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #6b6bff, #a8a4e0);
+  z-index: 30;
+  width: 0%;
+  transition: width 0.08s linear;
+}
+
+.article-prose p {
+  margin: 0 0 22px;
+}
+.article-prose ul, .article-prose ol {
+  margin: 0 0 24px;
+  padding-left: 22px;
+}
+.article-prose li {
+  margin-bottom: 8px;
+  line-height: 1.75;
+}
+.article-prose li::marker {
+  color: rgba(0, 0, 0, 0.35);
+}
+.article-prose strong {
+  color: #0a0a0a;
+  font-weight: 600;
 }
 
 @keyframes pulse {
@@ -68,6 +150,23 @@ a {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
+}
+
+/* Keycap buttons: hairline border + drop shadow + white inset top highlight.
+   !important beats the inline border/boxShadow declarations on the buttons. */
+.key-light {
+  border: 1px solid rgba(32, 32, 32, 0.12) !important;
+  box-shadow:
+    0 2px 3px rgba(20, 18, 50, 0.08),
+    inset 0 0 0.5px 1.5px rgba(255, 255, 255, 0.35),
+    inset 0 2px 0 rgba(255, 255, 255, 0.95) !important;
+}
+.key-dark {
+  border: 1px solid rgba(0, 0, 0, 0.55) !important;
+  box-shadow:
+    0 2px 3px rgba(20, 18, 50, 0.25),
+    inset 0 0 0.5px 1.5px rgba(255, 255, 255, 0.08),
+    inset 0 1.5px 0 rgba(255, 255, 255, 0.2) !important;
 }
 
 /* Hover states. !important is required because component styles are inline,

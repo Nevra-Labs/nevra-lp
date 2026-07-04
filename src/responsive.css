@@ -33,6 +33,16 @@
     padding-bottom: 40px !important;
   }
 
+  /* ── Problem section ── */
+  .problem-section {
+    padding: 72px 20px 64px !important;
+  }
+
+  /* SVG scales down ~3x on small screens; scale the labels up to compensate */
+  .problem-section svg text {
+    font-size: 34px;
+  }
+
   /* ── FAQ + CTA sections ── */
   .faq-section,
   .cta-section {
@@ -82,5 +92,13 @@
 
   .card-cover {
     aspect-ratio: 16 / 9 !important;
+  }
+
+  .blog-grid {
+    grid-template-columns: 1fr !important;
+    gap: 40px !important;
+  }
+  .blog-grid > li {
+    grid-column: auto !important;
   }
 }

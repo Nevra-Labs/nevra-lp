@@ -21,20 +21,20 @@ export default function Nav({ dark = false }) {
         />
       </Link>
       <div style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
-        <Link to="/blog" style={{ fontSize: 14, fontWeight: 500, color: fg, letterSpacing: '0.01em' }}>
+        <Link to="/blog" className="nav-text-links" style={{ fontSize: 14, fontWeight: 500, color: fg, letterSpacing: '0.01em' }}>
           Blog
         </Link>
-        <a href="#" style={{
+        <Link to="/apply" className={`btn-hover focus-ring ${dark ? 'key-dark' : 'key-light'}`} style={{
           background: applyBg,
           color: applyColor,
           fontSize: 14,
           fontWeight: 500,
           padding: '9px 18px',
-          borderRadius: 999,
+          borderRadius: 10,
           lineHeight: 1,
         }}>
           Apply
-        </a>
+        </Link>
       </div>
     </header>
   )
