@@ -12,7 +12,7 @@ html, body, #root {
   width: 100%;
   min-height: 100%;
   -webkit-text-size-adjust: 100%;
-  font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  font-family: 'Onest', 'Inter', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
 }
@@ -150,6 +150,23 @@ a {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
+}
+
+/* Keycap buttons: hairline border + drop shadow + white inset top highlight.
+   !important beats the inline border/boxShadow declarations on the buttons. */
+.key-light {
+  border: 1px solid rgba(32, 32, 32, 0.12) !important;
+  box-shadow:
+    0 2px 3px rgba(20, 18, 50, 0.08),
+    inset 0 0 0.5px 1.5px rgba(255, 255, 255, 0.35),
+    inset 0 2px 0 rgba(255, 255, 255, 0.95) !important;
+}
+.key-dark {
+  border: 1px solid rgba(0, 0, 0, 0.55) !important;
+  box-shadow:
+    0 2px 3px rgba(20, 18, 50, 0.25),
+    inset 0 0 0.5px 1.5px rgba(255, 255, 255, 0.08),
+    inset 0 1.5px 0 rgba(255, 255, 255, 0.2) !important;
 }
 
 /* Hover states. !important is required because component styles are inline,

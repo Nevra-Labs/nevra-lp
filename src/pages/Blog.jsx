@@ -23,9 +23,9 @@ export default function Blog() {
             The Nevra journal
           </p>
           <h1 className="enter-up enter-delay-1" style={{
-            fontWeight: 700,
+            fontWeight: 500,
             fontSize: 'clamp(34px, 5vw, 56px)',
-            letterSpacing: '-0.03em',
+            letterSpacing: '-0.02em',
             lineHeight: 1.05,
             marginBottom: 20,
           }}>
@@ -97,7 +97,7 @@ export default function Blog() {
                 </div>
 
                 <h2 className="blog-card-title" style={{
-                  fontWeight: 700,
+                  fontWeight: 600,
                   fontSize: i === 0 ? 'clamp(24px, 3vw, 32px)' : 'clamp(19px, 2vw, 22px)',
                   letterSpacing: '-0.02em',
                   lineHeight: 1.15,

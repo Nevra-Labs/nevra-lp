@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { useState, useEffect, useRef } from 'react'
+import StepArt from '../components/StepArt'
 import '../responsive.css'
 
 function Reveal({ children, delay = 0, className = '', style }) {
@@ -67,17 +68,14 @@ const STEPS = [
   {
     title: 'Connect your wallet',
     description: 'Link any wallet in one click. No forms, no delays. Your onchain history starts building your profile instantly.',
-    image: '/cards/wallet.png',
   },
   {
     title: 'Verify your identity',
     description: 'Complete KYC and link your bank account. We combine your offchain financial data with your onchain history into one real credit score.',
-    image: '/cards/score.png',
   },
   {
     title: 'Access your credit line',
     description: 'Post less than you borrow. Your score unlocks a credit line you can draw from anytime, no overcollateral, no waiting.',
-    image: '/cards/credit.png',
   },
 ]
 
@@ -96,7 +94,7 @@ export default function Home() {
   const applyColor = navDark ? '#EEEDFF' : '#333'
 
   return (
-    <div style={{ fontFamily: "'Inter', system-ui, sans-serif" }}>
+    <div style={{ fontFamily: "'Onest', 'Inter', system-ui, sans-serif" }}>
       {/* Fixed fullscreen video */}
       <video
         src="/hero.mp4"
@@ -132,7 +130,7 @@ export default function Home() {
           <a href="/pdf/whitepaper.pdf" target="_blank" rel="noopener noreferrer" className="nav-text-links" style={{ fontSize: 14, fontWeight: 500, color: navLinkColor, letterSpacing: '0.01em', transition: 'color 0.3s ease' }}>
             Whitepaper
           </a>
-          <Link to="/apply" className="btn-hover focus-ring" style={{
+          <Link to="/apply" className={`btn-hover focus-ring ${navDark ? 'key-dark' : 'key-light'}`} style={{
             background: applyBg,
             color: applyColor,
             fontSize: 14,
@@ -160,10 +158,10 @@ export default function Home() {
           color: '#EEEDFF',
         }}>
           <h1 className="enter-up" style={{
-            fontWeight: 600,
-            fontSize: 'clamp(28px, 3.4vw, 48px)',
-            lineHeight: 1.1,
-            letterSpacing: '-0.025em',
+            fontWeight: 500,
+            fontSize: 'clamp(32px, 4.2vw, 58px)',
+            lineHeight: 1.08,
+            letterSpacing: '-0.02em',
             marginBottom: 16,
             textShadow: '0 1px 6px rgba(0,0,0,0.25)',
           }}>
@@ -180,7 +178,7 @@ export default function Home() {
             Verify your identity, connect your bank and wallet, and get one real credit score from your entire financial life. Then borrow against it.
           </p>
           <div className="hero-ctas enter-up enter-delay-3" style={{ display: 'flex', gap: 10 }}>
-            <Link to="/apply" className="btn-hover focus-ring-light" style={{
+            <Link to="/apply" className="btn-hover focus-ring-light key-light" style={{
               background: '#EEEDFF',
               color: '#333',
               fontSize: 14,
@@ -271,13 +269,12 @@ export default function Home() {
       }}>
         <Reveal style={{ textAlign: 'center', marginBottom: 64 }}>
           <h2 style={{
-            fontWeight: 700,
-            fontSize: 'clamp(26px, 3.5vw, 42px)',
-            letterSpacing: '-0.025em',
+            fontWeight: 500,
+            fontSize: 'clamp(28px, 3.6vw, 46px)',
+            letterSpacing: '-0.02em',
             color: '#111',
             marginBottom: 16,
-            lineHeight: 1.1,
-            textShadow: '0 1px 0 rgba(255,255,255,0.6), 0 2px 6px rgba(0,0,0,0.18), 0 1px 2px rgba(0,0,0,0.12)',
+            lineHeight: 1.08,
           }}>
             How it works
           </h2>
@@ -306,8 +303,8 @@ export default function Home() {
               flexDirection: 'column',
               minHeight: 400,
             }}>
-              <div style={{ height: 160, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 28 }}>
-                <img src={step.image} alt={step.title} style={{ maxHeight: '100%', maxWidth: '80%', objectFit: 'contain' }} />
+              <div style={{ height: 170, borderRadius: 12, overflow: 'hidden', marginBottom: 28 }}>
+                <StepArt variant={i} />
               </div>
               <h3 style={{
                 fontWeight: 600,
@@ -316,7 +313,6 @@ export default function Home() {
                 color: '#111',
                 marginBottom: 10,
                 lineHeight: 1.3,
-                textShadow: '0 1px 0 rgba(255,255,255,0.6), 0 2px 6px rgba(0,0,0,0.18), 0 1px 2px rgba(0,0,0,0.12)',
               }}>
                 {step.title}
               </h3>
@@ -338,13 +334,12 @@ export default function Home() {
       }}>
         <Reveal style={{ textAlign: 'center', marginBottom: 56 }}>
           <h2 style={{
-            fontWeight: 700,
-            fontSize: 'clamp(26px, 3.5vw, 42px)',
-            letterSpacing: '-0.025em',
+            fontWeight: 500,
+            fontSize: 'clamp(28px, 3.6vw, 46px)',
+            letterSpacing: '-0.02em',
             color: '#111',
             marginBottom: 16,
-            lineHeight: 1.1,
-            textShadow: '0 1px 0 rgba(255,255,255,0.6), 0 2px 6px rgba(0,0,0,0.18), 0 1px 2px rgba(0,0,0,0.12)',
+            lineHeight: 1.08,
           }}>
             Questions, answered
           </h2>
@@ -389,11 +384,11 @@ export default function Home() {
           }} />
           <div style={{ position: 'relative' }}>
             <h2 style={{
-              fontWeight: 700,
-              fontSize: 'clamp(26px, 3.5vw, 42px)',
-              letterSpacing: '-0.025em',
+              fontWeight: 500,
+              fontSize: 'clamp(28px, 3.6vw, 46px)',
+              letterSpacing: '-0.02em',
               color: '#EEEDFF',
-              lineHeight: 1.1,
+              lineHeight: 1.08,
               marginBottom: 16,
             }}>
               Your history is your collateral.
@@ -408,7 +403,7 @@ export default function Home() {
               Stop locking up more than you borrow. Verify once, link your accounts, and open a credit line backed by your real score.
             </p>
             <div style={{ display: 'flex', gap: 10, justifyContent: 'center', flexWrap: 'wrap' }}>
-              <Link to="/apply" className="btn-hover focus-ring-light" style={{
+              <Link to="/apply" className="btn-hover focus-ring-light key-light" style={{
                 background: '#EEEDFF',
                 color: '#333',
                 fontSize: 14,

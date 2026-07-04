@@ -80,9 +80,9 @@ export default function ArticlePage() {
 
         {/* Title */}
         <h1 className="enter-up enter-delay-2" style={{
-          fontWeight: 700,
+          fontWeight: 500,
           fontSize: 'clamp(30px, 5vw, 48px)',
-          letterSpacing: '-0.03em',
+          letterSpacing: '-0.02em',
           lineHeight: 1.05,
           marginBottom: 22,
         }}>
@@ -148,7 +148,7 @@ export default function ArticlePage() {
             Verify once, connect your accounts, and open a real credit line.
           </h2>
           <div style={{ display: 'flex', gap: 12, marginTop: 12, flexWrap: 'wrap' }}>
-            <Link to="/apply" className="btn-hover focus-ring-light" style={{
+            <Link to="/apply" className="btn-hover focus-ring-light key-light" style={{
               background: '#EEEDFF',
               color: '#333',
               fontSize: 14,
