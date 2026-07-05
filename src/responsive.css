@@ -1,6 +1,7 @@
 @media (max-width: 768px) {
   /* ── Nav ── */
-  .nav-text-links {
+  .nav-text-links,
+  .nav-text-links-group {
     display: none !important;
   }
 

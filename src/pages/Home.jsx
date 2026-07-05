@@ -230,14 +230,16 @@ export default function Home() {
       <Nav />
 
       {/* Hero */}
-      <section style={{ padding: '76px 32px 0' }}>
+      <section style={{ padding: '76px 32px 0', minHeight: '100svh', display: 'flex', flexDirection: 'column' }}>
         <div className="hero-grid" style={{
           ...frame,
+          flex: 1,
+          width: '100%',
           display: 'grid',
           gridTemplateColumns: '1.05fr 0.95fr',
           alignItems: 'stretch',
         }}>
-          <div className="hero-copy-cell" style={{ padding: '96px 56px 72px' }}>
+          <div className="hero-copy-cell" style={{ padding: '64px 56px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
             <p className="eyebrow enter-up" style={{ color: 'var(--ink)', marginBottom: 26 }}>
               [ Consumer credit protocol ]
             </p>
@@ -294,6 +296,7 @@ export default function Home() {
         {/* Meta strip: three bordered cells under the hero */}
         <div className="hero-meta" style={{
           ...frame,
+          width: '100%',
           borderTop: '1px solid var(--hairline-soft)',
           display: 'grid',
           gridTemplateColumns: 'repeat(3, 1fr)',
