@@ -358,7 +358,7 @@ export default function Home() {
           alignItems: 'stretch',
         }}>
           <div className="hero-copy-cell" style={{ padding: '96px 56px 72px' }}>
-            <p className="eyebrow enter-up" style={{ color: 'var(--accent)', marginBottom: 26 }}>
+            <p className="eyebrow enter-up" style={{ color: 'var(--ink)', marginBottom: 26 }}>
               [ Consumer credit protocol ]
             </p>
             <h1 className="enter-up enter-delay-1" style={{
@@ -482,7 +482,7 @@ export default function Home() {
       }}>
         <div style={{ ...frameDark, padding: '120px 24px 104px' }}>
           <Reveal style={{ textAlign: 'center', marginBottom: 20 }}>
-            <p className="eyebrow" style={{ color: 'var(--accent-light)', marginBottom: 24 }}>/ The problem</p>
+            <p className="eyebrow" style={{ color: 'var(--dark-ink-60)', marginBottom: 24 }}>/ The problem</p>
             <h2 style={{
               fontWeight: 500,
               fontSize: 'clamp(30px, 3.8vw, 50px)',
@@ -569,7 +569,7 @@ export default function Home() {
       <section className="how-it-works-section" style={{ padding: '0 32px' }}>
         <div style={frame}>
           <Reveal className="pad-cell" style={{ padding: '88px 56px 56px' }}>
-            <p className="eyebrow" style={{ color: 'var(--accent)', marginBottom: 22 }}>/ How it works</p>
+            <p className="eyebrow" style={{ color: 'var(--ink)', marginBottom: 22 }}>/ How it works</p>
             <h2 style={{
               fontWeight: 500,
               fontSize: 'clamp(28px, 3.4vw, 44px)',
@@ -596,7 +596,7 @@ export default function Home() {
                   flexDirection: 'column',
                 }}>
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 40 }}>
-                    <span className="eyebrow" style={{ color: 'var(--accent)' }}>[ {step.number} ]</span>
+                    <span className="eyebrow" style={{ color: 'var(--ink-45)' }}>[ {step.number} ]</span>
                     <StepIcon index={i} />
                   </div>
                   <h3 style={{ fontWeight: 600, fontSize: 17, letterSpacing: '-0.015em', marginBottom: 10, lineHeight: 1.3 }}>
@@ -624,7 +624,7 @@ export default function Home() {
           alignItems: 'stretch',
         }}>
           <Reveal className="pad-cell" style={{ padding: '88px 56px' }}>
-            <p className="eyebrow" style={{ color: 'var(--accent)', marginBottom: 22 }}>/ What you get</p>
+            <p className="eyebrow" style={{ color: 'var(--ink)', marginBottom: 22 }}>/ What you get</p>
             <h2 style={{
               fontWeight: 500,
               fontSize: 'clamp(28px, 3.4vw, 44px)',
@@ -654,7 +654,7 @@ export default function Home() {
                 <div style={{ flex: 1, padding: '44px 32px 44px', display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 22 }}>
                   <PrincipleIcon index={i} />
                   <div>
-                    <p className="eyebrow" style={{ fontSize: 10, color: 'var(--accent)', marginBottom: 10 }}>[ {p.tag} ]</p>
+                    <p className="eyebrow" style={{ fontSize: 10, color: 'var(--ink-45)', marginBottom: 10 }}>[ {p.tag} ]</p>
                     <h3 style={{ fontWeight: 600, fontSize: 16, letterSpacing: '-0.01em', lineHeight: 1.3, margin: 0 }}>
                       {p.title}
                     </h3>
@@ -678,7 +678,7 @@ export default function Home() {
           alignItems: 'stretch',
         }}>
           <Reveal className="pad-cell" style={{ padding: '88px 56px' }}>
-            <p className="eyebrow" style={{ color: 'var(--accent)', marginBottom: 22 }}>/ FAQ</p>
+            <p className="eyebrow" style={{ color: 'var(--ink)', marginBottom: 22 }}>/ FAQ</p>
             <h2 style={{
               fontWeight: 500,
               fontSize: 'clamp(28px, 3.4vw, 44px)',
@@ -723,7 +723,7 @@ export default function Home() {
         }} />
         <div style={{ ...frameDark, position: 'relative', padding: '120px 24px' }}>
           <Reveal>
-            <p className="eyebrow" style={{ color: 'var(--accent-light)', marginBottom: 26 }}>[ Early access ]</p>
+            <p className="eyebrow" style={{ color: 'var(--dark-ink-60)', marginBottom: 26 }}>[ Early access ]</p>
             <h2 style={{
               fontWeight: 500,
               fontSize: 'clamp(30px, 3.8vw, 50px)',
