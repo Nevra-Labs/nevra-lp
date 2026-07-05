@@ -4,12 +4,15 @@
     display: none !important;
   }
 
-  /* ── Hero copy block ── */
-  .hero-copy {
-    left: 5% !important;
-    right: 5% !important;
-    max-width: none !important;
-    top: 50% !important;
+  /* ── Hero ── */
+  .hero-grid {
+    grid-template-columns: 1fr !important;
+    gap: 56px !important;
+  }
+
+  .hero-meta {
+    flex-wrap: wrap !important;
+    gap: 20px 28px !important;
   }
 
   /* Wrap CTA buttons if they overflow */
@@ -27,6 +30,28 @@
     max-width: 100% !important;
   }
 
+  .step-cell {
+    border-left: none !important;
+  }
+
+  .step-cell + .step-cell {
+    border-top: 1px solid rgba(22, 21, 29, 0.08) !important;
+  }
+
+  /* ── Two-column split sections (principles, FAQ) ── */
+  .split-grid {
+    grid-template-columns: 1fr !important;
+    gap: 40px !important;
+  }
+
+  .principles-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .principles-section {
+    padding: 72px 20px !important;
+  }
+
   /* ── Built with carousel ── */
   .built-with-section {
     padding-top: 40px !important;
@@ -38,21 +63,19 @@
     padding: 72px 20px 64px !important;
   }
 
-  /* SVG scales down ~3x on small screens; scale the labels up to compensate */
+  /* SVG scales down ~3x on small screens; scale the labels up to compensate.
+     Mono uppercase runs wide, so stay under the cylinder widths. */
   .problem-section svg text {
-    font-size: 34px;
+    font-size: 24px;
   }
 
   /* ── FAQ + CTA sections ── */
-  .faq-section,
-  .cta-section {
-    padding-left: 20px !important;
-    padding-right: 20px !important;
-    padding-bottom: 80px !important;
+  .faq-section {
+    padding: 72px 20px 88px !important;
   }
 
-  .cta-section > div {
-    padding: 56px 24px !important;
+  .cta-section {
+    padding: 88px 20px !important;
   }
 
   /* ── Footer ── */

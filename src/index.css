@@ -1,7 +1,44 @@
+:root {
+  --paper: #F6F5F1;
+  --surface: #FFFFFF;
+  --ink: #16151D;
+  --ink-60: rgba(22, 21, 29, 0.60);
+  --ink-45: rgba(22, 21, 29, 0.45);
+  --ink-30: rgba(22, 21, 29, 0.30);
+  --hairline: rgba(22, 21, 29, 0.12);
+  --hairline-soft: rgba(22, 21, 29, 0.08);
+  --accent: #4433EE;
+  --accent-light: #A9A1FF;
+  --dark: #131120;
+  --dark-ink: #F0EFF6;
+  --dark-ink-60: rgba(240, 239, 246, 0.60);
+  --dark-ink-38: rgba(240, 239, 246, 0.38);
+  --dark-hairline: rgba(240, 239, 246, 0.14);
+  --font-sans: 'Onest', 'Inter', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  --font-serif: 'Instrument Serif', Georgia, serif;
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+}
+
+/* Mono eyebrow labels: "/ THE PROBLEM" or "[ SUPPLY ]" style */
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.serif-accent {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: 0;
 }
 
 html {
