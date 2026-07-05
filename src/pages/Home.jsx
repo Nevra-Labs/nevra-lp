@@ -117,7 +117,7 @@ const frameDark = {
 
 function StepIcon({ index }) {
   const stroke = 'var(--ink)'
-  const accent = 'var(--accent)'
+  const detail = 'var(--ink-60)'
   const common = { fill: 'none', strokeWidth: 1.3 }
   if (index === 0) {
     // Wallet
@@ -127,9 +127,9 @@ function StepIcon({ index }) {
           <rect x="7" y="13" width="30" height="20" rx="3" />
           <path d="M7 19 h30" />
         </g>
-        <g {...common} stroke={accent}>
+        <g {...common} stroke={stroke}>
           <rect x="27" y="23" width="10" height="6" rx="1.5" />
-          <circle cx="30.5" cy="26" r="1" fill={accent} stroke="none" />
+          <circle cx="30.5" cy="26" r="1" fill={stroke} stroke="none" />
         </g>
       </svg>
     )
@@ -143,7 +143,7 @@ function StepIcon({ index }) {
           <circle cx="16.5" cy="19.5" r="3.4" />
           <path d="M10.5 29 c1.4 -3.6 4 -4.6 6 -4.6 s4.6 1 6 4.6" />
         </g>
-        <g {...common} stroke={accent}>
+        <g {...common} stroke={detail}>
           <path d="M27 17 h7 M27 21.5 h7 M27 26 h4.5" />
         </g>
       </svg>
@@ -156,7 +156,7 @@ function StepIcon({ index }) {
         <path d="M9 30 a13 13 0 0 1 26 0" />
         <path d="M9 30 h-2.5 M37.5 30 h-2.5" />
       </g>
-      <g {...common} stroke={accent}>
+      <g {...common} stroke={stroke}>
         <path d="M22 30 L29 20" strokeLinecap="round" />
         <circle cx="22" cy="30" r="2" fill="var(--paper)" />
       </g>
@@ -166,7 +166,7 @@ function StepIcon({ index }) {
 
 function PrincipleIcon({ index }) {
   const stroke = 'var(--ink)'
-  const accent = 'var(--accent)'
+  const detail = 'var(--ink-60)'
   const common = { fill: 'none', strokeWidth: 1.3, strokeLinecap: 'round', strokeLinejoin: 'round' }
   if (index === 0) {
     // Shield: read-only privacy
@@ -175,7 +175,7 @@ function PrincipleIcon({ index }) {
         <g {...common} stroke={stroke}>
           <path d="M28 10 L42 15 V29 C42 37 35 43 28 46 C21 43 14 37 14 29 V15 Z" />
         </g>
-        <g {...common} stroke={accent}>
+        <g {...common} stroke={stroke}>
           <path d="M22 28 L26.5 32.5 L34 24" />
         </g>
       </svg>
@@ -188,9 +188,7 @@ function PrincipleIcon({ index }) {
         <g {...common} stroke={stroke}>
           <circle cx="19" cy="28" r="7" />
           <path d="M26 28 H44 M40 28 V33 M35 28 V32" />
-        </g>
-        <g {...common} stroke={accent}>
-          <circle cx="19" cy="28" r="2.2" fill={accent} strokeWidth="0" />
+          <circle cx="19" cy="28" r="2.2" fill={stroke} strokeWidth="0" />
         </g>
       </svg>
     )
@@ -199,12 +197,12 @@ function PrincipleIcon({ index }) {
     // Rising bars: live score
     return (
       <svg width="56" height="56" viewBox="0 0 56 56" aria-hidden>
-        <g {...common} stroke={stroke}>
+        <g {...common} stroke={detail}>
           <path d="M12 44 H44" />
           <rect x="16" y="34" width="5" height="10" />
           <rect x="25.5" y="26" width="5" height="18" />
         </g>
-        <g {...common} stroke={accent}>
+        <g {...common} stroke={stroke}>
           <rect x="35" y="18" width="5" height="26" />
           <path d="M14 22 L22 26 L30 20 L40 14" />
         </g>
@@ -217,10 +215,8 @@ function PrincipleIcon({ index }) {
       <g {...common} stroke={stroke}>
         <path d="M12 24 A16 16 0 0 1 44 24" />
         <path d="M12 24 L20 24 M20 24 L28 40 M28 40 L36 24 M36 24 L44 24" />
-      </g>
-      <g {...common} stroke={accent}>
         <path d="M28 40 V46" />
-        <circle cx="28" cy="40" r="1.8" fill={accent} strokeWidth="0" />
+        <circle cx="28" cy="40" r="1.8" fill={stroke} strokeWidth="0" />
       </g>
     </svg>
   )
@@ -243,9 +239,9 @@ function ScoreCard() {
         <div style={{ ...row, alignItems: 'center', marginBottom: 22 }}>
           <span className="eyebrow" style={{ color: 'var(--ink-45)', fontSize: 11 }}>Nevra score</span>
           <span className="eyebrow" style={{
-            color: 'var(--accent)',
+            color: 'var(--ink-60)',
             fontSize: 10,
-            border: '1px solid rgba(68,51,238,0.3)',
+            border: '1px solid var(--hairline)',
             borderRadius: 99,
             padding: '4px 9px',
           }}>
@@ -258,7 +254,7 @@ function ScoreCard() {
             742
           </span>
           <span style={{ ...mono, fontSize: 12, color: 'var(--ink-45)', paddingBottom: 4 }}>/ 850</span>
-          <span style={{ ...mono, fontSize: 12, color: 'var(--accent)', marginLeft: 'auto', paddingBottom: 4 }}>▲ 12 this month</span>
+          <span style={{ ...mono, fontSize: 12, color: 'var(--ink-60)', marginLeft: 'auto', paddingBottom: 4 }}>▲ 12 this month</span>
         </div>
 
         <div style={{ borderTop: '1px solid var(--hairline-soft)', paddingTop: 16, marginBottom: 16 }}>
@@ -271,7 +267,7 @@ function ScoreCard() {
             <span style={{ ...mono, fontSize: 13, color: 'var(--ink)' }}>$1,250</span>
           </div>
           <div style={{ height: 4, borderRadius: 99, background: 'rgba(22,21,29,0.08)', overflow: 'hidden' }}>
-            <div style={{ width: '21%', height: '100%', borderRadius: 99, background: 'var(--accent)' }} />
+            <div style={{ width: '21%', height: '100%', borderRadius: 99, background: 'var(--ink)' }} />
           </div>
           <div style={{ ...row, marginTop: 8 }}>
             <span style={{ ...mono, fontSize: 11, color: 'var(--ink-45)' }}>21% utilized</span>
@@ -289,8 +285,8 @@ function ScoreCard() {
               <span style={{ ...mono, fontSize: 12, color: 'var(--ink)', display: 'inline-flex', alignItems: 'center', gap: 7 }}>
                 {value}
                 <svg width="13" height="13" viewBox="0 0 13 13">
-                  <circle cx="6.5" cy="6.5" r="6" fill="rgba(68,51,238,0.12)" />
-                  <path d="M4 6.7 l1.8 1.8 L9.2 4.9" stroke="var(--accent)" strokeWidth="1.3" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+                  <circle cx="6.5" cy="6.5" r="6" fill="rgba(22,21,29,0.1)" />
+                  <path d="M4 6.7 l1.8 1.8 L9.2 4.9" stroke="var(--ink)" strokeWidth="1.3" fill="none" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               </span>
             </div>

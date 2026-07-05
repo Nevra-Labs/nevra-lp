@@ -122,7 +122,7 @@ export default function Apply() {
     <div style={{
       background: 'var(--paper)',
       minHeight: '100vh',
-      fontFamily: "'Inter', system-ui, sans-serif",
+      fontFamily: 'var(--font-sans)',
       display: 'flex',
       flexDirection: 'column',
     }}>
@@ -131,11 +131,11 @@ export default function Apply() {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        padding: '22px 32px',
+        padding: '18px 32px',
         flexShrink: 0,
       }}>
         <Link to="/">
-          <img src="/logo.png" alt="Nevra" style={{ width: 24, height: 24, display: 'block' }} />
+          <img src="/logo.png" alt="Nevra" style={{ width: 26, height: 26, display: 'block' }} />
         </Link>
         <div style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
           <Link to="/blog" style={{ fontSize: 14, fontWeight: 500, color: 'rgba(0,0,0,0.45)', letterSpacing: '0.01em' }}>
