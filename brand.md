@@ -19,14 +19,15 @@ Professional fintech direction set July 2026. References: 3jane.xyz (technical c
 
 ## Typography
 
-- **Sans (UI, headings):** Onest — headings weight 500, letter-spacing -0.025em, two-tone (second line `--ink-30`)
+- **Sans (UI, headings):** Onest — headings weight 500, letter-spacing -0.025em, two-tone (second line muted)
 - **Mono (labels, data):** IBM Plex Mono — eyebrows `/ SECTION` or `[ LABEL ]`, uppercase, 0.14em tracking (`.eyebrow` class)
-- **Serif accent:** Instrument Serif italic (`.serif-accent`) — one emphasized word per headline, in accent color, sparingly
+- **No serif, no italic display type.** Headlines are plain sans, always two-tone (strong line + muted line)
 
 ## Motifs
 
-- Two-tone headlines: strong first line, `--ink-30` second line
+- Two-tone headlines: strong first line, muted second line
 - Mono eyebrows in accent color above every section heading
+- Structural frame: content-width side rails (`--hairline-soft`), full-width section rules, and grids whose cells share hairline dividers (Portola-style cases and lines)
 - Thin-line SVG diagrams (1.2px strokes, dashed accents) instead of raster art
 - Hairline-bordered grids with shared internal borders (Portola-style)
 - Dashboard mock cards with mono data, marked "ILLUSTRATIVE"
