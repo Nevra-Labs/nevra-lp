@@ -230,7 +230,7 @@ export default function Home() {
       <Nav />
 
       {/* Hero */}
-      <section style={{ padding: '76px 32px 0', minHeight: '100svh', display: 'flex', flexDirection: 'column' }}>
+      <section style={{ padding: '76px 32px 0', minHeight: 'calc(100svh - 141px)', display: 'flex', flexDirection: 'column' }}>
         <div className="hero-grid" style={{
           ...frame,
           flex: 1,
