@@ -4,12 +4,41 @@
     display: none !important;
   }
 
-  /* ── Hero copy block ── */
-  .hero-copy {
-    left: 5% !important;
-    right: 5% !important;
-    max-width: none !important;
-    top: 50% !important;
+  /* ── Structural frame cells ──
+     Vertical hairline dividers become horizontal when grids stack. */
+  .cell-divider {
+    border-left: none !important;
+    border-top: 1px solid rgba(22, 21, 29, 0.08) !important;
+  }
+
+  .pad-cell {
+    padding: 56px 24px 48px !important;
+  }
+
+  /* ── Hero ── */
+  .hero-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .hero-copy-cell {
+    padding: 80px 24px 56px !important;
+  }
+
+  .hero-card {
+    padding: 48px 24px 56px !important;
+  }
+
+  .hero-meta {
+    grid-template-columns: 1fr !important;
+  }
+
+  .hero-meta > div {
+    padding: 18px 24px 20px !important;
+  }
+
+  .hero-meta > div + div {
+    border-left: none !important;
+    border-top: 1px solid rgba(22, 21, 29, 0.08) !important;
   }
 
   /* Wrap CTA buttons if they overflow */
@@ -17,14 +46,40 @@
     flex-wrap: wrap !important;
   }
 
-  /* ── How it works section ── */
-  .how-it-works-section {
-    padding: 72px 20px 80px !important;
+  /* ── Section wrappers: tighter gutters, frames keep their own padding ── */
+  .how-it-works-section,
+  .principles-section,
+  .faq-section,
+  .problem-section,
+  .cta-section {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
   }
 
+  /* ── How it works section ── */
   .how-it-works-grid {
     grid-template-columns: 1fr !important;
-    max-width: 100% !important;
+  }
+
+  .step-cell {
+    padding: 32px 24px 40px !important;
+  }
+
+  /* ── Two-column split sections (principles, FAQ) ── */
+  .split-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .principles-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .principles-grid > .reveal {
+    border-left: none !important;
+  }
+
+  .principles-grid > .reveal + .reveal {
+    border-top: 1px solid rgba(22, 21, 29, 0.08) !important;
   }
 
   /* ── Built with carousel ── */
@@ -33,33 +88,15 @@
     padding-bottom: 40px !important;
   }
 
-  /* ── Problem section ── */
-  .problem-section {
-    padding: 72px 20px 64px !important;
-  }
-
-  /* SVG scales down ~3x on small screens; scale the labels up to compensate */
+  /* SVG scales down ~3x on small screens; scale the labels up to compensate.
+     Mono uppercase runs wide, so stay under the cylinder widths. */
   .problem-section svg text {
-    font-size: 34px;
-  }
-
-  /* ── FAQ + CTA sections ── */
-  .faq-section,
-  .cta-section {
-    padding-left: 20px !important;
-    padding-right: 20px !important;
-    padding-bottom: 80px !important;
-  }
-
-  .cta-section > div {
-    padding: 56px 24px !important;
+    font-size: 24px;
   }
 
   /* ── Footer ── */
-  .footer-root {
-    padding-left: 20px !important;
-    padding-right: 20px !important;
-    padding-top: 48px !important;
+  .footer-frame {
+    padding: 48px 24px 0 !important;
   }
 
   .footer-inner {

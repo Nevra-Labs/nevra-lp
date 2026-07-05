@@ -6,7 +6,7 @@ import '../responsive.css'
 
 export default function Blog() {
   return (
-    <div style={{ background: '#EEEDFF', minHeight: '100vh', color: '#111' }}>
+    <div style={{ background: 'var(--paper)', minHeight: '100vh', color: '#111' }}>
       <Nav dark />
 
       <main className="page-main" style={{ maxWidth: 960, margin: '0 auto', padding: '64px 32px 140px' }}>

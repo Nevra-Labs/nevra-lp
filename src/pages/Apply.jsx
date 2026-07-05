@@ -120,7 +120,7 @@ export default function Apply() {
 
   return (
     <div style={{
-      background: '#EEEDFF',
+      background: 'var(--paper)',
       minHeight: '100vh',
       fontFamily: "'Inter', system-ui, sans-serif",
       display: 'flex',

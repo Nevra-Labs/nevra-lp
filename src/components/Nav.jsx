@@ -1,37 +1,33 @@
 import { Link } from 'react-router-dom'
 
-export default function Nav({ dark = false }) {
-  const fg = dark ? '#111' : 'rgba(255,255,255,0.85)'
-  const applyBg = dark ? '#111' : '#EEEDFF'
-  const applyColor = dark ? '#EEEDFF' : '#111'
-  const logoFilter = dark ? 'none' : 'invert(1)'
-
+export default function Nav() {
   return (
     <header className="blog-nav" style={{
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'space-between',
-      padding: '22px 32px',
+      padding: '18px 32px',
+      borderBottom: '1px solid var(--hairline-soft)',
     }}>
-      <Link to="/">
-        <img
-          src="/logo.png"
-          alt="Nevra"
-          style={{ width: 24, height: 24, display: 'block', filter: logoFilter }}
-        />
+      <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+        <img src="/logo.png" alt="Nevra" style={{ width: 22, height: 22, display: 'block' }} />
+        <span style={{ fontSize: 16, fontWeight: 600, letterSpacing: '-0.01em', color: 'var(--ink)' }}>Nevra</span>
       </Link>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
-        <Link to="/blog" className="nav-text-links" style={{ fontSize: 14, fontWeight: 500, color: fg, letterSpacing: '0.01em' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 26 }}>
+        <Link to="/blog" className="nav-text-links eyebrow" style={{ color: 'var(--ink-60)' }}>
           Blog
         </Link>
-        <Link to="/apply" className={`btn-hover focus-ring ${dark ? 'key-dark' : 'key-light'}`} style={{
-          background: applyBg,
-          color: applyColor,
+        <Link to="/apply" className="btn-hover focus-ring" style={{
+          display: 'inline-flex',
+          alignItems: 'center',
+          background: 'var(--ink)',
+          color: '#fff',
           fontSize: 14,
           fontWeight: 500,
-          padding: '9px 18px',
-          borderRadius: 10,
+          padding: '11px 20px',
+          borderRadius: 8,
           lineHeight: 1,
+          letterSpacing: '0.01em',
         }}>
           Apply
         </Link>

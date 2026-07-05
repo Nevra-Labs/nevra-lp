@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom'
 import { useState, useEffect, useRef } from 'react'
-import StepArt from '../components/StepArt'
 import '../responsive.css'
 
 function Reveal({ children, delay = 0, className = '', style }) {
@@ -66,46 +65,259 @@ const FAQS = [
 
 const STEPS = [
   {
+    number: '01',
     title: 'Connect your wallet',
     description: 'Link any wallet in one click. No forms, no delays. Your onchain history starts building your profile instantly.',
   },
   {
+    number: '02',
     title: 'Verify your identity',
     description: 'Complete KYC and link your bank account. We combine your offchain financial data with your onchain history into one real credit score.',
   },
   {
+    number: '03',
     title: 'Access your credit line',
     description: 'Post less than you borrow. Your score unlocks a credit line you can draw from anytime, no overcollateral, no waiting.',
   },
 ]
 
+const PRINCIPLES = [
+  { tag: 'READ-ONLY', title: 'Bank data stays private' },
+  { tag: 'NON-CUSTODIAL', title: 'Your keys, your wallet' },
+  { tag: 'LIVE SCORE', title: 'Rates improve as you repay' },
+  { tag: 'SOFT LANDINGS', title: 'Liquidation is the last step' },
+]
+
+const btnBase = {
+  display: 'inline-flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  fontSize: 14,
+  fontWeight: 500,
+  lineHeight: 1,
+  padding: '14px 24px',
+  borderRadius: 8,
+  letterSpacing: '0.01em',
+}
+
+// Portola-style structural frame: side rails at content width.
+const frame = {
+  maxWidth: 1160,
+  margin: '0 auto',
+  borderLeft: '1px solid var(--hairline-soft)',
+  borderRight: '1px solid var(--hairline-soft)',
+}
+
+const frameDark = {
+  maxWidth: 1160,
+  margin: '0 auto',
+  borderLeft: '1px solid var(--dark-hairline)',
+  borderRight: '1px solid var(--dark-hairline)',
+}
+
+function StepIcon({ index }) {
+  const stroke = 'var(--ink)'
+  const accent = 'var(--accent)'
+  const common = { fill: 'none', strokeWidth: 1.3 }
+  if (index === 0) {
+    // Wallet
+    return (
+      <svg width="44" height="44" viewBox="0 0 44 44" aria-hidden>
+        <g {...common} stroke={stroke}>
+          <rect x="7" y="13" width="30" height="20" rx="3" />
+          <path d="M7 19 h30" />
+        </g>
+        <g {...common} stroke={accent}>
+          <rect x="27" y="23" width="10" height="6" rx="1.5" />
+          <circle cx="30.5" cy="26" r="1" fill={accent} stroke="none" />
+        </g>
+      </svg>
+    )
+  }
+  if (index === 1) {
+    // Identity + bank
+    return (
+      <svg width="44" height="44" viewBox="0 0 44 44" aria-hidden>
+        <g {...common} stroke={stroke}>
+          <rect x="7" y="10" width="30" height="24" rx="3" />
+          <circle cx="16.5" cy="19.5" r="3.4" />
+          <path d="M10.5 29 c1.4 -3.6 4 -4.6 6 -4.6 s4.6 1 6 4.6" />
+        </g>
+        <g {...common} stroke={accent}>
+          <path d="M27 17 h7 M27 21.5 h7 M27 26 h4.5" />
+        </g>
+      </svg>
+    )
+  }
+  // Credit line meter
+  return (
+    <svg width="44" height="44" viewBox="0 0 44 44" aria-hidden>
+      <g {...common} stroke={stroke}>
+        <path d="M9 30 a13 13 0 0 1 26 0" />
+        <path d="M9 30 h-2.5 M37.5 30 h-2.5" />
+      </g>
+      <g {...common} stroke={accent}>
+        <path d="M22 30 L29 20" strokeLinecap="round" />
+        <circle cx="22" cy="30" r="2" fill="var(--paper)" />
+      </g>
+    </svg>
+  )
+}
+
+function PrincipleIcon({ index }) {
+  const stroke = 'var(--ink)'
+  const accent = 'var(--accent)'
+  const common = { fill: 'none', strokeWidth: 1.3, strokeLinecap: 'round', strokeLinejoin: 'round' }
+  if (index === 0) {
+    // Shield: read-only privacy
+    return (
+      <svg width="56" height="56" viewBox="0 0 56 56" aria-hidden>
+        <g {...common} stroke={stroke}>
+          <path d="M28 10 L42 15 V29 C42 37 35 43 28 46 C21 43 14 37 14 29 V15 Z" />
+        </g>
+        <g {...common} stroke={accent}>
+          <path d="M22 28 L26.5 32.5 L34 24" />
+        </g>
+      </svg>
+    )
+  }
+  if (index === 1) {
+    // Key: non-custodial
+    return (
+      <svg width="56" height="56" viewBox="0 0 56 56" aria-hidden>
+        <g {...common} stroke={stroke}>
+          <circle cx="19" cy="28" r="7" />
+          <path d="M26 28 H44 M40 28 V33 M35 28 V32" />
+        </g>
+        <g {...common} stroke={accent}>
+          <circle cx="19" cy="28" r="2.2" fill={accent} strokeWidth="0" />
+        </g>
+      </svg>
+    )
+  }
+  if (index === 2) {
+    // Rising bars: live score
+    return (
+      <svg width="56" height="56" viewBox="0 0 56 56" aria-hidden>
+        <g {...common} stroke={stroke}>
+          <path d="M12 44 H44" />
+          <rect x="16" y="34" width="5" height="10" />
+          <rect x="25.5" y="26" width="5" height="18" />
+        </g>
+        <g {...common} stroke={accent}>
+          <rect x="35" y="18" width="5" height="26" />
+          <path d="M14 22 L22 26 L30 20 L40 14" />
+        </g>
+      </svg>
+    )
+  }
+  // Soft landing: parachute / gentle arrow
+  return (
+    <svg width="56" height="56" viewBox="0 0 56 56" aria-hidden>
+      <g {...common} stroke={stroke}>
+        <path d="M12 24 A16 16 0 0 1 44 24" />
+        <path d="M12 24 L20 24 M20 24 L28 40 M28 40 L36 24 M36 24 L44 24" />
+      </g>
+      <g {...common} stroke={accent}>
+        <path d="M28 40 V46" />
+        <circle cx="28" cy="40" r="1.8" fill={accent} strokeWidth="0" />
+      </g>
+    </svg>
+  )
+}
+
+function ScoreCard() {
+  const mono = { fontFamily: 'var(--font-mono)' }
+  const row = { display: 'flex', alignItems: 'baseline', justifyContent: 'space-between' }
+  return (
+    <div aria-hidden style={{ width: '100%' }}>
+      <div style={{
+        background: 'var(--surface)',
+        border: '1px solid var(--hairline)',
+        borderRadius: 8,
+        boxShadow: '0 24px 48px -24px rgba(22,21,29,0.18), 0 2px 6px rgba(22,21,29,0.05)',
+        padding: '22px 24px 20px',
+        maxWidth: 380,
+        margin: '0 auto',
+      }}>
+        <div style={{ ...row, alignItems: 'center', marginBottom: 22 }}>
+          <span className="eyebrow" style={{ color: 'var(--ink-45)', fontSize: 11 }}>Nevra score</span>
+          <span className="eyebrow" style={{
+            color: 'var(--accent)',
+            fontSize: 10,
+            border: '1px solid rgba(68,51,238,0.3)',
+            borderRadius: 99,
+            padding: '4px 9px',
+          }}>
+            Active
+          </span>
+        </div>
+
+        <div style={{ display: 'flex', alignItems: 'flex-end', gap: 14, marginBottom: 20 }}>
+          <span style={{ ...mono, fontSize: 58, fontWeight: 500, lineHeight: 0.9, color: 'var(--ink)', letterSpacing: '-0.03em' }}>
+            742
+          </span>
+          <span style={{ ...mono, fontSize: 12, color: 'var(--ink-45)', paddingBottom: 4 }}>/ 850</span>
+          <span style={{ ...mono, fontSize: 12, color: 'var(--accent)', marginLeft: 'auto', paddingBottom: 4 }}>▲ 12 this month</span>
+        </div>
+
+        <div style={{ borderTop: '1px solid var(--hairline-soft)', paddingTop: 16, marginBottom: 16 }}>
+          <div style={{ ...row, marginBottom: 8 }}>
+            <span style={{ fontSize: 13, color: 'var(--ink-60)' }}>Credit line</span>
+            <span style={{ ...mono, fontSize: 13, color: 'var(--ink)' }}>$6,000</span>
+          </div>
+          <div style={{ ...row, marginBottom: 12 }}>
+            <span style={{ fontSize: 13, color: 'var(--ink-60)' }}>Drawn</span>
+            <span style={{ ...mono, fontSize: 13, color: 'var(--ink)' }}>$1,250</span>
+          </div>
+          <div style={{ height: 4, borderRadius: 99, background: 'rgba(22,21,29,0.08)', overflow: 'hidden' }}>
+            <div style={{ width: '21%', height: '100%', borderRadius: 99, background: 'var(--accent)' }} />
+          </div>
+          <div style={{ ...row, marginTop: 8 }}>
+            <span style={{ ...mono, fontSize: 11, color: 'var(--ink-45)' }}>21% utilized</span>
+            <span style={{ ...mono, fontSize: 11, color: 'var(--ink-45)' }}>$4,750 available</span>
+          </div>
+        </div>
+
+        <div style={{ borderTop: '1px solid var(--hairline-soft)', paddingTop: 14, display: 'flex', flexDirection: 'column', gap: 9 }}>
+          {[
+            ['Wallet', '0x4f8a…9e2'],
+            ['Bank', 'Checking ••4821'],
+          ].map(([label, value]) => (
+            <div key={label} style={{ ...row, alignItems: 'center' }}>
+              <span style={{ fontSize: 13, color: 'var(--ink-60)' }}>{label}</span>
+              <span style={{ ...mono, fontSize: 12, color: 'var(--ink)', display: 'inline-flex', alignItems: 'center', gap: 7 }}>
+                {value}
+                <svg width="13" height="13" viewBox="0 0 13 13">
+                  <circle cx="6.5" cy="6.5" r="6" fill="rgba(68,51,238,0.12)" />
+                  <path d="M4 6.7 l1.8 1.8 L9.2 4.9" stroke="var(--accent)" strokeWidth="1.3" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </span>
+            </div>
+          ))}
+        </div>
+
+        <p className="eyebrow" style={{ marginTop: 18, fontSize: 9, color: 'var(--ink-30)', textAlign: 'right' }}>
+          Illustrative
+        </p>
+      </div>
+    </div>
+  )
+}
+
 export default function Home() {
-  const [navDark, setNavDark] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
 
   useEffect(() => {
-    const onScroll = () => setNavDark(window.scrollY > window.innerHeight * 0.85)
+    const onScroll = () => setScrolled(window.scrollY > 12)
+    onScroll()
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  const navLinkColor = navDark ? '#111' : 'rgba(255,255,255,0.85)'
-  const logoFilter = navDark ? 'none' : 'invert(1)'
-  const applyBg = navDark ? '#111' : '#EEEDFF'
-  const applyColor = navDark ? '#EEEDFF' : '#333'
-
   return (
-    <div style={{ fontFamily: "'Onest', 'Inter', system-ui, sans-serif" }}>
-      {/* Fixed fullscreen video */}
-      <video
-        src="/hero.mp4"
-        autoPlay
-        muted
-        loop
-        playsInline
-        style={{ position: 'fixed', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 0 }}
-      />
-
-      {/* Nav lives at root level so zIndex is not trapped in a stacking context */}
+    <div style={{ fontFamily: 'var(--font-sans)', background: 'var(--paper)', color: 'var(--ink)' }}>
+      {/* Nav */}
       <header style={{
         position: 'fixed',
         top: 0, left: 0, right: 0,
@@ -113,125 +325,131 @@ export default function Home() {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        padding: '22px 32px',
-        transition: 'background 0.3s ease, border-color 0.3s ease',
-        background: navDark ? 'rgba(238,237,255,0.92)' : 'transparent',
-        backdropFilter: navDark ? 'blur(16px)' : 'none',
-        WebkitBackdropFilter: navDark ? 'blur(16px)' : 'none',
-        borderBottom: navDark ? '1px solid rgba(0,0,0,0.09)' : '1px solid transparent',
+        padding: '18px 32px',
+        background: scrolled ? 'rgba(238,237,255,0.88)' : 'transparent',
+        backdropFilter: scrolled ? 'blur(14px)' : 'none',
+        WebkitBackdropFilter: scrolled ? 'blur(14px)' : 'none',
+        borderBottom: scrolled ? '1px solid var(--hairline-soft)' : '1px solid transparent',
+        transition: 'background 0.25s ease, border-color 0.25s ease',
       }}>
-        <Link to="/">
-          <img src="/logo.png" alt="Nevra" style={{ width: 24, height: 24, display: 'block', filter: logoFilter, transition: 'filter 0.3s ease' }} />
+        <Link to="/" style={{ display: 'flex', alignItems: 'center' }} aria-label="Nevra home">
+          <img src="/logo.png" alt="Nevra" style={{ width: 26, height: 26, display: 'block' }} />
         </Link>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
-          <Link to="/blog" className="nav-text-links" style={{ fontSize: 14, fontWeight: 500, color: navLinkColor, letterSpacing: '0.01em', transition: 'color 0.3s ease' }}>
+        <nav style={{ display: 'flex', alignItems: 'center', gap: 26 }}>
+          <Link to="/blog" className="nav-text-links eyebrow" style={{ color: 'var(--ink-60)' }}>
             Blog
           </Link>
-          <a href="/pdf/whitepaper.pdf" target="_blank" rel="noopener noreferrer" className="nav-text-links" style={{ fontSize: 14, fontWeight: 500, color: navLinkColor, letterSpacing: '0.01em', transition: 'color 0.3s ease' }}>
+          <a href="/pdf/whitepaper.pdf" target="_blank" rel="noopener noreferrer" className="nav-text-links eyebrow" style={{ color: 'var(--ink-60)' }}>
             Whitepaper
           </a>
-          <Link to="/apply" className={`btn-hover focus-ring ${navDark ? 'key-dark' : 'key-light'}`} style={{
-            background: applyBg,
-            color: applyColor,
-            fontSize: 14,
-            fontWeight: 500,
-            padding: '9px 18px',
-            borderRadius: 10,
-            lineHeight: 1,
-            border: '1px solid rgba(0,0,0,0.08)',
-            boxShadow: '0 1px 3px rgba(0,0,0,0.12)',
-            transition: 'background 0.3s ease, color 0.3s ease',
+          <Link to="/apply" className="btn-hover focus-ring" style={{
+            ...btnBase,
+            padding: '11px 20px',
+            background: 'var(--ink)',
+            color: '#fff',
           }}>
             Apply
           </Link>
-        </div>
+        </nav>
       </header>
 
-      {/* Hero section */}
-      <section style={{ position: 'relative', minHeight: '100vh', zIndex: 5 }}>
-        <div className="hero-copy" style={{
-          position: 'absolute',
-          top: '36%',
-          transform: 'translateY(-50%)',
-          left: '10%',
-          maxWidth: 560,
-          color: '#EEEDFF',
+      {/* Hero */}
+      <section style={{ padding: '76px 32px 0' }}>
+        <div className="hero-grid" style={{
+          ...frame,
+          display: 'grid',
+          gridTemplateColumns: '1.05fr 0.95fr',
+          alignItems: 'stretch',
         }}>
-          <h1 className="enter-up" style={{
-            fontWeight: 500,
-            fontSize: 'clamp(32px, 4.2vw, 58px)',
-            lineHeight: 1.08,
-            letterSpacing: '-0.02em',
-            marginBottom: 16,
-            textShadow: '0 1px 6px rgba(0,0,0,0.25)',
-          }}>
-            Consumer loans<br />for crypto-native people.
-          </h1>
-          <p className="enter-up enter-delay-2" style={{
-            fontSize: 14,
-            fontWeight: 400,
-            lineHeight: 1.6,
-            color: 'rgba(238,237,255,0.72)',
-            marginBottom: 28,
-            textShadow: '0 1px 4px rgba(0,0,0,0.2)',
-          }}>
-            Verify your identity, connect your bank and wallet, and get one real credit score from your entire financial life. Then borrow against it.
-          </p>
-          <div className="hero-ctas enter-up enter-delay-3" style={{ display: 'flex', gap: 10 }}>
-            <Link to="/apply" className="btn-hover focus-ring-light key-light" style={{
-              background: '#EEEDFF',
-              color: '#333',
-              fontSize: 14,
+          <div className="hero-copy-cell" style={{ padding: '96px 56px 72px' }}>
+            <p className="eyebrow enter-up" style={{ color: 'var(--accent)', marginBottom: 26 }}>
+              [ Consumer credit protocol ]
+            </p>
+            <h1 className="enter-up enter-delay-1" style={{
               fontWeight: 500,
-              padding: '11px 20px',
-              borderRadius: 10,
-              lineHeight: 1,
-              border: '1px solid rgba(255,255,255,0.3)',
-              boxShadow: '0 1px 4px rgba(0,0,0,0.15)',
+              fontSize: 'clamp(34px, 3.4vw, 48px)',
+              lineHeight: 1.06,
+              letterSpacing: '-0.03em',
+              marginBottom: 24,
             }}>
-              Apply Now →
-            </Link>
-            <Link to="/blog" className="btn-hover focus-ring-light" style={{
-              background: 'rgba(255,255,255,0.14)',
-              color: '#EEEDFF',
-              fontSize: 14,
-              fontWeight: 500,
-              padding: '11px 20px',
-              borderRadius: 10,
-              lineHeight: 1,
-              border: '1px solid rgba(255,255,255,0.22)',
-              boxShadow: '0 1px 4px rgba(0,0,0,0.1)',
-              backdropFilter: 'blur(6px)',
-              WebkitBackdropFilter: 'blur(6px)',
+              <span style={{ display: 'block' }}>Consumer loans for</span>
+              <span style={{ display: 'block', color: 'var(--ink-45)' }}>crypto-native people.</span>
+            </h1>
+            <p className="enter-up enter-delay-2" style={{
+              fontSize: 16,
+              lineHeight: 1.65,
+              color: 'var(--ink-60)',
+              maxWidth: 440,
+              marginBottom: 36,
             }}>
-              Blog
-            </Link>
+              Verify your identity, connect your bank and wallet, and get one real credit score from your entire financial life. Then borrow against it.
+            </p>
+            <div className="hero-ctas enter-up enter-delay-3" style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+              <Link to="/apply" className="btn-hover focus-ring" style={{
+                ...btnBase,
+                background: 'var(--ink)',
+                color: '#fff',
+              }}>
+                Apply now →
+              </Link>
+              <a href="/pdf/whitepaper.pdf" target="_blank" rel="noopener noreferrer" className="btn-hover focus-ring" style={{
+                ...btnBase,
+                background: 'transparent',
+                color: 'var(--ink)',
+                border: '1px solid var(--hairline)',
+              }}>
+                Read the whitepaper
+              </a>
+            </div>
           </div>
+
+          <div className="hero-card cell-divider enter-up enter-delay-3" style={{
+            borderLeft: '1px solid var(--hairline-soft)',
+            padding: '72px 48px',
+            display: 'flex',
+            alignItems: 'center',
+            position: 'relative',
+            overflow: 'hidden',
+          }}>
+            <ScoreCard />
+          </div>
+        </div>
+
+        {/* Meta strip: three bordered cells under the hero */}
+        <div className="hero-meta" style={{
+          ...frame,
+          borderTop: '1px solid var(--hairline-soft)',
+          display: 'grid',
+          gridTemplateColumns: 'repeat(3, 1fr)',
+        }}>
+          {[
+            ['One score', 'Onchain + bank history'],
+            ['Undercollateralized', 'Post less than you draw'],
+            ['Non-custodial', 'Your keys stay yours'],
+          ].map(([label, sub], i) => (
+            <div key={label} className={i > 0 ? 'cell-divider' : ''} style={{
+              padding: '22px 56px 26px',
+              borderLeft: i > 0 ? '1px solid var(--hairline-soft)' : 'none',
+            }}>
+              <p className="eyebrow" style={{ fontSize: 11, color: 'var(--ink)', marginBottom: 6 }}>{label}</p>
+              <p style={{ fontSize: 13, color: 'var(--ink-45)', lineHeight: 1.5 }}>{sub}</p>
+            </div>
+          ))}
         </div>
       </section>
 
-      {/* Built with logo carousel */}
+      {/* Built with */}
       <section className="built-with-section" style={{
-        position: 'relative',
-        zIndex: 15,
-        background: '#EEEDFF',
-        padding: '56px 0',
-        borderBottom: '1px solid rgba(0,0,0,0.07)',
+        borderTop: '1px solid var(--hairline-soft)',
+        borderBottom: '1px solid var(--hairline-soft)',
+        padding: '40px 0',
       }}>
-        <p style={{
-          textAlign: 'center',
-          fontSize: 11,
-          fontWeight: 600,
-          letterSpacing: '0.18em',
-          textTransform: 'uppercase',
-          color: 'rgba(0,0,0,0.35)',
-          marginBottom: 36,
-        }}>
+        <p className="eyebrow" style={{ textAlign: 'center', fontSize: 11, color: 'var(--ink-30)', marginBottom: 30 }}>
           Built with
         </p>
         <div style={{ position: 'relative', overflow: 'hidden' }}>
-          <div aria-hidden style={{ pointerEvents: 'none', position: 'absolute', left: 0, top: 0, bottom: 0, width: 96, zIndex: 2, background: 'linear-gradient(to right, #EEEDFF, transparent)' }} />
-          <div aria-hidden style={{ pointerEvents: 'none', position: 'absolute', right: 0, top: 0, bottom: 0, width: 96, zIndex: 2, background: 'linear-gradient(to left, #EEEDFF, transparent)' }} />
+          <div aria-hidden style={{ pointerEvents: 'none', position: 'absolute', left: 0, top: 0, bottom: 0, width: 96, zIndex: 2, background: 'linear-gradient(to right, var(--paper), transparent)' }} />
+          <div aria-hidden style={{ pointerEvents: 'none', position: 'absolute', right: 0, top: 0, bottom: 0, width: 96, zIndex: 2, background: 'linear-gradient(to left, var(--paper), transparent)' }} />
           <div className="logo-track">
             {[0, 1].map(half => (
               <div key={half} aria-hidden={half === 1} className="logo-track-half" style={{ display: 'flex', alignItems: 'center', gap: 72, paddingRight: 72 }}>
@@ -243,13 +461,13 @@ export default function Home() {
                       src={logo.src}
                       alt={half === 0 && rep === 0 ? logo.name : ''}
                       style={{
-                        height: 22,
+                        height: 20,
                         width: 'auto',
                         objectFit: 'contain',
                         flexShrink: 0,
                         userSelect: 'none',
                         filter: 'brightness(0)',
-                        opacity: 0.32,
+                        opacity: 0.3,
                       }}
                     />
                   ))
@@ -260,286 +478,310 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Problem section */}
+      {/* Problem */}
       <section className="problem-section" style={{
-        position: 'relative',
-        zIndex: 15,
-        background: 'radial-gradient(120% 130% at 50% 0%, #17123a 0%, #0c0a24 55%, #070614 100%)',
-        padding: '120px 32px 110px',
+        background: 'var(--dark)',
+        padding: '0 32px',
         overflow: 'hidden',
       }}>
-        <Reveal style={{ textAlign: 'center', marginBottom: 24 }}>
-          <h2 style={{
-            fontWeight: 500,
-            fontSize: 'clamp(30px, 4vw, 52px)',
-            letterSpacing: '-0.02em',
-            lineHeight: 1.12,
-            margin: 0,
-          }}>
-            <span style={{ display: 'block', color: '#EEEDFF' }}>Your wallet can't vouch for you.</span>
-            <span style={{ display: 'block', color: 'rgba(238,237,255,0.38)' }}>Lenders can't read it.</span>
-          </h2>
-        </Reveal>
-
-        <Reveal delay={120}>
-          <svg
-            viewBox="0 0 1000 380"
-            style={{ display: 'block', width: '100%', maxWidth: 900, margin: '0 auto' }}
-            role="img"
-            aria-label="Diagram: onchain history and lender capital exist as two disconnected pools with no credit score between them"
-          >
-            {(() => {
-              const line = 'rgba(201,198,240,0.35)'
-              const lineSoft = 'rgba(201,198,240,0.18)'
-              const accent = '#c9c6f0'
-              return (
-                <g fill="none" strokeWidth="1.2">
-                  {/* Left cylinder: onchain history */}
-                  <ellipse cx="120" cy="190" rx="42" ry="110" stroke={lineSoft} />
-                  <ellipse cx="155" cy="190" rx="42" ry="110" stroke={lineSoft} />
-                  <ellipse cx="190" cy="190" rx="42" ry="110" stroke={line} />
-                  <path d="M120 80 H235 M120 300 H235" stroke={lineSoft} />
-                  <ellipse cx="235" cy="190" rx="42" ry="110" stroke={accent} strokeOpacity="0.7" strokeDasharray="3 6" fill="rgba(201,198,240,0.04)" />
-
-                  {/* Right cylinder: lender capital, with liquidity dots */}
-                  <ellipse cx="880" cy="190" rx="42" ry="110" stroke={lineSoft} />
-                  <path d="M765 80 H880 M765 300 H880" stroke={lineSoft} />
-                  <ellipse cx="765" cy="190" rx="42" ry="110" stroke={accent} strokeOpacity="0.7" strokeDasharray="3 6" fill="rgba(201,198,240,0.04)" />
-                  <g fill={accent}>
-                    <circle cx="775" cy="140" r="3" opacity="0.85" />
-                    <circle cx="800" cy="180" r="2.5" opacity="0.5" />
-                    <circle cx="762" cy="225" r="3.5" opacity="0.9" />
-                    <circle cx="820" cy="240" r="2.5" opacity="0.6" />
-                    <circle cx="845" cy="160" r="3" opacity="0.75" />
-                    <circle cx="838" cy="205" r="2" opacity="0.45" />
-                    <circle cx="790" cy="265" r="2" opacity="0.55" />
-                    <circle cx="862" cy="130" r="2" opacity="0.4" />
-                  </g>
-
-                  {/* Broken link */}
-                  <path d="M280 190 H375" stroke={line} />
-                  <path d="M625 190 H720" stroke={line} />
-                  <path d="M410 190 H590" stroke={line} strokeDasharray="10 12" />
-                  <circle cx="392" cy="190" r="9" stroke={accent} strokeOpacity="0.8" />
-                  <path d="M387.5 185.5 l9 9 M396.5 185.5 l-9 9" stroke={accent} strokeOpacity="0.8" />
-                  <circle cx="608" cy="190" r="9" stroke={accent} strokeOpacity="0.8" />
-                  <path d="M603.5 185.5 l9 9 M612.5 185.5 l-9 9" stroke={accent} strokeOpacity="0.8" />
-
-                  {/* Labels */}
-                  <g fontFamily="inherit" fontSize="15" fill="rgba(238,237,255,0.55)" textAnchor="middle" stroke="none">
-                    <text x="178" y="340">Your onchain history</text>
-                    <text x="822" y="340">Lender capital</text>
-                    <text x="500" y="235" fill="rgba(238,237,255,0.8)">No shared credit score</text>
-                  </g>
-                </g>
-              )
-            })()}
-          </svg>
-        </Reveal>
-
-        <Reveal delay={200} style={{ textAlign: 'center', marginTop: 40 }}>
-          <p style={{
-            fontSize: 16,
-            lineHeight: 1.65,
-            color: 'rgba(238,237,255,0.6)',
-            maxWidth: 480,
-            margin: '0 auto',
-          }}>
-            Years of onchain behavior, invisible to every lender. So everyone gets the same deal: lock up more than you borrow. Nevra is the score in between.
-          </p>
-        </Reveal>
-      </section>
-
-      {/* How it works section */}
-      <section className="how-it-works-section" style={{
-        position: 'relative',
-        zIndex: 15,
-        background: '#EEEDFF',
-        padding: '120px 52px 140px',
-      }}>
-        <Reveal style={{ textAlign: 'center', marginBottom: 64 }}>
-          <h2 style={{
-            fontWeight: 500,
-            fontSize: 'clamp(28px, 3.6vw, 46px)',
-            letterSpacing: '-0.02em',
-            color: '#111',
-            marginBottom: 16,
-            lineHeight: 1.08,
-          }}>
-            How it works
-          </h2>
-          <p style={{ fontSize: 15, color: 'rgba(0,0,0,0.45)', lineHeight: 1.6, maxWidth: 440, margin: '0 auto' }}>
-            From wallet to credit line in three steps.
-          </p>
-        </Reveal>
-
-        <div className="how-it-works-grid" style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(3, 1fr)',
-          gap: 16,
-          maxWidth: 960,
-          margin: '0 auto',
-        }}>
-          {STEPS.map((step, i) => (
-            <Reveal key={step.title} delay={i * 90} style={{ display: 'flex' }}>
-            <div style={{
-              flex: 1,
-              background: '#fff',
-              borderRadius: 16,
-              border: '1px solid rgba(0,0,0,0.06)',
-              boxShadow: '0 4px 24px rgba(0,0,0,0.07), 0 1px 4px rgba(0,0,0,0.05)',
-              padding: '32px 28px 36px',
-              display: 'flex',
-              flexDirection: 'column',
-              minHeight: 400,
-            }}>
-              <div style={{ height: 170, borderRadius: 12, overflow: 'hidden', marginBottom: 28 }}>
-                <StepArt variant={i} />
-              </div>
-              <h3 style={{
-                fontWeight: 600,
-                fontSize: 17,
-                letterSpacing: '-0.015em',
-                color: '#111',
-                marginBottom: 10,
-                lineHeight: 1.3,
-              }}>
-                {step.title}
-              </h3>
-              <p style={{ fontSize: 14, color: 'rgba(0,0,0,0.48)', lineHeight: 1.7, margin: 0 }}>
-                {step.description}
-              </p>
-            </div>
-            </Reveal>
-          ))}
-        </div>
-      </section>
-
-      {/* FAQ section */}
-      <section className="faq-section" style={{
-        position: 'relative',
-        zIndex: 15,
-        background: '#EEEDFF',
-        padding: '0 52px 140px',
-      }}>
-        <Reveal style={{ textAlign: 'center', marginBottom: 56 }}>
-          <h2 style={{
-            fontWeight: 500,
-            fontSize: 'clamp(28px, 3.6vw, 46px)',
-            letterSpacing: '-0.02em',
-            color: '#111',
-            marginBottom: 16,
-            lineHeight: 1.08,
-          }}>
-            Questions, answered
-          </h2>
-          <p style={{ fontSize: 15, color: 'rgba(0,0,0,0.45)', lineHeight: 1.6, maxWidth: 440, margin: '0 auto' }}>
-            Everything you need to know before you apply.
-          </p>
-        </Reveal>
-
-        <div style={{ maxWidth: 720, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 12 }}>
-          {FAQS.map((faq, i) => (
-            <Reveal key={faq.question} delay={i * 60}>
-              <FaqItem faq={faq} index={i} />
-            </Reveal>
-          ))}
-        </div>
-      </section>
-
-      {/* CTA banner */}
-      <section className="cta-section" style={{
-        position: 'relative',
-        zIndex: 15,
-        background: '#EEEDFF',
-        padding: '0 52px 140px',
-      }}>
-        <Reveal>
-        <div style={{
-          maxWidth: 960,
-          margin: '0 auto',
-          background: '#111',
-          borderRadius: 24,
-          padding: '80px 32px',
-          textAlign: 'center',
-          boxShadow: '0 24px 64px rgba(0,0,0,0.22), 0 4px 16px rgba(0,0,0,0.12)',
-          overflow: 'hidden',
-          position: 'relative',
-        }}>
-          <div aria-hidden style={{
-            position: 'absolute',
-            inset: 0,
-            background: 'radial-gradient(ellipse at 50% -20%, rgba(238,237,255,0.18) 0%, transparent 60%)',
-            pointerEvents: 'none',
-          }} />
-          <div style={{ position: 'relative' }}>
+        <div style={{ ...frameDark, padding: '120px 24px 104px' }}>
+          <Reveal style={{ textAlign: 'center', marginBottom: 20 }}>
+            <p className="eyebrow" style={{ color: 'var(--accent-light)', marginBottom: 24 }}>/ The problem</p>
             <h2 style={{
               fontWeight: 500,
-              fontSize: 'clamp(28px, 3.6vw, 46px)',
-              letterSpacing: '-0.02em',
-              color: '#EEEDFF',
-              lineHeight: 1.08,
-              marginBottom: 16,
+              fontSize: 'clamp(30px, 3.8vw, 50px)',
+              letterSpacing: '-0.025em',
+              lineHeight: 1.1,
+              margin: 0,
             }}>
-              Your history is your collateral.
+              <span style={{ display: 'block', color: 'var(--dark-ink)' }}>Your wallet can't vouch for you.</span>
+              <span style={{ display: 'block', color: 'var(--dark-ink-38)' }}>Lenders can't read it.</span>
+            </h2>
+          </Reveal>
+
+          <Reveal delay={120}>
+            <svg
+              viewBox="0 0 1000 380"
+              style={{ display: 'block', width: '100%', maxWidth: 880, margin: '0 auto' }}
+              role="img"
+              aria-label="Diagram: onchain history and lender capital exist as two disconnected pools with no credit score between them"
+            >
+              {(() => {
+                const line = 'rgba(201,198,240,0.35)'
+                const lineSoft = 'rgba(201,198,240,0.18)'
+                const accent = '#c9c6f0'
+                return (
+                  <g fill="none" strokeWidth="1.2">
+                    {/* Left cylinder: onchain history */}
+                    <ellipse cx="120" cy="190" rx="42" ry="110" stroke={lineSoft} />
+                    <ellipse cx="155" cy="190" rx="42" ry="110" stroke={lineSoft} />
+                    <ellipse cx="190" cy="190" rx="42" ry="110" stroke={line} />
+                    <path d="M120 80 H235 M120 300 H235" stroke={lineSoft} />
+                    <ellipse cx="235" cy="190" rx="42" ry="110" stroke={accent} strokeOpacity="0.7" strokeDasharray="3 6" fill="rgba(201,198,240,0.04)" />
+
+                    {/* Right cylinder: lender capital, with liquidity dots */}
+                    <ellipse cx="880" cy="190" rx="42" ry="110" stroke={lineSoft} />
+                    <path d="M765 80 H880 M765 300 H880" stroke={lineSoft} />
+                    <ellipse cx="765" cy="190" rx="42" ry="110" stroke={accent} strokeOpacity="0.7" strokeDasharray="3 6" fill="rgba(201,198,240,0.04)" />
+                    <g fill={accent}>
+                      <circle cx="775" cy="140" r="3" opacity="0.85" />
+                      <circle cx="800" cy="180" r="2.5" opacity="0.5" />
+                      <circle cx="762" cy="225" r="3.5" opacity="0.9" />
+                      <circle cx="820" cy="240" r="2.5" opacity="0.6" />
+                      <circle cx="845" cy="160" r="3" opacity="0.75" />
+                      <circle cx="838" cy="205" r="2" opacity="0.45" />
+                      <circle cx="790" cy="265" r="2" opacity="0.55" />
+                      <circle cx="862" cy="130" r="2" opacity="0.4" />
+                    </g>
+
+                    {/* Broken link */}
+                    <path d="M280 190 H375" stroke={line} />
+                    <path d="M625 190 H720" stroke={line} />
+                    <path d="M410 190 H590" stroke={line} strokeDasharray="10 12" />
+                    <circle cx="392" cy="190" r="9" stroke={accent} strokeOpacity="0.8" />
+                    <path d="M387.5 185.5 l9 9 M396.5 185.5 l-9 9" stroke={accent} strokeOpacity="0.8" />
+                    <circle cx="608" cy="190" r="9" stroke={accent} strokeOpacity="0.8" />
+                    <path d="M603.5 185.5 l9 9 M612.5 185.5 l-9 9" stroke={accent} strokeOpacity="0.8" />
+
+                    {/* Labels */}
+                    <g fontFamily="'IBM Plex Mono', monospace" fontSize="14" fill="rgba(238,237,255,0.55)" textAnchor="middle" stroke="none">
+                      <text x="178" y="340">YOUR ONCHAIN HISTORY</text>
+                      <text x="822" y="340">LENDER CAPITAL</text>
+                      <text x="500" y="235" fill="rgba(238,237,255,0.8)">NO SHARED CREDIT SCORE</text>
+                    </g>
+                  </g>
+                )
+              })()}
+            </svg>
+          </Reveal>
+
+          <Reveal delay={200} style={{ textAlign: 'center', marginTop: 36 }}>
+            <p style={{
+              fontSize: 16,
+              lineHeight: 1.65,
+              color: 'var(--dark-ink-60)',
+              maxWidth: 480,
+              margin: '0 auto',
+            }}>
+              Years of onchain behavior, invisible to every lender. So everyone gets the same deal: lock up more than you borrow. Nevra is the score in between.
+            </p>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* How it works */}
+      <section className="how-it-works-section" style={{ padding: '0 32px' }}>
+        <div style={frame}>
+          <Reveal className="pad-cell" style={{ padding: '88px 56px 56px' }}>
+            <p className="eyebrow" style={{ color: 'var(--accent)', marginBottom: 22 }}>/ How it works</p>
+            <h2 style={{
+              fontWeight: 500,
+              fontSize: 'clamp(28px, 3.4vw, 44px)',
+              letterSpacing: '-0.025em',
+              lineHeight: 1.1,
+              margin: 0,
+            }}>
+              <span style={{ display: 'block' }}>From wallet to credit line</span>
+              <span style={{ display: 'block', color: 'var(--ink-30)' }}>in three steps.</span>
+            </h2>
+          </Reveal>
+
+          <Reveal delay={100}>
+            <div className="how-it-works-grid" style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(3, 1fr)',
+              borderTop: '1px solid var(--hairline-soft)',
+            }}>
+              {STEPS.map((step, i) => (
+                <div key={step.title} className={`step-cell ${i > 0 ? 'cell-divider' : ''}`} style={{
+                  padding: '40px 40px 56px',
+                  borderLeft: i > 0 ? '1px solid var(--hairline-soft)' : 'none',
+                  display: 'flex',
+                  flexDirection: 'column',
+                }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 40 }}>
+                    <span className="eyebrow" style={{ color: 'var(--accent)' }}>[ {step.number} ]</span>
+                    <StepIcon index={i} />
+                  </div>
+                  <h3 style={{ fontWeight: 600, fontSize: 17, letterSpacing: '-0.015em', marginBottom: 10, lineHeight: 1.3 }}>
+                    {step.title}
+                  </h3>
+                  <p style={{ fontSize: 14, color: 'var(--ink-60)', lineHeight: 1.7, margin: 0 }}>
+                    {step.description}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* Principles */}
+      <section className="principles-section" style={{
+        borderTop: '1px solid var(--hairline-soft)',
+        padding: '0 32px',
+      }}>
+        <div className="split-grid" style={{
+          ...frame,
+          display: 'grid',
+          gridTemplateColumns: '0.9fr 1.1fr',
+          alignItems: 'stretch',
+        }}>
+          <Reveal className="pad-cell" style={{ padding: '88px 56px' }}>
+            <p className="eyebrow" style={{ color: 'var(--accent)', marginBottom: 22 }}>/ What you get</p>
+            <h2 style={{
+              fontWeight: 500,
+              fontSize: 'clamp(28px, 3.4vw, 44px)',
+              letterSpacing: '-0.025em',
+              lineHeight: 1.12,
+              marginBottom: 20,
+            }}>
+              Boring credit,{' '}
+              <span style={{ color: 'var(--ink-30)' }}>done right.</span>
+            </h2>
+            <p style={{ fontSize: 15, color: 'var(--ink-60)', lineHeight: 1.7, maxWidth: 340 }}>
+              Clear rules. Honest data. Nothing you have to babysit.
+            </p>
+          </Reveal>
+
+          <div className="principles-grid cell-divider" style={{
+            borderLeft: '1px solid var(--hairline-soft)',
+            display: 'grid',
+            gridTemplateColumns: '1fr 1fr',
+          }}>
+            {PRINCIPLES.map((p, i) => (
+              <Reveal key={p.tag} delay={i * 70} className={i % 2 === 1 ? 'cell-divider' : ''} style={{
+                display: 'flex',
+                borderLeft: i % 2 === 1 ? '1px solid var(--hairline-soft)' : 'none',
+                borderTop: i > 1 ? '1px solid var(--hairline-soft)' : 'none',
+              }}>
+                <div style={{ flex: 1, padding: '44px 32px 44px', display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 22 }}>
+                  <PrincipleIcon index={i} />
+                  <div>
+                    <p className="eyebrow" style={{ fontSize: 10, color: 'var(--accent)', marginBottom: 10 }}>[ {p.tag} ]</p>
+                    <h3 style={{ fontWeight: 600, fontSize: 16, letterSpacing: '-0.01em', lineHeight: 1.3, margin: 0 }}>
+                      {p.title}
+                    </h3>
+                  </div>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <section className="faq-section" style={{
+        borderTop: '1px solid var(--hairline-soft)',
+        padding: '0 32px',
+      }}>
+        <div className="split-grid" style={{
+          ...frame,
+          display: 'grid',
+          gridTemplateColumns: '0.9fr 1.1fr',
+          alignItems: 'stretch',
+        }}>
+          <Reveal className="pad-cell" style={{ padding: '88px 56px' }}>
+            <p className="eyebrow" style={{ color: 'var(--accent)', marginBottom: 22 }}>/ FAQ</p>
+            <h2 style={{
+              fontWeight: 500,
+              fontSize: 'clamp(28px, 3.4vw, 44px)',
+              letterSpacing: '-0.025em',
+              lineHeight: 1.1,
+              marginBottom: 20,
+            }}>
+              Frequently asked{' '}
+              <span style={{ color: 'var(--ink-30)' }}>questions.</span>
+            </h2>
+            <p style={{ fontSize: 15, color: 'var(--ink-60)', lineHeight: 1.7, maxWidth: 360 }}>
+              Everything you need to know before you apply. More detail lives in the whitepaper.
+            </p>
+          </Reveal>
+
+          <Reveal delay={100} className="cell-divider pad-cell" style={{
+            borderLeft: '1px solid var(--hairline-soft)',
+            padding: '56px 56px 72px',
+          }}>
+            <div style={{ borderTop: '1px solid var(--hairline)' }}>
+              {FAQS.map((faq, i) => (
+                <FaqItem key={faq.question} faq={faq} index={i} />
+              ))}
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="cta-section" style={{
+        background: 'var(--dark)',
+        padding: '0 32px',
+        textAlign: 'center',
+        overflow: 'hidden',
+        position: 'relative',
+      }}>
+        <div aria-hidden style={{
+          position: 'absolute',
+          inset: 0,
+          background: 'radial-gradient(ellipse 70% 90% at 50% 115%, rgba(107,95,255,0.16) 0%, transparent 65%)',
+          pointerEvents: 'none',
+        }} />
+        <div style={{ ...frameDark, position: 'relative', padding: '120px 24px' }}>
+          <Reveal>
+            <p className="eyebrow" style={{ color: 'var(--accent-light)', marginBottom: 26 }}>[ Early access ]</p>
+            <h2 style={{
+              fontWeight: 500,
+              fontSize: 'clamp(30px, 3.8vw, 50px)',
+              letterSpacing: '-0.025em',
+              lineHeight: 1.1,
+              marginBottom: 20,
+            }}>
+              <span style={{ display: 'block', color: 'var(--dark-ink)' }}>Your history is your collateral.</span>
+              <span style={{ display: 'block', color: 'var(--dark-ink-38)' }}>Borrow like it counts.</span>
             </h2>
             <p style={{
               fontSize: 15,
-              color: 'rgba(238,237,255,0.6)',
-              lineHeight: 1.6,
-              maxWidth: 460,
-              margin: '0 auto 32px',
+              color: 'var(--dark-ink-60)',
+              lineHeight: 1.65,
+              maxWidth: 440,
+              margin: '0 auto 36px',
             }}>
               Stop locking up more than you borrow. Verify once, link your accounts, and open a credit line backed by your real score.
             </p>
-            <div style={{ display: 'flex', gap: 10, justifyContent: 'center', flexWrap: 'wrap' }}>
-              <Link to="/apply" className="btn-hover focus-ring-light key-light" style={{
-                background: '#EEEDFF',
-                color: '#333',
-                fontSize: 14,
-                fontWeight: 500,
-                padding: '13px 24px',
-                borderRadius: 10,
-                lineHeight: 1,
-                border: '1px solid rgba(255,255,255,0.3)',
-                boxShadow: '0 1px 4px rgba(0,0,0,0.3)',
+            <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
+              <Link to="/apply" className="btn-hover focus-ring-light" style={{
+                ...btnBase,
+                background: 'var(--dark-ink)',
+                color: 'var(--ink)',
               }}>
-                Apply Now →
+                Apply now →
               </Link>
               <a href="/pdf/whitepaper.pdf" target="_blank" rel="noopener noreferrer" className="btn-hover focus-ring-light" style={{
-                background: 'rgba(255,255,255,0.1)',
-                color: '#EEEDFF',
-                fontSize: 14,
-                fontWeight: 500,
-                padding: '13px 24px',
-                borderRadius: 10,
-                lineHeight: 1,
-                border: '1px solid rgba(255,255,255,0.18)',
+                ...btnBase,
+                background: 'transparent',
+                color: 'var(--dark-ink)',
+                border: '1px solid var(--dark-hairline)',
               }}>
                 Read the whitepaper
               </a>
             </div>
-          </div>
+          </Reveal>
         </div>
-        </Reveal>
       </section>
 
       {/* Footer */}
       <footer className="footer-root" style={{
-        position: 'relative',
-        zIndex: 15,
-        background: '#EEEDFF',
-        color: '#111',
-        padding: '64px 52px 0',
+        borderTop: '1px solid var(--hairline-soft)',
+        padding: '0 32px',
         overflow: 'hidden',
       }}>
-        <div style={{ borderTop: '1px solid rgba(0,0,0,0.12)', paddingTop: 52 }}>
-          <div className="footer-inner" style={{ display: 'flex', gap: 64, marginBottom: 64 }}>
+        <div className="footer-frame" style={{ ...frame, padding: '72px 56px 0' }}>
+          <div className="footer-inner" style={{ display: 'flex', gap: 64, marginBottom: 72 }}>
             <div style={{ minWidth: 200 }}>
-              <div style={{ marginBottom: 12 }}>
-                <img src="/logo.png" alt="" style={{ width: 22, height: 22 }} />
+              <div style={{ display: 'flex', alignItems: 'center', gap: 9, marginBottom: 14 }}>
+                <img src="/logo.png" alt="" style={{ width: 20, height: 20 }} />
+                <span style={{ fontSize: 15, fontWeight: 600 }}>Nevra</span>
               </div>
-              <p style={{ fontSize: 13, color: 'rgba(0,0,0,0.5)', lineHeight: 1.5 }}>
+              <p style={{ fontSize: 13, color: 'var(--ink-45)', lineHeight: 1.6 }}>
                 ©Nevra Inc. 2026<br />All rights reserved.
               </p>
             </div>
@@ -564,12 +806,12 @@ export default function Home() {
           </div>
         </div>
         <div className="footer-wordmark" style={{
-          fontSize: 'clamp(80px, 14vw, 180px)',
-          fontWeight: 700,
-          letterSpacing: '-0.04em',
-          color: 'rgba(0,0,0,0.08)',
-          lineHeight: 0.85,
-          marginLeft: '-0.03em',
+          fontSize: 'clamp(80px, 14vw, 190px)',
+          fontWeight: 600,
+          letterSpacing: '-0.045em',
+          color: 'rgba(22,21,29,0.07)',
+          lineHeight: 0.82,
+          textAlign: 'center',
           userSelect: 'none',
         }}>
           Nevra
@@ -584,13 +826,7 @@ function FaqItem({ faq, index }) {
   const contentId = `faq-answer-${index}`
 
   return (
-    <div style={{
-      background: '#fff',
-      borderRadius: 14,
-      border: '1px solid rgba(0,0,0,0.06)',
-      boxShadow: '0 2px 12px rgba(0,0,0,0.05), 0 1px 3px rgba(0,0,0,0.04)',
-      overflow: 'hidden',
-    }}>
+    <div style={{ borderBottom: '1px solid var(--hairline)' }}>
       <button
         type="button"
         className="focus-ring faq-toggle"
@@ -603,7 +839,7 @@ function FaqItem({ faq, index }) {
           alignItems: 'center',
           justifyContent: 'space-between',
           gap: 16,
-          padding: '20px 24px',
+          padding: '22px 4px',
           background: 'none',
           border: 'none',
           cursor: 'pointer',
@@ -611,13 +847,14 @@ function FaqItem({ faq, index }) {
           fontFamily: 'inherit',
         }}
       >
-        <span style={{ fontSize: 15, fontWeight: 600, letterSpacing: '-0.01em', color: '#111', lineHeight: 1.4 }}>
+        <span style={{ fontSize: 15, fontWeight: 500, letterSpacing: '-0.01em', color: 'var(--ink)', lineHeight: 1.45 }}>
           {faq.question}
         </span>
         <span aria-hidden style={{
-          fontSize: 18,
+          fontFamily: 'var(--font-mono)',
+          fontSize: 17,
           fontWeight: 400,
-          color: 'rgba(0,0,0,0.4)',
+          color: 'var(--ink-45)',
           lineHeight: 1,
           flexShrink: 0,
           transform: open ? 'rotate(45deg)' : 'none',
@@ -635,7 +872,7 @@ function FaqItem({ faq, index }) {
         }}
       >
         <div style={{ overflow: 'hidden' }}>
-          <p style={{ padding: '0 24px 22px', fontSize: 14, color: 'rgba(0,0,0,0.5)', lineHeight: 1.7, margin: 0 }}>
+          <p style={{ padding: '0 40px 24px 4px', fontSize: 14, color: 'var(--ink-60)', lineHeight: 1.7, margin: 0 }}>
             {faq.answer}
           </p>
         </div>
@@ -647,13 +884,13 @@ function FaqItem({ faq, index }) {
 function FooterCol({ title, links }) {
   return (
     <div>
-      <p style={{ fontSize: 13, fontWeight: 600, marginBottom: 16, color: '#111' }}>{title}</p>
-      <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 10 }}>
+      <p className="eyebrow" style={{ fontSize: 11, marginBottom: 18, color: 'var(--ink-45)' }}>{title}</p>
+      <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 11 }}>
         {links.map(({ label, href, internal }) => (
           <li key={label}>
             {internal
-              ? <Link to={href} className="footer-link" style={{ fontSize: 13, color: 'rgba(0,0,0,0.55)', fontWeight: 400, textDecoration: 'none' }}>{label}</Link>
-              : <a href={href} target="_blank" rel="noopener noreferrer" className="footer-link" style={{ fontSize: 13, color: 'rgba(0,0,0,0.55)', fontWeight: 400 }}>{label}</a>
+              ? <Link to={href} className="footer-link" style={{ fontSize: 13.5, color: 'var(--ink-60)', fontWeight: 400, textDecoration: 'none' }}>{label}</Link>
+              : <a href={href} target="_blank" rel="noopener noreferrer" className="footer-link" style={{ fontSize: 13.5, color: 'var(--ink-60)', fontWeight: 400 }}>{label}</a>
             }
           </li>
         ))}

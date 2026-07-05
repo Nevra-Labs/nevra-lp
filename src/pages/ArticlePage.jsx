@@ -27,7 +27,7 @@ export default function ArticlePage() {
 
   if (!article) {
     return (
-      <div style={{ background: '#EEEDFF', minHeight: '100vh', color: '#111' }}>
+      <div style={{ background: 'var(--paper)', minHeight: '100vh', color: '#111' }}>
         <Nav dark />
         <main style={{ maxWidth: 720, margin: '0 auto', padding: '60px 32px' }}>
           <p>Article not found.</p>
@@ -40,7 +40,7 @@ export default function ArticlePage() {
   const variantIndex = Math.max(0, articles.findIndex(a => a.id === article.id))
 
   return (
-    <div style={{ background: '#EEEDFF', minHeight: '100vh', color: '#111' }}>
+    <div style={{ background: 'var(--paper)', minHeight: '100vh', color: '#111' }}>
       <div className="reading-progress" style={{ width: `${progress}%` }} />
       <Nav dark />
 
@@ -123,7 +123,7 @@ export default function ArticlePage() {
           padding: '32px 28px',
           borderRadius: 16,
           background: '#111',
-          color: '#EEEDFF',
+          color: 'var(--paper)',
           display: 'flex',
           flexDirection: 'column',
           gap: 12,
@@ -149,7 +149,7 @@ export default function ArticlePage() {
           </h2>
           <div style={{ display: 'flex', gap: 12, marginTop: 12, flexWrap: 'wrap' }}>
             <Link to="/apply" className="btn-hover focus-ring-light key-light" style={{
-              background: '#EEEDFF',
+              background: 'var(--paper)',
               color: '#333',
               fontSize: 14,
               fontWeight: 500,
@@ -162,7 +162,7 @@ export default function ArticlePage() {
             </Link>
             <Link to="/blog" className="btn-hover focus-ring-light" style={{
               background: 'rgba(255,255,255,0.1)',
-              color: '#EEEDFF',
+              color: 'var(--paper)',
               fontSize: 14,
               fontWeight: 500,
               padding: '11px 20px',
