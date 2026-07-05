@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom'
 import { useState, useEffect, useRef } from 'react'
+import { ShieldCheck, KeyRound, TrendingUp, Umbrella, Wallet, ScanFace, Gauge } from 'lucide-react'
+import Nav from '../components/Nav'
 import '../responsive.css'
 
 function Reveal({ children, delay = 0, className = '', style }) {
@@ -115,110 +117,31 @@ const frameDark = {
   borderRight: '1px solid var(--dark-hairline)',
 }
 
+const STEP_ICONS = [Wallet, ScanFace, Gauge]
+
 function StepIcon({ index }) {
-  const stroke = 'var(--ink)'
-  const detail = 'var(--ink-60)'
-  const common = { fill: 'none', strokeWidth: 1.3 }
-  if (index === 0) {
-    // Wallet
-    return (
-      <svg width="44" height="44" viewBox="0 0 44 44" aria-hidden>
-        <g {...common} stroke={stroke}>
-          <rect x="7" y="13" width="30" height="20" rx="3" />
-          <path d="M7 19 h30" />
-        </g>
-        <g {...common} stroke={stroke}>
-          <rect x="27" y="23" width="10" height="6" rx="1.5" />
-          <circle cx="30.5" cy="26" r="1" fill={stroke} stroke="none" />
-        </g>
-      </svg>
-    )
-  }
-  if (index === 1) {
-    // Identity + bank
-    return (
-      <svg width="44" height="44" viewBox="0 0 44 44" aria-hidden>
-        <g {...common} stroke={stroke}>
-          <rect x="7" y="10" width="30" height="24" rx="3" />
-          <circle cx="16.5" cy="19.5" r="3.4" />
-          <path d="M10.5 29 c1.4 -3.6 4 -4.6 6 -4.6 s4.6 1 6 4.6" />
-        </g>
-        <g {...common} stroke={detail}>
-          <path d="M27 17 h7 M27 21.5 h7 M27 26 h4.5" />
-        </g>
-      </svg>
-    )
-  }
-  // Credit line meter
-  return (
-    <svg width="44" height="44" viewBox="0 0 44 44" aria-hidden>
-      <g {...common} stroke={stroke}>
-        <path d="M9 30 a13 13 0 0 1 26 0" />
-        <path d="M9 30 h-2.5 M37.5 30 h-2.5" />
-      </g>
-      <g {...common} stroke={stroke}>
-        <path d="M22 30 L29 20" strokeLinecap="round" />
-        <circle cx="22" cy="30" r="2" fill="var(--paper)" />
-      </g>
-    </svg>
-  )
+  const Icon = STEP_ICONS[index]
+  return <Icon size={26} strokeWidth={1.6} color="var(--ink)" aria-hidden />
 }
 
+const PRINCIPLE_ICONS = [ShieldCheck, KeyRound, TrendingUp, Umbrella]
+
 function PrincipleIcon({ index }) {
-  const stroke = 'var(--ink)'
-  const detail = 'var(--ink-60)'
-  const common = { fill: 'none', strokeWidth: 1.3, strokeLinecap: 'round', strokeLinejoin: 'round' }
-  if (index === 0) {
-    // Shield: read-only privacy
-    return (
-      <svg width="56" height="56" viewBox="0 0 56 56" aria-hidden>
-        <g {...common} stroke={stroke}>
-          <path d="M28 10 L42 15 V29 C42 37 35 43 28 46 C21 43 14 37 14 29 V15 Z" />
-        </g>
-        <g {...common} stroke={stroke}>
-          <path d="M22 28 L26.5 32.5 L34 24" />
-        </g>
-      </svg>
-    )
-  }
-  if (index === 1) {
-    // Key: non-custodial
-    return (
-      <svg width="56" height="56" viewBox="0 0 56 56" aria-hidden>
-        <g {...common} stroke={stroke}>
-          <circle cx="19" cy="28" r="7" />
-          <path d="M26 28 H44 M40 28 V33 M35 28 V32" />
-          <circle cx="19" cy="28" r="2.2" fill={stroke} strokeWidth="0" />
-        </g>
-      </svg>
-    )
-  }
-  if (index === 2) {
-    // Rising bars: live score
-    return (
-      <svg width="56" height="56" viewBox="0 0 56 56" aria-hidden>
-        <g {...common} stroke={detail}>
-          <path d="M12 44 H44" />
-          <rect x="16" y="34" width="5" height="10" />
-          <rect x="25.5" y="26" width="5" height="18" />
-        </g>
-        <g {...common} stroke={stroke}>
-          <rect x="35" y="18" width="5" height="26" />
-          <path d="M14 22 L22 26 L30 20 L40 14" />
-        </g>
-      </svg>
-    )
-  }
-  // Soft landing: parachute / gentle arrow
+  const Icon = PRINCIPLE_ICONS[index]
   return (
-    <svg width="56" height="56" viewBox="0 0 56 56" aria-hidden>
-      <g {...common} stroke={stroke}>
-        <path d="M12 24 A16 16 0 0 1 44 24" />
-        <path d="M12 24 L20 24 M20 24 L28 40 M28 40 L36 24 M36 24 L44 24" />
-        <path d="M28 40 V46" />
-        <circle cx="28" cy="40" r="1.8" fill={stroke} strokeWidth="0" />
-      </g>
-    </svg>
+    <span aria-hidden style={{
+      display: 'inline-flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      width: 48,
+      height: 48,
+      borderRadius: 12,
+      background: 'var(--surface)',
+      border: '1px solid var(--hairline-soft)',
+      boxShadow: '0 2px 8px -2px rgba(22,21,29,0.08)',
+    }}>
+      <Icon size={22} strokeWidth={1.6} color="var(--ink)" />
+    </span>
   )
 }
 
@@ -302,52 +225,9 @@ function ScoreCard() {
 }
 
 export default function Home() {
-  const [scrolled, setScrolled] = useState(false)
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 12)
-    onScroll()
-    window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
-  }, [])
-
   return (
     <div style={{ fontFamily: 'var(--font-sans)', background: 'var(--paper)', color: 'var(--ink)' }}>
-      {/* Nav */}
-      <header style={{
-        position: 'fixed',
-        top: 0, left: 0, right: 0,
-        zIndex: 20,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        padding: '18px 32px',
-        background: scrolled ? 'rgba(238,237,255,0.88)' : 'transparent',
-        backdropFilter: scrolled ? 'blur(14px)' : 'none',
-        WebkitBackdropFilter: scrolled ? 'blur(14px)' : 'none',
-        borderBottom: scrolled ? '1px solid var(--hairline-soft)' : '1px solid transparent',
-        transition: 'background 0.25s ease, border-color 0.25s ease',
-      }}>
-        <Link to="/" style={{ display: 'flex', alignItems: 'center' }} aria-label="Nevra home">
-          <img src="/logo.png" alt="Nevra" style={{ width: 26, height: 26, display: 'block' }} />
-        </Link>
-        <nav style={{ display: 'flex', alignItems: 'center', gap: 26 }}>
-          <Link to="/blog" className="nav-text-links eyebrow" style={{ color: 'var(--ink-60)' }}>
-            Blog
-          </Link>
-          <a href="/pdf/whitepaper.pdf" target="_blank" rel="noopener noreferrer" className="nav-text-links eyebrow" style={{ color: 'var(--ink-60)' }}>
-            Whitepaper
-          </a>
-          <Link to="/apply" className="btn-hover focus-ring" style={{
-            ...btnBase,
-            padding: '11px 20px',
-            background: 'var(--ink)',
-            color: '#fff',
-          }}>
-            Apply
-          </Link>
-        </nav>
-      </header>
+      <Nav />
 
       {/* Hero */}
       <section style={{ padding: '76px 32px 0' }}>
