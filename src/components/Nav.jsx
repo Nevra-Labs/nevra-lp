@@ -9,9 +9,8 @@ export default function Nav() {
       padding: '18px 32px',
       borderBottom: '1px solid var(--hairline-soft)',
     }}>
-      <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-        <img src="/logo.png" alt="Nevra" style={{ width: 22, height: 22, display: 'block' }} />
-        <span style={{ fontSize: 16, fontWeight: 600, letterSpacing: '-0.01em', color: 'var(--ink)' }}>Nevra</span>
+      <Link to="/" style={{ display: 'flex', alignItems: 'center' }} aria-label="Nevra home">
+        <img src="/logo.png" alt="Nevra" style={{ width: 26, height: 26, display: 'block' }} />
       </Link>
       <div style={{ display: 'flex', alignItems: 'center', gap: 26 }}>
         <Link to="/blog" className="nav-text-links eyebrow" style={{ color: 'var(--ink-60)' }}>
