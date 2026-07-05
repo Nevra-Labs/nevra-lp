@@ -8,7 +8,7 @@ Professional fintech direction set July 2026. References: 3jane.xyz (technical c
 
 | Token | Value | Use |
 |---|---|---|
-| `--paper` | `#F6F5F1` | Site background (warm bone) |
+| `--paper` | `#EEEDFF` | Site background (violet-tinted paper) |
 | `--surface` | `#FFFFFF` | Cards, elevated panels |
 | `--ink` | `#16151D` | Text, primary buttons |
 | `--ink-60/-45/-30` | ink at 60/45/30% | Body copy, captions, faint headings |

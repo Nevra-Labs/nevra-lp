@@ -82,26 +82,10 @@ const STEPS = [
 ]
 
 const PRINCIPLES = [
-  {
-    tag: 'READ-ONLY',
-    title: 'Your bank data stays yours',
-    description: 'Balances and cash flow are read through Plaid to score you, nothing else. We never see your credentials.',
-  },
-  {
-    tag: 'NON-CUSTODIAL',
-    title: 'Your keys stay yours',
-    description: 'Nevra never takes custody of your wallet. Your history is the asset, not your holdings.',
-  },
-  {
-    tag: 'SCORE-BASED',
-    title: 'Rates that respond to you',
-    description: 'Repay on time and your rate and available credit improve. Your score is a living number, not a snapshot.',
-  },
-  {
-    tag: 'LAST RESORT',
-    title: 'Liquidation is the exception',
-    description: 'Missed payments adjust your score and rate first. Posted collateral is only touched when everything else fails.',
-  },
+  { tag: 'READ-ONLY', title: 'Bank data stays private' },
+  { tag: 'NON-CUSTODIAL', title: 'Your keys, your wallet' },
+  { tag: 'LIVE SCORE', title: 'Rates improve as you repay' },
+  { tag: 'SOFT LANDINGS', title: 'Liquidation is the last step' },
 ]
 
 const btnBase = {
@@ -180,27 +164,74 @@ function StepIcon({ index }) {
   )
 }
 
+function PrincipleIcon({ index }) {
+  const stroke = 'var(--ink)'
+  const accent = 'var(--accent)'
+  const common = { fill: 'none', strokeWidth: 1.3, strokeLinecap: 'round', strokeLinejoin: 'round' }
+  if (index === 0) {
+    // Shield: read-only privacy
+    return (
+      <svg width="56" height="56" viewBox="0 0 56 56" aria-hidden>
+        <g {...common} stroke={stroke}>
+          <path d="M28 10 L42 15 V29 C42 37 35 43 28 46 C21 43 14 37 14 29 V15 Z" />
+        </g>
+        <g {...common} stroke={accent}>
+          <path d="M22 28 L26.5 32.5 L34 24" />
+        </g>
+      </svg>
+    )
+  }
+  if (index === 1) {
+    // Key: non-custodial
+    return (
+      <svg width="56" height="56" viewBox="0 0 56 56" aria-hidden>
+        <g {...common} stroke={stroke}>
+          <circle cx="19" cy="28" r="7" />
+          <path d="M26 28 H44 M40 28 V33 M35 28 V32" />
+        </g>
+        <g {...common} stroke={accent}>
+          <circle cx="19" cy="28" r="2.2" fill={accent} strokeWidth="0" />
+        </g>
+      </svg>
+    )
+  }
+  if (index === 2) {
+    // Rising bars: live score
+    return (
+      <svg width="56" height="56" viewBox="0 0 56 56" aria-hidden>
+        <g {...common} stroke={stroke}>
+          <path d="M12 44 H44" />
+          <rect x="16" y="34" width="5" height="10" />
+          <rect x="25.5" y="26" width="5" height="18" />
+        </g>
+        <g {...common} stroke={accent}>
+          <rect x="35" y="18" width="5" height="26" />
+          <path d="M14 22 L22 26 L30 20 L40 14" />
+        </g>
+      </svg>
+    )
+  }
+  // Soft landing: parachute / gentle arrow
+  return (
+    <svg width="56" height="56" viewBox="0 0 56 56" aria-hidden>
+      <g {...common} stroke={stroke}>
+        <path d="M12 24 A16 16 0 0 1 44 24" />
+        <path d="M12 24 L20 24 M20 24 L28 40 M28 40 L36 24 M36 24 L44 24" />
+      </g>
+      <g {...common} stroke={accent}>
+        <path d="M28 40 V46" />
+        <circle cx="28" cy="40" r="1.8" fill={accent} strokeWidth="0" />
+      </g>
+    </svg>
+  )
+}
+
 function ScoreCard() {
   const mono = { fontFamily: 'var(--font-mono)' }
   const row = { display: 'flex', alignItems: 'baseline', justifyContent: 'space-between' }
   return (
-    <div aria-hidden style={{ position: 'relative', width: '100%' }}>
-      {/* Thin-line orbital art behind the card */}
-      <svg
-        viewBox="0 0 560 560"
-        style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '130%', height: 'auto', pointerEvents: 'none' }}
-      >
-        <g fill="none" strokeWidth="1">
-          <circle cx="280" cy="280" r="252" stroke="var(--hairline-soft)" />
-          <circle cx="280" cy="280" r="196" stroke="var(--hairline)" strokeDasharray="2 7" />
-          <circle cx="280" cy="280" r="252" stroke="var(--accent)" strokeOpacity="0.35" strokeDasharray="60 730" strokeLinecap="round" />
-          <circle cx="118" cy="86.5" r="3" fill="var(--accent)" stroke="none" opacity="0.7" />
-          <circle cx="470" cy="400" r="2.4" fill="var(--ink-30)" stroke="none" />
-        </g>
-      </svg>
-
+    <div aria-hidden style={{ width: '100%' }}>
       <div style={{
-        position: 'relative',
         background: 'var(--surface)',
         border: '1px solid var(--hairline)',
         borderRadius: 8,
@@ -295,15 +326,14 @@ export default function Home() {
         alignItems: 'center',
         justifyContent: 'space-between',
         padding: '18px 32px',
-        background: scrolled ? 'rgba(246,245,241,0.88)' : 'transparent',
+        background: scrolled ? 'rgba(238,237,255,0.88)' : 'transparent',
         backdropFilter: scrolled ? 'blur(14px)' : 'none',
         WebkitBackdropFilter: scrolled ? 'blur(14px)' : 'none',
         borderBottom: scrolled ? '1px solid var(--hairline-soft)' : '1px solid transparent',
         transition: 'background 0.25s ease, border-color 0.25s ease',
       }}>
-        <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-          <img src="/logo.png" alt="" style={{ width: 22, height: 22, display: 'block' }} />
-          <span style={{ fontSize: 16, fontWeight: 600, letterSpacing: '-0.01em' }}>Nevra</span>
+        <Link to="/" style={{ display: 'flex', alignItems: 'center' }} aria-label="Nevra home">
+          <img src="/logo.png" alt="Nevra" style={{ width: 26, height: 26, display: 'block' }} />
         </Link>
         <nav style={{ display: 'flex', alignItems: 'center', gap: 26 }}>
           <Link to="/blog" className="nav-text-links eyebrow" style={{ color: 'var(--ink-60)' }}>
@@ -598,7 +628,7 @@ export default function Home() {
           alignItems: 'stretch',
         }}>
           <Reveal className="pad-cell" style={{ padding: '88px 56px' }}>
-            <p className="eyebrow" style={{ color: 'var(--accent)', marginBottom: 22 }}>/ Principles</p>
+            <p className="eyebrow" style={{ color: 'var(--accent)', marginBottom: 22 }}>/ What you get</p>
             <h2 style={{
               fontWeight: 500,
               fontSize: 'clamp(28px, 3.4vw, 44px)',
@@ -606,11 +636,11 @@ export default function Home() {
               lineHeight: 1.12,
               marginBottom: 20,
             }}>
-              Traditional underwriting,{' '}
-              <span style={{ color: 'var(--ink-30)' }}>crypto-native distribution.</span>
+              Boring credit,{' '}
+              <span style={{ color: 'var(--ink-30)' }}>done right.</span>
             </h2>
-            <p style={{ fontSize: 15, color: 'var(--ink-60)', lineHeight: 1.7, maxWidth: 380 }}>
-              Real credit works because it is boring: clear rules, honest data, consequences that arrive gradually. Nevra keeps the boring parts and removes the gatekeeping.
+            <p style={{ fontSize: 15, color: 'var(--ink-60)', lineHeight: 1.7, maxWidth: 340 }}>
+              Clear rules. Honest data. Nothing you have to babysit.
             </p>
           </Reveal>
 
@@ -625,14 +655,14 @@ export default function Home() {
                 borderLeft: i % 2 === 1 ? '1px solid var(--hairline-soft)' : 'none',
                 borderTop: i > 1 ? '1px solid var(--hairline-soft)' : 'none',
               }}>
-                <div style={{ flex: 1, padding: '36px 32px 40px' }}>
-                  <p className="eyebrow" style={{ fontSize: 10, color: 'var(--ink-45)', marginBottom: 16 }}>[ {p.tag} ]</p>
-                  <h3 style={{ fontWeight: 600, fontSize: 15, letterSpacing: '-0.01em', marginBottom: 8, lineHeight: 1.35 }}>
-                    {p.title}
-                  </h3>
-                  <p style={{ fontSize: 13.5, color: 'var(--ink-60)', lineHeight: 1.65, margin: 0 }}>
-                    {p.description}
-                  </p>
+                <div style={{ flex: 1, padding: '44px 32px 44px', display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 22 }}>
+                  <PrincipleIcon index={i} />
+                  <div>
+                    <p className="eyebrow" style={{ fontSize: 10, color: 'var(--accent)', marginBottom: 10 }}>[ {p.tag} ]</p>
+                    <h3 style={{ fontWeight: 600, fontSize: 16, letterSpacing: '-0.01em', lineHeight: 1.3, margin: 0 }}>
+                      {p.title}
+                    </h3>
+                  </div>
                 </div>
               </Reveal>
             ))}
