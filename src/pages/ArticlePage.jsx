@@ -28,8 +28,8 @@ export default function ArticlePage() {
   if (!article) {
     return (
       <div style={{ background: 'var(--paper)', minHeight: '100vh', color: '#111' }}>
-        <Nav dark />
-        <main style={{ maxWidth: 720, margin: '0 auto', padding: '60px 32px' }}>
+        <Nav />
+        <main style={{ maxWidth: 720, margin: '0 auto', padding: '128px 32px' }}>
           <p>Article not found.</p>
           <Link to="/blog">← Back to blog</Link>
         </main>
@@ -42,9 +42,9 @@ export default function ArticlePage() {
   return (
     <div style={{ background: 'var(--paper)', minHeight: '100vh', color: '#111' }}>
       <div className="reading-progress" style={{ width: `${progress}%` }} />
-      <Nav dark />
+      <Nav />
 
-      <main className="page-main" style={{ maxWidth: 720, margin: '0 auto', padding: '32px 32px 120px' }}>
+      <main className="page-main" style={{ maxWidth: 720, margin: '0 auto', padding: '110px 32px 120px' }}>
         <Link to="/blog" className="enter-up focus-ring" style={{
           fontSize: 13,
           fontWeight: 500,

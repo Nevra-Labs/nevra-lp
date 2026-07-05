@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
 import { usePrivy } from '@privy-io/react-auth'
 import { supabase } from '../lib/supabase'
+import Nav from '../components/Nav'
 import '../responsive.css'
 
 const PRIVY_APP_ID = import.meta.env.VITE_PRIVY_APP_ID
@@ -126,47 +126,28 @@ export default function Apply() {
       display: 'flex',
       flexDirection: 'column',
     }}>
-      {/* Nav */}
-      <header className="blog-nav" style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        padding: '18px 32px',
-        flexShrink: 0,
-      }}>
-        <Link to="/">
-          <img src="/logo.png" alt="Nevra" style={{ width: 26, height: 26, display: 'block' }} />
-        </Link>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
-          <Link to="/blog" style={{ fontSize: 14, fontWeight: 500, color: 'rgba(0,0,0,0.45)', letterSpacing: '0.01em' }}>
-            Blog
-          </Link>
-          <a href="/pdf/whitepaper.pdf" target="_blank" rel="noopener noreferrer" style={{ fontSize: 14, fontWeight: 500, color: 'rgba(0,0,0,0.45)', letterSpacing: '0.01em' }}>
-            Whitepaper
-          </a>
-          {authenticated && (
-            <button
-              onClick={logout}
-              className="fade-in"
-              style={{
-                fontSize: 13,
-                fontWeight: 500,
-                color: 'rgba(0,0,0,0.35)',
-                background: 'none',
-                border: 'none',
-                cursor: 'pointer',
-                padding: 0,
-                letterSpacing: '0.01em',
-                transition: 'color 0.15s',
-              }}
-              onMouseEnter={e => e.currentTarget.style.color = 'rgba(0,0,0,0.7)'}
-              onMouseLeave={e => e.currentTarget.style.color = 'rgba(0,0,0,0.35)'}
-            >
-              Disconnect
-            </button>
-          )}
-        </div>
-      </header>
+      <Nav rightExtra={authenticated ? (
+        <button
+          onClick={logout}
+          className="fade-in"
+          style={{
+            fontSize: 13,
+            fontWeight: 500,
+            color: 'rgba(0,0,0,0.35)',
+            background: 'none',
+            border: 'none',
+            cursor: 'pointer',
+            padding: '8px 12px',
+            letterSpacing: '0.01em',
+            transition: 'color 0.15s',
+            fontFamily: 'inherit',
+          }}
+          onMouseEnter={e => e.currentTarget.style.color = 'rgba(0,0,0,0.7)'}
+          onMouseLeave={e => e.currentTarget.style.color = 'rgba(0,0,0,0.35)'}
+        >
+          Disconnect
+        </button>
+      ) : null} />
 
       {/* Content */}
       <div style={{
