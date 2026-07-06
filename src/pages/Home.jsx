@@ -263,6 +263,163 @@ function ScoreCard() {
   )
 }
 
+// Comparison viz scale: $4,400 max so the $4,000 bar stops short of the edge.
+const VIZ_MAX = 4400
+const VIZ_COLLATERAL = 1500
+
+function useInView(threshold = 0.45) {
+  const ref = useRef(null)
+  const [inView, setInView] = useState(false)
+
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setInView(true)
+          observer.disconnect()
+        }
+      },
+      { threshold }
+    )
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [threshold])
+
+  return [ref, inView]
+}
+
+function CountUp({ to, active, delay = 0, duration = 1100 }) {
+  const [value, setValue] = useState(0)
+
+  useEffect(() => {
+    if (!active) return
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      setValue(to)
+      return
+    }
+    let raf
+    let start
+    const tick = t => {
+      if (start === undefined) start = t
+      const elapsed = t - start - delay
+      if (elapsed < 0) {
+        raf = requestAnimationFrame(tick)
+        return
+      }
+      const p = Math.min(elapsed / duration, 1)
+      const eased = 1 - Math.pow(1 - p, 3)
+      setValue(Math.round(to * eased))
+      if (p < 1) raf = requestAnimationFrame(tick)
+    }
+    raf = requestAnimationFrame(tick)
+    return () => cancelAnimationFrame(raf)
+  }, [active, to, delay, duration])
+
+  return <>${value.toLocaleString('en-US')}</>
+}
+
+function ComparisonViz() {
+  const [ref, active] = useInView()
+  const pct = v => `${((v / VIZ_MAX) * 100).toFixed(2)}%`
+  const mono = { fontFamily: 'var(--font-mono)' }
+
+  const rows = [
+    {
+      tag: 'EVERYWHERE ELSE',
+      amount: 1000,
+      delayMs: 150,
+      amountColor: 'rgba(238,237,255,0.6)',
+      fill: {
+        background: 'repeating-linear-gradient(-45deg, rgba(201,198,240,0.28) 0 6px, rgba(201,198,240,0.12) 6px 12px)',
+      },
+    },
+    {
+      tag: 'WITH NEVRA',
+      amount: 4000,
+      delayMs: 550,
+      shimmer: true,
+      amountColor: '#EEEDFF',
+      fill: {
+        background: 'linear-gradient(90deg, var(--accent) 0%, #8B7BFF 100%)',
+        boxShadow: '0 0 28px rgba(107,95,255,0.35)',
+      },
+    },
+  ]
+
+  return (
+    <div
+      ref={ref}
+      role="img"
+      aria-label="Comparison: with $1,500 posted as collateral, overcollateralized lenders let you borrow about $1,000. With Nevra you can draw up to $4,000."
+      style={{ maxWidth: 720, margin: '0 auto' }}
+    >
+      <p className="eyebrow" style={{ fontSize: 10, color: 'rgba(238,237,255,0.5)', marginBottom: 24 }}>
+        [ WHAT YOU CAN BORROW ]
+      </p>
+
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 36 }}>
+        {rows.map(({ tag, amount, delayMs, shimmer, amountColor, fill }) => (
+          <div key={tag}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 10 }}>
+              <span className="eyebrow" style={{ fontSize: 10, color: 'rgba(238,237,255,0.5)' }}>[ {tag} ]</span>
+              <span style={{ ...mono, fontSize: 'clamp(20px, 2.4vw, 26px)', fontWeight: 500, letterSpacing: '-0.02em', color: amountColor }}>
+                <CountUp to={amount} active={active} delay={delayMs + 150} />
+              </span>
+            </div>
+            <div style={{ position: 'relative' }}>
+              <div style={{
+                height: 40,
+                borderRadius: 7,
+                background: 'rgba(238,237,255,0.05)',
+                border: '1px solid rgba(238,237,255,0.1)',
+                overflow: 'hidden',
+              }}>
+                <div style={{
+                  position: 'absolute',
+                  left: 0,
+                  top: 0,
+                  bottom: 0,
+                  width: active ? pct(amount) : '0%',
+                  borderRadius: 7,
+                  overflow: 'hidden',
+                  transition: `width 1.1s cubic-bezier(0.22, 1, 0.36, 1) ${delayMs}ms`,
+                  ...fill,
+                }}>
+                  {shimmer && <span className="bar-shimmer" aria-hidden />}
+                </div>
+              </div>
+              {/* Dashed reference line at the $1,500 collateral mark */}
+              <span aria-hidden style={{
+                position: 'absolute',
+                top: -7,
+                bottom: -7,
+                left: pct(VIZ_COLLATERAL),
+                borderLeft: '1px dashed rgba(238,237,255,0.4)',
+                opacity: active ? 1 : 0,
+                transition: 'opacity 0.5s ease 1.5s',
+              }} />
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div aria-hidden style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: 9,
+        marginTop: 22,
+        opacity: active ? 1 : 0,
+        transition: 'opacity 0.5s ease 1.6s',
+      }}>
+        <span style={{ width: 18, borderTop: '1px dashed rgba(238,237,255,0.4)' }} />
+        <span style={{ ...mono, fontSize: 11, color: 'rgba(238,237,255,0.5)' }}>the $1,500 you posted</span>
+      </div>
+    </div>
+  )
+}
+
 export default function Home() {
   return (
     <div style={{ fontFamily: 'var(--font-sans)', background: 'var(--paper)', color: 'var(--ink)' }}>
@@ -392,14 +549,14 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Problem */}
+      {/* Why Nevra — animated collateral comparison */}
       <section className="problem-section" style={{
         background: '#0D1738',
         padding: '0 32px',
         overflow: 'hidden',
       }}>
         <div style={{ ...frameDark, padding: '120px 24px 104px' }}>
-          <Reveal style={{ textAlign: 'center', marginBottom: 20 }}>
+          <Reveal style={{ textAlign: 'center', marginBottom: 64 }}>
             <h2 style={{
               fontWeight: 300,
               fontSize: 'clamp(30px, 3.8vw, 50px)',
@@ -407,68 +564,16 @@ export default function Home() {
               lineHeight: 1.1,
               margin: 0,
             }}>
-              <span style={{ display: 'block', color: 'var(--dark-ink)' }}>Your wallet can't vouch for you.</span>
-              <span style={{ display: 'block', color: 'var(--dark-ink-38)' }}>Lenders can't read it.</span>
+              <span style={{ display: 'block', color: 'var(--dark-ink)' }}>Same $1,500 in collateral.</span>
+              <span style={{ display: 'block', color: 'var(--dark-ink-38)' }}>Very different loan.</span>
             </h2>
           </Reveal>
 
           <Reveal delay={120}>
-            <svg
-              viewBox="0 0 1000 380"
-              style={{ display: 'block', width: '100%', maxWidth: 880, margin: '0 auto' }}
-              role="img"
-              aria-label="Diagram: onchain history and lender capital exist as two disconnected pools with no credit score between them"
-            >
-              {(() => {
-                const line = 'rgba(201,198,240,0.35)'
-                const lineSoft = 'rgba(201,198,240,0.18)'
-                const accent = '#c9c6f0'
-                return (
-                  <g fill="none" strokeWidth="1.2">
-                    {/* Left cylinder: onchain history */}
-                    <ellipse cx="120" cy="190" rx="42" ry="110" stroke={lineSoft} />
-                    <ellipse cx="155" cy="190" rx="42" ry="110" stroke={lineSoft} />
-                    <ellipse cx="190" cy="190" rx="42" ry="110" stroke={line} />
-                    <path d="M120 80 H235 M120 300 H235" stroke={lineSoft} />
-                    <ellipse cx="235" cy="190" rx="42" ry="110" stroke={accent} strokeOpacity="0.7" strokeDasharray="3 6" fill="rgba(201,198,240,0.04)" />
-
-                    {/* Right cylinder: lender capital, with liquidity dots */}
-                    <ellipse cx="880" cy="190" rx="42" ry="110" stroke={lineSoft} />
-                    <path d="M765 80 H880 M765 300 H880" stroke={lineSoft} />
-                    <ellipse cx="765" cy="190" rx="42" ry="110" stroke={accent} strokeOpacity="0.7" strokeDasharray="3 6" fill="rgba(201,198,240,0.04)" />
-                    <g fill={accent}>
-                      <circle cx="775" cy="140" r="3" opacity="0.85" />
-                      <circle cx="800" cy="180" r="2.5" opacity="0.5" />
-                      <circle cx="762" cy="225" r="3.5" opacity="0.9" />
-                      <circle cx="820" cy="240" r="2.5" opacity="0.6" />
-                      <circle cx="845" cy="160" r="3" opacity="0.75" />
-                      <circle cx="838" cy="205" r="2" opacity="0.45" />
-                      <circle cx="790" cy="265" r="2" opacity="0.55" />
-                      <circle cx="862" cy="130" r="2" opacity="0.4" />
-                    </g>
-
-                    {/* Broken link */}
-                    <path d="M280 190 H375" stroke={line} />
-                    <path d="M625 190 H720" stroke={line} />
-                    <path d="M410 190 H590" stroke={line} strokeDasharray="10 12" />
-                    <circle cx="392" cy="190" r="9" stroke={accent} strokeOpacity="0.8" />
-                    <path d="M387.5 185.5 l9 9 M396.5 185.5 l-9 9" stroke={accent} strokeOpacity="0.8" />
-                    <circle cx="608" cy="190" r="9" stroke={accent} strokeOpacity="0.8" />
-                    <path d="M603.5 185.5 l9 9 M612.5 185.5 l-9 9" stroke={accent} strokeOpacity="0.8" />
-
-                    {/* Labels */}
-                    <g fontFamily="'IBM Plex Mono', monospace" fontSize="14" fill="rgba(238,237,255,0.55)" textAnchor="middle" stroke="none">
-                      <text x="178" y="340">YOUR ONCHAIN HISTORY</text>
-                      <text x="822" y="340">LENDER CAPITAL</text>
-                      <text x="500" y="235" fill="rgba(238,237,255,0.8)">NO SHARED CREDIT SCORE</text>
-                    </g>
-                  </g>
-                )
-              })()}
-            </svg>
+            <ComparisonViz />
           </Reveal>
 
-          <Reveal delay={200} style={{ textAlign: 'center', marginTop: 36 }}>
+          <Reveal delay={200} style={{ textAlign: 'center', marginTop: 56 }}>
             <p style={{
               fontSize: 16,
               lineHeight: 1.65,
@@ -476,7 +581,7 @@ export default function Home() {
               maxWidth: 480,
               margin: '0 auto',
             }}>
-              Years of onchain behavior, invisible to every lender. So everyone gets the same deal: lock up more than you borrow. Nevra is the score in between.
+              Overcollateralized lending gives everyone the same deal: lock up more than you take out. Your Nevra score reads your wallet and bank history, so your collateral goes further.
             </p>
           </Reveal>
         </div>
