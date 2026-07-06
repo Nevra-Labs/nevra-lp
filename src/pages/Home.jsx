@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { useState, useEffect, useRef } from 'react'
-import { ShieldCheck, KeyRound, TrendingUp, Umbrella, Wallet, ScanFace, Gauge } from 'lucide-react'
+import { ShieldCheck, KeyRound, TrendingUp, Umbrella, Wallet, ScanFace, Gauge, Home as HomeIcon, Briefcase, ChartLine, Sparkles } from 'lucide-react'
 import Nav from '../components/Nav'
 import '../responsive.css'
 
@@ -90,15 +90,43 @@ const PRINCIPLES = [
   { tag: 'SOFT LANDINGS', title: 'Liquidation is the last step' },
 ]
 
+const USE_CASES = [
+  {
+    tag: 'EVERYDAY',
+    title: 'Living expenses',
+    description: 'Cover rent and day-to-day spending without selling your stack.',
+    Icon: HomeIcon,
+  },
+  {
+    tag: 'BUSINESS',
+    title: 'Start something',
+    description: 'Fund your company or side project while your portfolio keeps working.',
+    Icon: Briefcase,
+  },
+  {
+    tag: 'INVESTING',
+    title: 'Stay in the market',
+    description: 'Seize opportunities without triggering a taxable sale.',
+    Icon: ChartLine,
+  },
+  {
+    tag: 'MILESTONES',
+    title: 'Big moments',
+    description: 'Finance a car, a move, or a wedding at a rate your score earned.',
+    Icon: Sparkles,
+  },
+]
+
+// Stripe-style pill buttons: tight padding, full radius, weight 400.
 const btnBase = {
   display: 'inline-flex',
   alignItems: 'center',
   justifyContent: 'center',
-  fontSize: 14,
-  fontWeight: 500,
+  fontSize: 15,
+  fontWeight: 400,
   lineHeight: 1,
-  padding: '14px 24px',
-  borderRadius: 8,
+  padding: '12px 22px',
+  borderRadius: 99,
   letterSpacing: '0.01em',
 }
 
@@ -138,7 +166,7 @@ function PrincipleIcon({ index }) {
       borderRadius: 12,
       background: 'var(--surface)',
       border: '1px solid var(--hairline-soft)',
-      boxShadow: '0 2px 8px -2px rgba(22,21,29,0.08)',
+      boxShadow: '0 2px 8px -2px rgba(13,37,61,0.08)',
     }}>
       <Icon size={22} strokeWidth={1.6} color="var(--ink)" />
     </span>
@@ -154,7 +182,7 @@ function ScoreCard() {
         background: 'var(--surface)',
         border: '1px solid var(--hairline)',
         borderRadius: 8,
-        boxShadow: '0 24px 48px -24px rgba(22,21,29,0.18), 0 2px 6px rgba(22,21,29,0.05)',
+        boxShadow: '0 24px 48px -24px rgba(13,37,61,0.18), 0 2px 6px rgba(13,37,61,0.05)',
         padding: '22px 24px 20px',
         maxWidth: 380,
         margin: '0 auto',
@@ -189,7 +217,7 @@ function ScoreCard() {
             <span style={{ fontSize: 13, color: 'var(--ink-60)' }}>Drawn</span>
             <span style={{ ...mono, fontSize: 13, color: 'var(--ink)' }}>$1,250</span>
           </div>
-          <div style={{ height: 4, borderRadius: 99, background: 'rgba(22,21,29,0.08)', overflow: 'hidden' }}>
+          <div style={{ height: 4, borderRadius: 99, background: 'rgba(13,37,61,0.08)', overflow: 'hidden' }}>
             <div style={{ width: '21%', height: '100%', borderRadius: 99, background: 'var(--ink)' }} />
           </div>
           <div style={{ ...row, marginTop: 8 }}>
@@ -208,7 +236,7 @@ function ScoreCard() {
               <span style={{ ...mono, fontSize: 12, color: 'var(--ink)', display: 'inline-flex', alignItems: 'center', gap: 7 }}>
                 {value}
                 <svg width="13" height="13" viewBox="0 0 13 13">
-                  <circle cx="6.5" cy="6.5" r="6" fill="rgba(22,21,29,0.1)" />
+                  <circle cx="6.5" cy="6.5" r="6" fill="rgba(13,37,61,0.1)" />
                   <path d="M4 6.7 l1.8 1.8 L9.2 4.9" stroke="var(--ink)" strokeWidth="1.3" fill="none" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               </span>
@@ -229,8 +257,8 @@ export default function Home() {
     <div style={{ fontFamily: 'var(--font-sans)', background: 'var(--paper)', color: 'var(--ink)' }}>
       <Nav />
 
-      {/* Hero */}
-      <section style={{ padding: '76px 32px 0', minHeight: 'calc(100svh - 141px)', display: 'flex', flexDirection: 'column' }}>
+      {/* Hero — top padding equals nav height so the frame rails meet the nav's bottom border */}
+      <section style={{ padding: '57px 32px 0', minHeight: 'calc(100svh - 118px)', display: 'flex', flexDirection: 'column' }}>
         <div className="hero-grid" style={{
           ...frame,
           flex: 1,
@@ -244,20 +272,20 @@ export default function Home() {
               [ Consumer credit protocol ]
             </p>
             <h1 className="enter-up enter-delay-1" style={{
-              fontWeight: 500,
-              fontSize: 'clamp(34px, 3.4vw, 48px)',
-              lineHeight: 1.06,
-              letterSpacing: '-0.03em',
-              marginBottom: 24,
+              fontWeight: 300,
+              fontSize: 'clamp(38px, 3.9vw, 56px)',
+              lineHeight: 1.04,
+              letterSpacing: '-0.025em',
+              marginBottom: 26,
             }}>
               <span style={{ display: 'block' }}>Consumer loans for</span>
               <span style={{ display: 'block', color: 'var(--ink-45)' }}>crypto-native people.</span>
             </h1>
             <p className="enter-up enter-delay-2" style={{
-              fontSize: 16,
-              lineHeight: 1.65,
+              fontSize: 18,
+              lineHeight: 1.6,
               color: 'var(--ink-60)',
-              maxWidth: 440,
+              maxWidth: 480,
               marginBottom: 36,
             }}>
               Verify your identity, connect your bank and wallet, and get one real credit score from your entire financial life. Then borrow against it.
@@ -265,7 +293,7 @@ export default function Home() {
             <div className="hero-ctas enter-up enter-delay-3" style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
               <Link to="/apply" className="btn-hover focus-ring" style={{
                 ...btnBase,
-                background: 'var(--ink)',
+                background: 'var(--accent)',
                 color: '#fff',
               }}>
                 Apply now →
@@ -317,42 +345,41 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Built with */}
+      {/* Built with — compact logo band inside the frame rails, Stripe-style */}
       <section className="built-with-section" style={{
         borderTop: '1px solid var(--hairline-soft)',
         borderBottom: '1px solid var(--hairline-soft)',
-        padding: '40px 0',
+        padding: '0 32px',
       }}>
-        <p className="eyebrow" style={{ textAlign: 'center', fontSize: 11, color: 'var(--ink-30)', marginBottom: 30 }}>
-          Built with
-        </p>
-        <div style={{ position: 'relative', overflow: 'hidden' }}>
-          <div aria-hidden style={{ pointerEvents: 'none', position: 'absolute', left: 0, top: 0, bottom: 0, width: 96, zIndex: 2, background: 'linear-gradient(to right, var(--paper), transparent)' }} />
-          <div aria-hidden style={{ pointerEvents: 'none', position: 'absolute', right: 0, top: 0, bottom: 0, width: 96, zIndex: 2, background: 'linear-gradient(to left, var(--paper), transparent)' }} />
-          <div className="logo-track">
-            {[0, 1].map(half => (
-              <div key={half} aria-hidden={half === 1} className="logo-track-half" style={{ display: 'flex', alignItems: 'center', gap: 72, paddingRight: 72 }}>
-                {Array.from({ length: 6 }).flatMap((_, rep) =>
-                  PARTNER_LOGOS.map(logo => (
-                    <img
-                      key={`${rep}-${logo.name}`}
-                      className="partner-logo"
-                      src={logo.src}
-                      alt={half === 0 && rep === 0 ? logo.name : ''}
-                      style={{
-                        height: 20,
-                        width: 'auto',
-                        objectFit: 'contain',
-                        flexShrink: 0,
-                        userSelect: 'none',
-                        filter: 'brightness(0)',
-                        opacity: 0.3,
-                      }}
-                    />
-                  ))
-                )}
-              </div>
-            ))}
+        <div style={{ ...frame, padding: '26px 0' }}>
+          <div style={{ position: 'relative', overflow: 'hidden' }}>
+            <div aria-hidden style={{ pointerEvents: 'none', position: 'absolute', left: 0, top: 0, bottom: 0, width: 72, zIndex: 2, background: 'linear-gradient(to right, var(--paper), transparent)' }} />
+            <div aria-hidden style={{ pointerEvents: 'none', position: 'absolute', right: 0, top: 0, bottom: 0, width: 72, zIndex: 2, background: 'linear-gradient(to left, var(--paper), transparent)' }} />
+            <div className="logo-track">
+              {[0, 1].map(half => (
+                <div key={half} aria-hidden={half === 1} className="logo-track-half" style={{ display: 'flex', alignItems: 'center', gap: 88, paddingRight: 88 }}>
+                  {Array.from({ length: 6 }).flatMap((_, rep) =>
+                    PARTNER_LOGOS.map(logo => (
+                      <img
+                        key={`${rep}-${logo.name}`}
+                        className="partner-logo"
+                        src={logo.src}
+                        alt={half === 0 && rep === 0 ? logo.name : ''}
+                        style={{
+                          height: 22,
+                          width: 'auto',
+                          objectFit: 'contain',
+                          flexShrink: 0,
+                          userSelect: 'none',
+                          filter: 'brightness(0)',
+                          opacity: 0.45,
+                        }}
+                      />
+                    ))
+                  )}
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
@@ -367,7 +394,7 @@ export default function Home() {
           <Reveal style={{ textAlign: 'center', marginBottom: 20 }}>
             <p className="eyebrow" style={{ color: 'var(--dark-ink-60)', marginBottom: 24 }}>/ The problem</p>
             <h2 style={{
-              fontWeight: 500,
+              fontWeight: 300,
               fontSize: 'clamp(30px, 3.8vw, 50px)',
               letterSpacing: '-0.025em',
               lineHeight: 1.1,
@@ -454,7 +481,7 @@ export default function Home() {
           <Reveal className="pad-cell" style={{ padding: '88px 56px 56px' }}>
             <p className="eyebrow" style={{ color: 'var(--ink)', marginBottom: 22 }}>/ How it works</p>
             <h2 style={{
-              fontWeight: 500,
+              fontWeight: 300,
               fontSize: 'clamp(28px, 3.4vw, 44px)',
               letterSpacing: '-0.025em',
               lineHeight: 1.1,
@@ -482,7 +509,7 @@ export default function Home() {
                     <span className="eyebrow" style={{ color: 'var(--ink-45)' }}>[ {step.number} ]</span>
                     <StepIcon index={i} />
                   </div>
-                  <h3 style={{ fontWeight: 600, fontSize: 17, letterSpacing: '-0.015em', marginBottom: 10, lineHeight: 1.3 }}>
+                  <h3 style={{ fontWeight: 500, fontSize: 17, letterSpacing: '-0.015em', marginBottom: 10, lineHeight: 1.3 }}>
                     {step.title}
                   </h3>
                   <p style={{ fontSize: 14, color: 'var(--ink-60)', lineHeight: 1.7, margin: 0 }}>
@@ -492,6 +519,71 @@ export default function Home() {
               ))}
             </div>
           </Reveal>
+        </div>
+      </section>
+
+      {/* Use cases — Stripe-style feature cards with placeholder art */}
+      <section className="usecases-section" style={{
+        borderTop: '1px solid var(--hairline-soft)',
+        background: 'var(--paper-soft)',
+        padding: '0 32px',
+      }}>
+        <div style={{ maxWidth: 1160, margin: '0 auto', padding: '96px 0 104px' }}>
+          <Reveal style={{ marginBottom: 56 }}>
+            <p className="eyebrow" style={{ color: 'var(--ink)', marginBottom: 22 }}>/ Use cases</p>
+            <h2 style={{
+              fontWeight: 300,
+              fontSize: 'clamp(30px, 3.6vw, 48px)',
+              letterSpacing: '-0.025em',
+              lineHeight: 1.1,
+              margin: 0,
+            }}>
+              <span style={{ display: 'block' }}>Real money,</span>
+              <span style={{ display: 'block', color: 'var(--ink-30)' }}>for real life.</span>
+            </h2>
+          </Reveal>
+
+          <div className="usecases-grid" style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(4, 1fr)',
+            gap: 24,
+          }}>
+            {USE_CASES.map(({ tag, title, description, Icon }, i) => (
+              <Reveal key={tag} delay={i * 70}>
+                <div className="usecase-card" style={{
+                  background: 'var(--surface)',
+                  border: '1px solid var(--hairline)',
+                  borderRadius: 12,
+                  overflow: 'hidden',
+                  boxShadow: '0 1px 3px rgba(0,55,112,0.08)',
+                  height: '100%',
+                  display: 'flex',
+                  flexDirection: 'column',
+                }}>
+                  {/* Placeholder image area */}
+                  <div aria-hidden style={{
+                    aspectRatio: '3 / 2',
+                    background: 'linear-gradient(135deg, #F6F9FC 0%, #EAEFF5 60%, #E3E8EE 100%)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    borderBottom: '1px solid var(--hairline-soft)',
+                  }}>
+                    <Icon size={30} strokeWidth={1.4} color="var(--ink-30)" />
+                  </div>
+                  <div style={{ padding: '22px 24px 26px', display: 'flex', flexDirection: 'column', gap: 8, flex: 1 }}>
+                    <p className="eyebrow" style={{ fontSize: 10, color: 'var(--ink-45)', margin: 0 }}>[ {tag} ]</p>
+                    <h3 style={{ fontWeight: 500, fontSize: 18, letterSpacing: '-0.015em', lineHeight: 1.3, margin: 0 }}>
+                      {title}
+                    </h3>
+                    <p style={{ fontSize: 14.5, color: 'var(--ink-60)', lineHeight: 1.55, margin: 0 }}>
+                      {description}
+                    </p>
+                  </div>
+                </div>
+              </Reveal>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -509,7 +601,7 @@ export default function Home() {
           <Reveal className="pad-cell" style={{ padding: '88px 56px' }}>
             <p className="eyebrow" style={{ color: 'var(--ink)', marginBottom: 22 }}>/ What you get</p>
             <h2 style={{
-              fontWeight: 500,
+              fontWeight: 300,
               fontSize: 'clamp(28px, 3.4vw, 44px)',
               letterSpacing: '-0.025em',
               lineHeight: 1.12,
@@ -538,7 +630,7 @@ export default function Home() {
                   <PrincipleIcon index={i} />
                   <div>
                     <p className="eyebrow" style={{ fontSize: 10, color: 'var(--ink-45)', marginBottom: 10 }}>[ {p.tag} ]</p>
-                    <h3 style={{ fontWeight: 600, fontSize: 16, letterSpacing: '-0.01em', lineHeight: 1.3, margin: 0 }}>
+                    <h3 style={{ fontWeight: 500, fontSize: 16, letterSpacing: '-0.01em', lineHeight: 1.3, margin: 0 }}>
                       {p.title}
                     </h3>
                   </div>
@@ -563,7 +655,7 @@ export default function Home() {
           <Reveal className="pad-cell" style={{ padding: '88px 56px' }}>
             <p className="eyebrow" style={{ color: 'var(--ink)', marginBottom: 22 }}>/ FAQ</p>
             <h2 style={{
-              fontWeight: 500,
+              fontWeight: 300,
               fontSize: 'clamp(28px, 3.4vw, 44px)',
               letterSpacing: '-0.025em',
               lineHeight: 1.1,
@@ -608,7 +700,7 @@ export default function Home() {
           <Reveal>
             <p className="eyebrow" style={{ color: 'var(--dark-ink-60)', marginBottom: 26 }}>[ Early access ]</p>
             <h2 style={{
-              fontWeight: 500,
+              fontWeight: 300,
               fontSize: 'clamp(30px, 3.8vw, 50px)',
               letterSpacing: '-0.025em',
               lineHeight: 1.1,
@@ -688,7 +780,7 @@ export default function Home() {
           fontSize: 'clamp(80px, 14vw, 190px)',
           fontWeight: 600,
           letterSpacing: '-0.045em',
-          color: 'rgba(22,21,29,0.07)',
+          color: 'rgba(13,37,61,0.07)',
           lineHeight: 0.82,
           textAlign: 'center',
           userSelect: 'none',

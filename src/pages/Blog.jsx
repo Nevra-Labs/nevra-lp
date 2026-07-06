@@ -6,7 +6,7 @@ import '../responsive.css'
 
 export default function Blog() {
   return (
-    <div style={{ background: 'var(--paper)', minHeight: '100vh', color: '#111' }}>
+    <div style={{ background: 'var(--paper)', minHeight: '100vh', color: 'var(--ink)' }}>
       <Nav />
 
       <main className="page-main" style={{ maxWidth: 960, margin: '0 auto', padding: '128px 32px 140px' }}>
@@ -102,7 +102,7 @@ export default function Blog() {
                   letterSpacing: '-0.02em',
                   lineHeight: 1.15,
                   margin: '0 0 12px',
-                  color: '#111',
+                  color: 'var(--ink)',
                 }}>
                   {article.title}
                 </h2>
