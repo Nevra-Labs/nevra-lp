@@ -163,6 +163,31 @@ a {
   50%       { opacity: 1;    transform: scale(1); }
 }
 
+/* Navbar circular social buttons: dark ink circles with white glyphs */
+.nav-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 99px;
+  background: var(--ink);
+  color: #fff;
+  flex-shrink: 0;
+  transition: transform 0.15s cubic-bezier(0, 0, 0.2, 1), opacity 0.15s cubic-bezier(0, 0, 0.2, 1);
+}
+
+@media (hover: hover) {
+  .nav-icon-btn:hover {
+    transform: scale(1.06);
+    opacity: 0.88;
+  }
+}
+
+.nav-icon-btn:active {
+  transform: scale(0.97);
+}
+
 /* Use-case cards: lift + image zoom + chip nudge on hover (pointer devices only) */
 .usecase-card {
   box-shadow: 0 1px 3px rgba(0, 55, 112, 0.08);
