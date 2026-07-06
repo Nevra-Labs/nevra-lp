@@ -5,15 +5,6 @@
     display: none !important;
   }
 
-  /* Tighter gutters so wordmark + icon buttons + pill fit on one 375px row */
-  .nav-root {
-    padding: 0 16px !important;
-  }
-
-  .nav-frame {
-    padding: 9px 4px !important;
-  }
-
   /* ── Structural frame cells ──
      Vertical hairline dividers become horizontal when grids stack. */
   .cell-divider {
