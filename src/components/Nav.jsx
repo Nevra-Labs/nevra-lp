@@ -24,7 +24,7 @@ export default function Nav({ rightExtra = null }) {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        padding: '15px 0',
+        padding: '15px 24px',
       }}>
         <Link to="/" style={{ display: 'flex', alignItems: 'center' }} aria-label="Nevra home">
           <img src="/logo.png" alt="Nevra" style={{ width: 26, height: 26, display: 'block' }} />
@@ -56,8 +56,8 @@ export default function Nav({ rightExtra = null }) {
 }
 
 const navLink = {
-  fontSize: 14,
+  fontSize: 15,
   fontWeight: 400,
-  color: 'var(--ink-60)',
+  color: 'var(--ink)',
   letterSpacing: '-0.005em',
 }

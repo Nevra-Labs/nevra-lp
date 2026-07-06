@@ -83,10 +83,15 @@
     border-top: 1px solid rgba(13, 37, 61, 0.08) !important;
   }
 
-  /* ── Built with carousel ── */
-  .built-with-section {
-    padding-top: 40px !important;
-    padding-bottom: 40px !important;
+  /* ── Use cases ── */
+  .usecases-section {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+
+  .usecases-grid {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 16px !important;
   }
 
   /* SVG scales down ~3x on small screens; scale the labels up to compensate.
