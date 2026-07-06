@@ -19,7 +19,7 @@ const tree = hasValidPrivyId ? (
     config={{
       appearance: {
         theme: 'light',
-        accentColor: '#111111',
+        accentColor: '#533AFD',
         logo: '/logo.png',
       },
       loginMethods: ['email'],

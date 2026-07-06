@@ -40,23 +40,27 @@ const QUESTIONS = [
   },
 ]
 
-// Glassy button style
-const glassBtn = {
-  background: 'rgba(255,255,255,0.45)',
-  color: '#1a1a1a',
-  fontSize: 14,
-  fontWeight: 500,
-  padding: '13px 20px',
-  borderRadius: 12,
-  lineHeight: 1,
-  border: '1px solid rgba(255,255,255,0.7)',
-  boxShadow: '0 2px 12px rgba(0,0,0,0.07), inset 0 1px 0 rgba(255,255,255,0.8)',
-  backdropFilter: 'blur(8px)',
-  WebkitBackdropFilter: 'blur(8px)',
+// Stripe-style option card: white surface, hairline border, level-1 shadow.
+const optionBtn = {
+  background: 'var(--surface)',
+  color: 'var(--ink)',
+  fontFamily: 'inherit',
+  fontSize: 15,
+  fontWeight: 400,
+  padding: '14px 18px',
+  borderRadius: 10,
+  lineHeight: 1.3,
+  border: '1px solid var(--hairline)',
+  boxShadow: '0 1px 3px rgba(0,55,112,0.08)',
   cursor: 'pointer',
-  transition: 'box-shadow 0.15s, background 0.15s',
+  transition: 'box-shadow 0.15s, border-color 0.15s',
   textAlign: 'left',
   width: '100%',
+}
+
+const optionBtnHover = {
+  borderColor: 'var(--accent)',
+  boxShadow: '0 8px 24px rgba(0,55,112,0.08), 0 2px 6px rgba(0,55,112,0.04)',
 }
 
 export default function Apply() {
@@ -167,7 +171,7 @@ export default function Apply() {
                 width: 6,
                 height: 6,
                 borderRadius: '50%',
-                background: 'rgba(0,0,0,0.25)',
+                background: 'var(--ink-30)',
                 animation: `pulse 1.2s ease-in-out ${i * 0.2}s infinite`,
               }} />
             ))}
@@ -175,25 +179,38 @@ export default function Apply() {
         )}
 
         {phase === 'landing' && (
-          <div key="landing" className="fade-up" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 28 }}>
+          <div key="landing" className="fade-up" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 16, padding: '0 24px', textAlign: 'center' }}>
+            <p className="eyebrow" style={{ color: 'var(--ink-45)', margin: 0 }}>[ Closed beta ]</p>
             <h1 style={{
-              fontWeight: 700,
-              fontSize: 32,
-              letterSpacing: '-0.03em',
+              fontWeight: 300,
+              fontSize: 'clamp(32px, 4vw, 44px)',
+              letterSpacing: '-0.025em',
+              lineHeight: 1.08,
               color: 'var(--ink)',
               margin: 0,
-              textAlign: 'center',
-              textShadow: '0 1px 0 rgba(255,255,255,0.6), 0 2px 6px rgba(0,0,0,0.18), 0 1px 2px rgba(0,0,0,0.12)',
             }}>
               Apply for the closed beta
             </h1>
+            <p style={{ fontSize: 16, color: 'var(--ink-60)', lineHeight: 1.6, maxWidth: 400, margin: '0 0 12px' }}>
+              A few quick questions, then you're in line for the next cohort.
+            </p>
             <button
               onClick={handleLogin}
-              style={{ ...glassBtn, width: 'auto', textAlign: 'center', padding: '11px 24px' }}
-              onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.65)'; e.currentTarget.style.boxShadow = '0 4px 18px rgba(0,0,0,0.11), inset 0 1px 0 rgba(255,255,255,0.9)' }}
-              onMouseLeave={e => { e.currentTarget.style.background = glassBtn.background; e.currentTarget.style.boxShadow = glassBtn.boxShadow }}
+              className="btn-hover focus-ring"
+              style={{
+                background: 'var(--accent)',
+                color: '#fff',
+                fontFamily: 'inherit',
+                fontSize: 15,
+                fontWeight: 400,
+                padding: '12px 24px',
+                borderRadius: 99,
+                lineHeight: 1,
+                border: 'none',
+                cursor: 'pointer',
+              }}
             >
-              Apply now
+              Apply now →
             </button>
           </div>
         )}
@@ -219,21 +236,20 @@ export default function Apply() {
                   width: 6,
                   height: 6,
                   borderRadius: '50%',
-                  background: i <= step ? '#111' : 'rgba(0,0,0,0.18)',
+                  background: i <= step ? 'var(--accent)' : 'var(--hairline)',
                   transition: 'background 0.3s',
                 }} />
               ))}
             </div>
 
             <h2 style={{
-              fontWeight: 700,
-              fontSize: 22,
-              letterSpacing: '-0.025em',
+              fontWeight: 300,
+              fontSize: 26,
+              letterSpacing: '-0.02em',
               color: 'var(--ink)',
               margin: 0,
               textAlign: 'center',
-              lineHeight: 1.35,
-              textShadow: '0 1px 0 rgba(255,255,255,0.6), 0 2px 6px rgba(0,0,0,0.18), 0 1px 2px rgba(0,0,0,0.12)',
+              lineHeight: 1.3,
             }}>
               {currentQuestion.question}
             </h2>
@@ -243,10 +259,10 @@ export default function Apply() {
                 <button
                   key={opt}
                   onClick={() => handleOption(currentQuestion.id, opt)}
-                  className="fade-up"
-                  style={{ ...glassBtn, animationDelay: `${i * 0.06}s` }}
-                  onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.65)'; e.currentTarget.style.boxShadow = '0 4px 18px rgba(0,0,0,0.11), inset 0 1px 0 rgba(255,255,255,0.9)' }}
-                  onMouseLeave={e => { e.currentTarget.style.background = glassBtn.background; e.currentTarget.style.boxShadow = glassBtn.boxShadow }}
+                  className="fade-up focus-ring"
+                  style={{ ...optionBtn, animationDelay: `${i * 0.06}s` }}
+                  onMouseEnter={e => Object.assign(e.currentTarget.style, optionBtnHover)}
+                  onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--hairline)'; e.currentTarget.style.boxShadow = optionBtn.boxShadow }}
                 >
                   {opt}
                 </button>
@@ -258,16 +274,15 @@ export default function Apply() {
         {phase === 'done' && (
           <div key="done" className="fade-up" style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12 }}>
             <h2 style={{
-              fontWeight: 700,
-              fontSize: 28,
-              letterSpacing: '-0.03em',
+              fontWeight: 300,
+              fontSize: 34,
+              letterSpacing: '-0.025em',
               color: 'var(--ink)',
               margin: 0,
-              textShadow: '0 1px 0 rgba(255,255,255,0.6), 0 2px 6px rgba(0,0,0,0.18), 0 1px 2px rgba(0,0,0,0.12)',
             }}>
               You're on the list.
             </h2>
-            <p style={{ fontSize: 14, color: 'rgba(0,0,0,0.45)', margin: 0 }}>
+            <p style={{ fontSize: 15, color: 'var(--ink-60)', margin: 0 }}>
               We'll reach out when your spot opens up.
             </p>
           </div>
