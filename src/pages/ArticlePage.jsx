@@ -47,8 +47,8 @@ export default function ArticlePage() {
       <main className="page-main" style={{ maxWidth: 720, margin: '0 auto', padding: '110px 32px 120px' }}>
         <Link to="/blog" className="enter-up focus-ring" style={{
           fontSize: 13,
-          fontWeight: 500,
-          color: 'rgba(0,0,0,0.5)',
+          fontWeight: 400,
+          color: 'var(--ink-60)',
           textDecoration: 'none',
           display: 'inline-flex',
           alignItems: 'center',
@@ -60,30 +60,27 @@ export default function ArticlePage() {
 
         {/* Meta */}
         <div className="enter-up enter-delay-1" style={{ display: 'flex', gap: 10, alignItems: 'center', marginBottom: 18, flexWrap: 'wrap' }}>
-          <span style={{
+          <span className="eyebrow" style={{
             display: 'inline-block',
-            fontSize: 11,
-            fontWeight: 600,
-            letterSpacing: '0.08em',
-            textTransform: 'uppercase',
-            color: 'rgba(0,0,0,0.7)',
-            background: 'rgba(0,0,0,0.06)',
+            fontSize: 10,
+            color: 'var(--ink-60)',
+            border: '1px solid var(--hairline)',
             padding: '5px 10px',
-            borderRadius: 999,
+            borderRadius: 99,
           }}>
             {article.category}
           </span>
-          <span style={{ fontSize: 13, color: 'rgba(0,0,0,0.45)' }}>{article.date}</span>
-          <span style={{ fontSize: 13, color: 'rgba(0,0,0,0.3)' }}>·</span>
-          <span style={{ fontSize: 13, color: 'rgba(0,0,0,0.45)' }}>{article.readTime}</span>
+          <span style={{ fontSize: 13, color: 'var(--ink-45)' }}>{article.date}</span>
+          <span style={{ fontSize: 13, color: 'var(--ink-30)' }}>·</span>
+          <span style={{ fontSize: 13, color: 'var(--ink-45)' }}>{article.readTime}</span>
         </div>
 
         {/* Title */}
         <h1 className="enter-up enter-delay-2" style={{
-          fontWeight: 500,
-          fontSize: 'clamp(30px, 5vw, 48px)',
-          letterSpacing: '-0.02em',
-          lineHeight: 1.05,
+          fontWeight: 300,
+          fontSize: 'clamp(30px, 4.6vw, 46px)',
+          letterSpacing: '-0.025em',
+          lineHeight: 1.08,
           marginBottom: 22,
         }}>
           {article.title}
@@ -92,10 +89,10 @@ export default function ArticlePage() {
         {/* Excerpt / lede */}
         <p className="enter-up enter-delay-3" style={{
           fontSize: 18,
-          lineHeight: 1.55,
-          color: 'rgba(0,0,0,0.6)',
+          lineHeight: 1.6,
+          color: 'var(--ink-60)',
           margin: '0 0 40px',
-          fontWeight: 400,
+          fontWeight: 300,
         }}>
           {article.excerpt}
         </p>
@@ -104,71 +101,74 @@ export default function ArticlePage() {
         <div className="enter-cover enter-delay-3" style={{
           width: '100%',
           aspectRatio: '16 / 8',
-          borderRadius: 16,
+          borderRadius: 12,
           overflow: 'hidden',
           marginBottom: 56,
-          boxShadow: '0 12px 40px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.06)',
+          border: '1px solid var(--hairline)',
+          boxShadow: '0 1px 3px rgba(0,55,112,0.08)',
         }}>
           <BlogCover variant={variantIndex} featured />
         </div>
 
         {/* Body */}
-        <div className="article-prose enter-up enter-delay-4" style={{ fontSize: 17, lineHeight: 1.75, color: '#1a1a1a' }}>
+        <div className="article-prose enter-up enter-delay-4" style={{ fontSize: 17, lineHeight: 1.75, color: 'var(--ink)' }}>
           <ArticleBody content={article.content} />
         </div>
 
         {/* Footer CTA */}
         <div className="enter-up" style={{
           marginTop: 80,
-          padding: '32px 28px',
-          borderRadius: 16,
-          background: 'var(--dark)',
-          color: 'var(--paper)',
+          padding: '40px 36px',
+          borderRadius: 12,
+          background: '#0D1738',
+          color: 'var(--dark-ink)',
           display: 'flex',
           flexDirection: 'column',
-          gap: 12,
+          gap: 14,
         }}>
-          <p style={{
-            fontSize: 11,
-            fontWeight: 600,
-            letterSpacing: '0.18em',
-            textTransform: 'uppercase',
-            color: 'rgba(255,255,255,0.55)',
+          <p className="eyebrow" style={{
+            color: 'var(--dark-ink-60)',
             margin: 0,
           }}>
-            Ready to apply?
+            [ Ready to apply? ]
           </p>
           <h2 style={{
-            fontSize: 22,
-            fontWeight: 600,
-            letterSpacing: '-0.02em',
+            fontSize: 'clamp(22px, 3vw, 28px)',
+            fontWeight: 300,
+            letterSpacing: '-0.025em',
             margin: 0,
-            lineHeight: 1.25,
+            lineHeight: 1.2,
           }}>
-            Verify once, connect your accounts, and open a real credit line.
+            <span style={{ color: 'var(--dark-ink)' }}>Verify once, connect your accounts, </span>
+            <span style={{ color: 'var(--dark-ink-38)' }}>and open a real credit line.</span>
           </h2>
-          <div style={{ display: 'flex', gap: 12, marginTop: 12, flexWrap: 'wrap' }}>
-            <Link to="/apply" className="btn-hover focus-ring-light key-light" style={{
-              background: 'var(--paper)',
-              color: '#333',
-              fontSize: 14,
-              fontWeight: 500,
-              padding: '11px 20px',
-              borderRadius: 10,
+          <div style={{ display: 'flex', gap: 12, marginTop: 14, flexWrap: 'wrap' }}>
+            <Link to="/apply" className="btn-hover focus-ring-light" style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              background: 'var(--dark-ink)',
+              color: 'var(--ink)',
+              fontSize: 15,
+              fontWeight: 400,
+              letterSpacing: '0.01em',
+              padding: '12px 22px',
+              borderRadius: 99,
               lineHeight: 1,
-              border: '1px solid rgba(255,255,255,0.3)',
             }}>
-              Apply Now →
+              Apply now →
             </Link>
             <Link to="/blog" className="btn-hover focus-ring-light" style={{
-              background: 'rgba(255,255,255,0.1)',
-              color: 'var(--paper)',
-              fontSize: 14,
-              fontWeight: 500,
-              padding: '11px 20px',
-              borderRadius: 10,
+              display: 'inline-flex',
+              alignItems: 'center',
+              background: 'transparent',
+              color: 'var(--dark-ink)',
+              fontSize: 15,
+              fontWeight: 400,
+              letterSpacing: '0.01em',
+              padding: '12px 22px',
+              borderRadius: 99,
               lineHeight: 1,
-              border: '1px solid rgba(255,255,255,0.18)',
+              border: '1px solid var(--dark-hairline)',
             }}>
               More articles
             </Link>
@@ -198,9 +198,9 @@ function ArticleBody({ content }) {
     if (block.startsWith('## ')) {
       out.push(
         <h2 key={i} style={{
-          fontWeight: 600,
+          fontWeight: 500,
           fontSize: 22,
-          letterSpacing: '-0.015em',
+          letterSpacing: '-0.02em',
           marginTop: 44,
           marginBottom: 16,
           color: 'var(--ink)',

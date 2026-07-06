@@ -386,7 +386,7 @@ export default function Home() {
 
       {/* Problem */}
       <section className="problem-section" style={{
-        background: 'var(--dark)',
+        background: '#0D1738',
         padding: '0 32px',
         overflow: 'hidden',
       }}>

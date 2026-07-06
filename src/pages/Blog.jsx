@@ -12,29 +12,26 @@ export default function Blog() {
       <main className="page-main" style={{ maxWidth: 960, margin: '0 auto', padding: '128px 32px 140px' }}>
         {/* Header */}
         <div style={{ marginBottom: 72, maxWidth: 640 }}>
-          <p className="enter-up" style={{
-            fontSize: 11,
-            fontWeight: 600,
-            letterSpacing: '0.18em',
-            textTransform: 'uppercase',
-            color: 'rgba(0,0,0,0.4)',
-            marginBottom: 20,
+          <p className="eyebrow enter-up" style={{
+            color: 'var(--ink)',
+            marginBottom: 24,
           }}>
-            The Nevra journal
+            / The Nevra journal
           </p>
           <h1 className="enter-up enter-delay-1" style={{
-            fontWeight: 500,
-            fontSize: 'clamp(34px, 5vw, 56px)',
-            letterSpacing: '-0.02em',
-            lineHeight: 1.05,
-            marginBottom: 20,
+            fontWeight: 300,
+            fontSize: 'clamp(34px, 4.4vw, 54px)',
+            letterSpacing: '-0.025em',
+            lineHeight: 1.06,
+            marginBottom: 22,
           }}>
-            Notes on credit,<br />collateral, and the crypto economy.
+            <span style={{ display: 'block' }}>Notes on credit, collateral,</span>
+            <span style={{ display: 'block', color: 'var(--ink-45)' }}>and the crypto economy.</span>
           </h1>
           <p className="enter-up enter-delay-2" style={{
             fontSize: 16,
-            color: 'rgba(0,0,0,0.5)',
-            lineHeight: 1.6,
+            color: 'var(--ink-60)',
+            lineHeight: 1.65,
             maxWidth: 520,
           }}>
             Deep dives, product updates, and plain-English explainers from the team building undercollateralized credit for crypto.
@@ -64,10 +61,11 @@ export default function Blog() {
                 <div className="blog-card-cover card-cover" style={{
                   width: '100%',
                   aspectRatio: i === 0 ? '21 / 9' : '16 / 10',
-                  borderRadius: 16,
+                  borderRadius: 12,
                   overflow: 'hidden',
                   marginBottom: 24,
-                  boxShadow: '0 8px 32px rgba(0,0,0,0.08), 0 2px 6px rgba(0,0,0,0.04)',
+                  border: '1px solid var(--hairline)',
+                  boxShadow: '0 1px 3px rgba(0,55,112,0.08)',
                 }}>
                   <BlogCover variant={i % 3} featured={i === 0} />
                 </div>
@@ -78,29 +76,26 @@ export default function Blog() {
                   gap: 10,
                   marginBottom: 14,
                 }}>
-                  <span style={{
+                  <span className="eyebrow" style={{
                     display: 'inline-block',
-                    fontSize: 11,
-                    fontWeight: 600,
-                    letterSpacing: '0.08em',
-                    textTransform: 'uppercase',
-                    color: 'rgba(0,0,0,0.7)',
-                    background: 'rgba(0,0,0,0.06)',
+                    fontSize: 10,
+                    color: 'var(--ink-60)',
+                    border: '1px solid var(--hairline)',
                     padding: '5px 10px',
-                    borderRadius: 999,
+                    borderRadius: 99,
                   }}>
                     {article.category}
                   </span>
-                  <span style={{ fontSize: 13, color: 'rgba(0,0,0,0.4)' }}>{article.date}</span>
-                  <span style={{ fontSize: 13, color: 'rgba(0,0,0,0.3)' }}>·</span>
-                  <span style={{ fontSize: 13, color: 'rgba(0,0,0,0.4)' }}>{article.readTime}</span>
+                  <span style={{ fontSize: 13, color: 'var(--ink-45)' }}>{article.date}</span>
+                  <span style={{ fontSize: 13, color: 'var(--ink-30)' }}>·</span>
+                  <span style={{ fontSize: 13, color: 'var(--ink-45)' }}>{article.readTime}</span>
                 </div>
 
                 <h2 className="blog-card-title" style={{
-                  fontWeight: 600,
+                  fontWeight: 500,
                   fontSize: i === 0 ? 'clamp(24px, 3vw, 32px)' : 'clamp(19px, 2vw, 22px)',
                   letterSpacing: '-0.02em',
-                  lineHeight: 1.15,
+                  lineHeight: 1.2,
                   margin: '0 0 12px',
                   color: 'var(--ink)',
                 }}>
@@ -110,7 +105,7 @@ export default function Blog() {
                 <p style={{
                   fontSize: 15,
                   lineHeight: 1.6,
-                  color: 'rgba(0,0,0,0.55)',
+                  color: 'var(--ink-60)',
                   margin: 0,
                 }}>
                   {article.excerpt}
