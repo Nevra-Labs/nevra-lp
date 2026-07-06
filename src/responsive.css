@@ -94,12 +94,6 @@
     gap: 16px !important;
   }
 
-  /* SVG scales down ~3x on small screens; scale the labels up to compensate.
-     Mono uppercase runs wide, so stay under the cylinder widths. */
-  .problem-section svg text {
-    font-size: 24px;
-  }
-
   /* ── Footer ── */
   .footer-frame {
     padding: 48px 24px 0 !important;
