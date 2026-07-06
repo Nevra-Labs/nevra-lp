@@ -1,7 +1,7 @@
 @media (max-width: 768px) {
   /* ── Nav ── */
   .nav-text-links,
-  .nav-text-links-group {
+  .nav-text-links {
     display: none !important;
   }
 
@@ -9,7 +9,7 @@
      Vertical hairline dividers become horizontal when grids stack. */
   .cell-divider {
     border-left: none !important;
-    border-top: 1px solid rgba(22, 21, 29, 0.08) !important;
+    border-top: 1px solid rgba(13, 37, 61, 0.08) !important;
   }
 
   .pad-cell {
@@ -39,7 +39,7 @@
 
   .hero-meta > div + div {
     border-left: none !important;
-    border-top: 1px solid rgba(22, 21, 29, 0.08) !important;
+    border-top: 1px solid rgba(13, 37, 61, 0.08) !important;
   }
 
   /* Wrap CTA buttons if they overflow */
@@ -80,7 +80,7 @@
   }
 
   .principles-grid > .reveal + .reveal {
-    border-top: 1px solid rgba(22, 21, 29, 0.08) !important;
+    border-top: 1px solid rgba(13, 37, 61, 0.08) !important;
   }
 
   /* ── Built with carousel ── */

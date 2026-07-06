@@ -27,7 +27,7 @@ export default function ArticlePage() {
 
   if (!article) {
     return (
-      <div style={{ background: 'var(--paper)', minHeight: '100vh', color: '#111' }}>
+      <div style={{ background: 'var(--paper)', minHeight: '100vh', color: 'var(--ink)' }}>
         <Nav />
         <main style={{ maxWidth: 720, margin: '0 auto', padding: '128px 32px' }}>
           <p>Article not found.</p>
@@ -40,7 +40,7 @@ export default function ArticlePage() {
   const variantIndex = Math.max(0, articles.findIndex(a => a.id === article.id))
 
   return (
-    <div style={{ background: 'var(--paper)', minHeight: '100vh', color: '#111' }}>
+    <div style={{ background: 'var(--paper)', minHeight: '100vh', color: 'var(--ink)' }}>
       <div className="reading-progress" style={{ width: `${progress}%` }} />
       <Nav />
 
@@ -122,7 +122,7 @@ export default function ArticlePage() {
           marginTop: 80,
           padding: '32px 28px',
           borderRadius: 16,
-          background: '#111',
+          background: 'var(--dark)',
           color: 'var(--paper)',
           display: 'flex',
           flexDirection: 'column',
@@ -133,7 +133,7 @@ export default function ArticlePage() {
             fontWeight: 600,
             letterSpacing: '0.18em',
             textTransform: 'uppercase',
-            color: 'rgba(238,237,255,0.5)',
+            color: 'rgba(255,255,255,0.55)',
             margin: 0,
           }}>
             Ready to apply?
@@ -203,7 +203,7 @@ function ArticleBody({ content }) {
           letterSpacing: '-0.015em',
           marginTop: 44,
           marginBottom: 16,
-          color: '#0a0a0a',
+          color: 'var(--ink)',
         }}>
           {block.replace('## ', '')}
         </h2>

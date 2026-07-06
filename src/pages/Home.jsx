@@ -90,15 +90,16 @@ const PRINCIPLES = [
   { tag: 'SOFT LANDINGS', title: 'Liquidation is the last step' },
 ]
 
+// Stripe-style pill buttons: tight padding, full radius, weight 400.
 const btnBase = {
   display: 'inline-flex',
   alignItems: 'center',
   justifyContent: 'center',
-  fontSize: 14,
-  fontWeight: 500,
+  fontSize: 15,
+  fontWeight: 400,
   lineHeight: 1,
-  padding: '14px 24px',
-  borderRadius: 8,
+  padding: '12px 22px',
+  borderRadius: 99,
   letterSpacing: '0.01em',
 }
 
@@ -138,7 +139,7 @@ function PrincipleIcon({ index }) {
       borderRadius: 12,
       background: 'var(--surface)',
       border: '1px solid var(--hairline-soft)',
-      boxShadow: '0 2px 8px -2px rgba(22,21,29,0.08)',
+      boxShadow: '0 2px 8px -2px rgba(13,37,61,0.08)',
     }}>
       <Icon size={22} strokeWidth={1.6} color="var(--ink)" />
     </span>
@@ -154,7 +155,7 @@ function ScoreCard() {
         background: 'var(--surface)',
         border: '1px solid var(--hairline)',
         borderRadius: 8,
-        boxShadow: '0 24px 48px -24px rgba(22,21,29,0.18), 0 2px 6px rgba(22,21,29,0.05)',
+        boxShadow: '0 24px 48px -24px rgba(13,37,61,0.18), 0 2px 6px rgba(13,37,61,0.05)',
         padding: '22px 24px 20px',
         maxWidth: 380,
         margin: '0 auto',
@@ -189,7 +190,7 @@ function ScoreCard() {
             <span style={{ fontSize: 13, color: 'var(--ink-60)' }}>Drawn</span>
             <span style={{ ...mono, fontSize: 13, color: 'var(--ink)' }}>$1,250</span>
           </div>
-          <div style={{ height: 4, borderRadius: 99, background: 'rgba(22,21,29,0.08)', overflow: 'hidden' }}>
+          <div style={{ height: 4, borderRadius: 99, background: 'rgba(13,37,61,0.08)', overflow: 'hidden' }}>
             <div style={{ width: '21%', height: '100%', borderRadius: 99, background: 'var(--ink)' }} />
           </div>
           <div style={{ ...row, marginTop: 8 }}>
@@ -208,7 +209,7 @@ function ScoreCard() {
               <span style={{ ...mono, fontSize: 12, color: 'var(--ink)', display: 'inline-flex', alignItems: 'center', gap: 7 }}>
                 {value}
                 <svg width="13" height="13" viewBox="0 0 13 13">
-                  <circle cx="6.5" cy="6.5" r="6" fill="rgba(22,21,29,0.1)" />
+                  <circle cx="6.5" cy="6.5" r="6" fill="rgba(13,37,61,0.1)" />
                   <path d="M4 6.7 l1.8 1.8 L9.2 4.9" stroke="var(--ink)" strokeWidth="1.3" fill="none" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               </span>
@@ -244,10 +245,10 @@ export default function Home() {
               [ Consumer credit protocol ]
             </p>
             <h1 className="enter-up enter-delay-1" style={{
-              fontWeight: 500,
-              fontSize: 'clamp(34px, 3.4vw, 48px)',
-              lineHeight: 1.06,
-              letterSpacing: '-0.03em',
+              fontWeight: 300,
+              fontSize: 'clamp(36px, 3.6vw, 54px)',
+              lineHeight: 1.05,
+              letterSpacing: '-0.026em',
               marginBottom: 24,
             }}>
               <span style={{ display: 'block' }}>Consumer loans for</span>
@@ -265,7 +266,7 @@ export default function Home() {
             <div className="hero-ctas enter-up enter-delay-3" style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
               <Link to="/apply" className="btn-hover focus-ring" style={{
                 ...btnBase,
-                background: 'var(--ink)',
+                background: 'var(--accent)',
                 color: '#fff',
               }}>
                 Apply now →
@@ -367,7 +368,7 @@ export default function Home() {
           <Reveal style={{ textAlign: 'center', marginBottom: 20 }}>
             <p className="eyebrow" style={{ color: 'var(--dark-ink-60)', marginBottom: 24 }}>/ The problem</p>
             <h2 style={{
-              fontWeight: 500,
+              fontWeight: 300,
               fontSize: 'clamp(30px, 3.8vw, 50px)',
               letterSpacing: '-0.025em',
               lineHeight: 1.1,
@@ -454,7 +455,7 @@ export default function Home() {
           <Reveal className="pad-cell" style={{ padding: '88px 56px 56px' }}>
             <p className="eyebrow" style={{ color: 'var(--ink)', marginBottom: 22 }}>/ How it works</p>
             <h2 style={{
-              fontWeight: 500,
+              fontWeight: 300,
               fontSize: 'clamp(28px, 3.4vw, 44px)',
               letterSpacing: '-0.025em',
               lineHeight: 1.1,
@@ -482,7 +483,7 @@ export default function Home() {
                     <span className="eyebrow" style={{ color: 'var(--ink-45)' }}>[ {step.number} ]</span>
                     <StepIcon index={i} />
                   </div>
-                  <h3 style={{ fontWeight: 600, fontSize: 17, letterSpacing: '-0.015em', marginBottom: 10, lineHeight: 1.3 }}>
+                  <h3 style={{ fontWeight: 500, fontSize: 17, letterSpacing: '-0.015em', marginBottom: 10, lineHeight: 1.3 }}>
                     {step.title}
                   </h3>
                   <p style={{ fontSize: 14, color: 'var(--ink-60)', lineHeight: 1.7, margin: 0 }}>
@@ -509,7 +510,7 @@ export default function Home() {
           <Reveal className="pad-cell" style={{ padding: '88px 56px' }}>
             <p className="eyebrow" style={{ color: 'var(--ink)', marginBottom: 22 }}>/ What you get</p>
             <h2 style={{
-              fontWeight: 500,
+              fontWeight: 300,
               fontSize: 'clamp(28px, 3.4vw, 44px)',
               letterSpacing: '-0.025em',
               lineHeight: 1.12,
@@ -538,7 +539,7 @@ export default function Home() {
                   <PrincipleIcon index={i} />
                   <div>
                     <p className="eyebrow" style={{ fontSize: 10, color: 'var(--ink-45)', marginBottom: 10 }}>[ {p.tag} ]</p>
-                    <h3 style={{ fontWeight: 600, fontSize: 16, letterSpacing: '-0.01em', lineHeight: 1.3, margin: 0 }}>
+                    <h3 style={{ fontWeight: 500, fontSize: 16, letterSpacing: '-0.01em', lineHeight: 1.3, margin: 0 }}>
                       {p.title}
                     </h3>
                   </div>
@@ -563,7 +564,7 @@ export default function Home() {
           <Reveal className="pad-cell" style={{ padding: '88px 56px' }}>
             <p className="eyebrow" style={{ color: 'var(--ink)', marginBottom: 22 }}>/ FAQ</p>
             <h2 style={{
-              fontWeight: 500,
+              fontWeight: 300,
               fontSize: 'clamp(28px, 3.4vw, 44px)',
               letterSpacing: '-0.025em',
               lineHeight: 1.1,
@@ -608,7 +609,7 @@ export default function Home() {
           <Reveal>
             <p className="eyebrow" style={{ color: 'var(--dark-ink-60)', marginBottom: 26 }}>[ Early access ]</p>
             <h2 style={{
-              fontWeight: 500,
+              fontWeight: 300,
               fontSize: 'clamp(30px, 3.8vw, 50px)',
               letterSpacing: '-0.025em',
               lineHeight: 1.1,
@@ -688,7 +689,7 @@ export default function Home() {
           fontSize: 'clamp(80px, 14vw, 190px)',
           fontWeight: 600,
           letterSpacing: '-0.045em',
-          color: 'rgba(22,21,29,0.07)',
+          color: 'rgba(13,37,61,0.07)',
           lineHeight: 0.82,
           textAlign: 'center',
           userSelect: 'none',
