@@ -96,24 +96,28 @@ const USE_CASES = [
     title: 'Living expenses',
     description: 'Cover rent and day-to-day spending without selling your stack.',
     image: '/usecases/living.jpg',
+    chip: ['+$1,450 drawn', 'rent covered'],
   },
   {
     tag: 'BUSINESS',
     title: 'Start something',
     description: 'Fund your company or side project while your portfolio keeps working.',
     image: '/usecases/business.jpg',
+    chip: ['+$12,000 drawn', 'company funded'],
   },
   {
     tag: 'INVESTING',
     title: 'Stay in the market',
     description: 'Seize opportunities without triggering a taxable sale.',
     image: '/usecases/market.jpg',
+    chip: ['+$3,200 drawn', '0 tokens sold'],
   },
   {
     tag: 'MILESTONES',
     title: 'Big moments',
     description: 'Finance a car, a move, or a wedding at a rate your score earned.',
     image: '/usecases/moments.jpg',
+    chip: ['+$8,000 drawn', 'keys in hand'],
   },
 ]
 
@@ -658,19 +662,19 @@ export default function Home() {
             gridTemplateColumns: 'repeat(4, 1fr)',
             gap: 24,
           }}>
-            {USE_CASES.map(({ tag, title, description, image }, i) => (
+            {USE_CASES.map(({ tag, title, description, image, chip }, i) => (
               <Reveal key={tag} delay={i * 70}>
                 <div className="usecase-card" style={{
                   background: 'var(--surface)',
                   border: '1px solid var(--hairline)',
                   borderRadius: 12,
                   overflow: 'hidden',
-                  boxShadow: '0 1px 3px rgba(0,55,112,0.08)',
                   height: '100%',
                   display: 'flex',
                   flexDirection: 'column',
                 }}>
                   <div style={{
+                    position: 'relative',
                     aspectRatio: '3 / 2',
                     overflow: 'hidden',
                     borderBottom: '1px solid var(--hairline-soft)',
@@ -679,8 +683,27 @@ export default function Home() {
                       src={image}
                       alt={title}
                       loading="lazy"
+                      className="usecase-img"
                       style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
                     />
+                    {/* Draw-notification chip, same motif as the hero score card */}
+                    <div className="usecase-chip" aria-hidden style={{
+                      position: 'absolute',
+                      left: 12,
+                      bottom: 12,
+                      background: 'var(--surface)',
+                      border: '1px solid var(--hairline)',
+                      borderRadius: 8,
+                      boxShadow: '0 10px 22px -10px rgba(13,37,61,0.35), 0 1px 4px rgba(13,37,61,0.08)',
+                      padding: '7px 11px 8px',
+                    }}>
+                      <p style={{ fontFamily: 'var(--font-mono)', fontSize: 12, fontWeight: 500, color: '#0E8345', margin: 0, letterSpacing: '-0.01em' }}>
+                        {chip[0]}
+                      </p>
+                      <p style={{ fontSize: 10.5, color: 'var(--ink-45)', margin: '2px 0 0' }}>
+                        {chip[1]}
+                      </p>
+                    </div>
                   </div>
                   <div style={{ padding: '22px 24px 26px', display: 'flex', flexDirection: 'column', gap: 8, flex: 1 }}>
                     <p className="eyebrow" style={{ fontSize: 10, color: 'var(--ink-45)', margin: 0 }}>[ {tag} ]</p>
