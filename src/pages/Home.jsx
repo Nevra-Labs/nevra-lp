@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { useState, useEffect, useRef } from 'react'
-import { ShieldCheck, KeyRound, TrendingUp, Umbrella, Wallet, ScanFace, Gauge, Home as HomeIcon, Briefcase, ChartLine, Sparkles } from 'lucide-react'
+import { ShieldCheck, KeyRound, TrendingUp, Umbrella, Wallet, ScanFace, Gauge } from 'lucide-react'
 import Nav from '../components/Nav'
 import '../responsive.css'
 
@@ -95,25 +95,25 @@ const USE_CASES = [
     tag: 'EVERYDAY',
     title: 'Living expenses',
     description: 'Cover rent and day-to-day spending without selling your stack.',
-    Icon: HomeIcon,
+    image: '/usecases/living.jpg',
   },
   {
     tag: 'BUSINESS',
     title: 'Start something',
     description: 'Fund your company or side project while your portfolio keeps working.',
-    Icon: Briefcase,
+    image: '/usecases/business.jpg',
   },
   {
     tag: 'INVESTING',
     title: 'Stay in the market',
     description: 'Seize opportunities without triggering a taxable sale.',
-    Icon: ChartLine,
+    image: '/usecases/market.jpg',
   },
   {
     tag: 'MILESTONES',
     title: 'Big moments',
     description: 'Finance a car, a move, or a wedding at a rate your score earned.',
-    Icon: Sparkles,
+    image: '/usecases/moments.jpg',
   },
 ]
 
@@ -179,6 +179,7 @@ function ScoreCard() {
   return (
     <div aria-hidden style={{ width: '100%' }}>
       <div style={{
+        position: 'relative',
         background: 'var(--surface)',
         border: '1px solid var(--hairline)',
         borderRadius: 8,
@@ -187,17 +188,27 @@ function ScoreCard() {
         maxWidth: 380,
         margin: '0 auto',
       }}>
+        {/* Floating draw notification overlapping the score card */}
+        <div style={{
+          position: 'absolute',
+          top: -24,
+          right: -20,
+          zIndex: 1,
+          background: 'var(--surface)',
+          border: '1px solid var(--hairline)',
+          borderRadius: 10,
+          boxShadow: '0 12px 28px -12px rgba(13,37,61,0.25), 0 2px 6px rgba(13,37,61,0.06)',
+          padding: '11px 15px',
+        }}>
+          <p style={{ fontFamily: 'var(--font-mono)', fontSize: 14, fontWeight: 500, color: '#0E8345', margin: 0, letterSpacing: '-0.01em' }}>
+            +$4,000 USDC drawn
+          </p>
+          <p style={{ fontSize: 11.5, color: 'var(--ink-45)', margin: '3px 0 0' }}>
+            against just $1,500 posted
+          </p>
+        </div>
         <div style={{ ...row, alignItems: 'center', marginBottom: 22 }}>
           <span className="eyebrow" style={{ color: 'var(--ink-45)', fontSize: 11 }}>Nevra score</span>
-          <span className="eyebrow" style={{
-            color: 'var(--ink-60)',
-            fontSize: 10,
-            border: '1px solid var(--hairline)',
-            borderRadius: 99,
-            padding: '4px 9px',
-          }}>
-            Active
-          </span>
         </div>
 
         <div style={{ display: 'flex', alignItems: 'flex-end', gap: 14, marginBottom: 20 }}>
@@ -268,9 +279,6 @@ export default function Home() {
           alignItems: 'stretch',
         }}>
           <div className="hero-copy-cell" style={{ padding: '64px 56px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-            <p className="eyebrow enter-up" style={{ color: 'var(--ink)', marginBottom: 26 }}>
-              [ Consumer credit protocol ]
-            </p>
             <h1 className="enter-up enter-delay-1" style={{
               fontWeight: 300,
               fontSize: 'clamp(38px, 3.9vw, 56px)',
@@ -392,7 +400,6 @@ export default function Home() {
       }}>
         <div style={{ ...frameDark, padding: '120px 24px 104px' }}>
           <Reveal style={{ textAlign: 'center', marginBottom: 20 }}>
-            <p className="eyebrow" style={{ color: 'var(--dark-ink-60)', marginBottom: 24 }}>/ The problem</p>
             <h2 style={{
               fontWeight: 300,
               fontSize: 'clamp(30px, 3.8vw, 50px)',
@@ -479,7 +486,6 @@ export default function Home() {
       <section className="how-it-works-section" style={{ padding: '0 32px' }}>
         <div style={frame}>
           <Reveal className="pad-cell" style={{ padding: '88px 56px 56px' }}>
-            <p className="eyebrow" style={{ color: 'var(--ink)', marginBottom: 22 }}>/ How it works</p>
             <h2 style={{
               fontWeight: 300,
               fontSize: 'clamp(28px, 3.4vw, 44px)',
@@ -530,7 +536,6 @@ export default function Home() {
       }}>
         <div style={{ maxWidth: 1160, margin: '0 auto', padding: '96px 0 104px' }}>
           <Reveal style={{ marginBottom: 56 }}>
-            <p className="eyebrow" style={{ color: 'var(--ink)', marginBottom: 22 }}>/ Use cases</p>
             <h2 style={{
               fontWeight: 300,
               fontSize: 'clamp(30px, 3.6vw, 48px)',
@@ -548,7 +553,7 @@ export default function Home() {
             gridTemplateColumns: 'repeat(4, 1fr)',
             gap: 24,
           }}>
-            {USE_CASES.map(({ tag, title, description, Icon }, i) => (
+            {USE_CASES.map(({ tag, title, description, image }, i) => (
               <Reveal key={tag} delay={i * 70}>
                 <div className="usecase-card" style={{
                   background: 'var(--surface)',
@@ -560,16 +565,17 @@ export default function Home() {
                   display: 'flex',
                   flexDirection: 'column',
                 }}>
-                  {/* Placeholder image area */}
-                  <div aria-hidden style={{
+                  <div style={{
                     aspectRatio: '3 / 2',
-                    background: 'linear-gradient(135deg, #F6F9FC 0%, #EAEFF5 60%, #E3E8EE 100%)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
+                    overflow: 'hidden',
                     borderBottom: '1px solid var(--hairline-soft)',
                   }}>
-                    <Icon size={30} strokeWidth={1.4} color="var(--ink-30)" />
+                    <img
+                      src={image}
+                      alt={title}
+                      loading="lazy"
+                      style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                    />
                   </div>
                   <div style={{ padding: '22px 24px 26px', display: 'flex', flexDirection: 'column', gap: 8, flex: 1 }}>
                     <p className="eyebrow" style={{ fontSize: 10, color: 'var(--ink-45)', margin: 0 }}>[ {tag} ]</p>
@@ -599,7 +605,6 @@ export default function Home() {
           alignItems: 'stretch',
         }}>
           <Reveal className="pad-cell" style={{ padding: '88px 56px' }}>
-            <p className="eyebrow" style={{ color: 'var(--ink)', marginBottom: 22 }}>/ What you get</p>
             <h2 style={{
               fontWeight: 300,
               fontSize: 'clamp(28px, 3.4vw, 44px)',
@@ -653,7 +658,6 @@ export default function Home() {
           alignItems: 'stretch',
         }}>
           <Reveal className="pad-cell" style={{ padding: '88px 56px' }}>
-            <p className="eyebrow" style={{ color: 'var(--ink)', marginBottom: 22 }}>/ FAQ</p>
             <h2 style={{
               fontWeight: 300,
               fontSize: 'clamp(28px, 3.4vw, 44px)',
@@ -698,7 +702,6 @@ export default function Home() {
         }} />
         <div style={{ ...frameDark, position: 'relative', padding: '120px 24px' }}>
           <Reveal>
-            <p className="eyebrow" style={{ color: 'var(--dark-ink-60)', marginBottom: 26 }}>[ Early access ]</p>
             <h2 style={{
               fontWeight: 300,
               fontSize: 'clamp(30px, 3.8vw, 50px)',
@@ -748,9 +751,8 @@ export default function Home() {
         <div className="footer-frame" style={{ ...frame, padding: '72px 56px 0' }}>
           <div className="footer-inner" style={{ display: 'flex', gap: 64, marginBottom: 72 }}>
             <div style={{ minWidth: 200 }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 9, marginBottom: 14 }}>
-                <img src="/logo.png" alt="" style={{ width: 20, height: 20 }} />
-                <span style={{ fontSize: 15, fontWeight: 600 }}>Nevra</span>
+              <div style={{ display: 'flex', alignItems: 'center', marginBottom: 14 }}>
+                <img src="/logo.png" alt="Nevra" style={{ width: 22, height: 22 }} />
               </div>
               <p style={{ fontSize: 13, color: 'var(--ink-45)', lineHeight: 1.6 }}>
                 ©Nevra Inc. 2026<br />All rights reserved.
