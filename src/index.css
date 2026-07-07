@@ -163,32 +163,26 @@ a {
   50%       { opacity: 1;    transform: scale(1); }
 }
 
-/* Use-case cards: lift + image zoom + chip nudge on hover (pointer devices only) */
+/* Use-case draw cards: dark navy panels that lift + brighten on hover */
 .usecase-card {
-  box-shadow: 0 1px 3px rgba(0, 55, 112, 0.08);
-  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  box-shadow: 0 20px 44px -30px rgba(13, 37, 61, 0.6);
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.35s ease;
   will-change: transform;
 }
 
-.usecase-img {
-  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
-  will-change: transform;
-}
-
-.usecase-chip {
-  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+.usecase-glow {
+  opacity: 0.7;
+  transition: opacity 0.4s ease;
 }
 
 @media (hover: hover) {
   .usecase-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 20px 40px -18px rgba(13, 37, 61, 0.28), 0 2px 6px rgba(0, 55, 112, 0.08);
+    transform: translateY(-6px);
+    box-shadow: 0 34px 64px -32px rgba(13, 37, 61, 0.72);
+    border-color: rgba(201, 198, 240, 0.34) !important;
   }
-  .usecase-card:hover .usecase-img {
-    transform: scale(1.045);
-  }
-  .usecase-card:hover .usecase-chip {
-    transform: translateY(-3px);
+  .usecase-card:hover .usecase-glow {
+    opacity: 1;
   }
 }
 

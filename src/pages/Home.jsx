@@ -68,8 +68,8 @@ const FAQS = [
 const STEPS = [
   {
     number: '01',
-    title: 'Connect your wallet',
-    description: 'Link any wallet in one click. No forms, no delays. Your onchain history starts building your profile instantly.',
+    title: 'Connect your wallets',
+    description: 'Link as many wallets as you want in one click. No forms, no delays. Your combined onchain history across every account starts building your profile instantly.',
   },
   {
     number: '02',
@@ -95,29 +95,33 @@ const USE_CASES = [
     tag: 'EVERYDAY',
     title: 'Living expenses',
     description: 'Cover rent and day-to-day spending without selling your stack.',
-    image: '/usecases/living.jpg',
-    chip: ['+$1,450 drawn', 'rent covered'],
+    drawn: 1450,
+    posted: 600,
+    caption: 'rent covered',
   },
   {
     tag: 'BUSINESS',
     title: 'Start something',
     description: 'Fund your company or side project while your portfolio keeps working.',
-    image: '/usecases/business.jpg',
-    chip: ['+$12,000 drawn', 'company funded'],
+    drawn: 12000,
+    posted: 5000,
+    caption: 'company funded',
   },
   {
     tag: 'INVESTING',
     title: 'Stay in the market',
     description: 'Seize opportunities without triggering a taxable sale.',
-    image: '/usecases/market.jpg',
-    chip: ['+$3,200 drawn', '0 tokens sold'],
+    drawn: 3200,
+    posted: 1400,
+    caption: '0 tokens sold',
   },
   {
     tag: 'MILESTONES',
     title: 'Big moments',
     description: 'Finance a car, a move, or a wedding at a rate your score earned.',
-    image: '/usecases/moments.jpg',
-    chip: ['+$8,000 drawn', 'keys in hand'],
+    drawn: 8000,
+    posted: 3500,
+    caption: 'keys in hand',
   },
 ]
 
@@ -424,6 +428,131 @@ function ComparisonViz() {
   )
 }
 
+function UseCaseCard({ tag, title, description, drawn, posted, caption, index, active }) {
+  const mono = { fontFamily: 'var(--font-mono)' }
+  // Per-card scale: the drawn bar nearly fills the track, posted stays proportional,
+  // so each card shows its own leverage ratio at a glance.
+  const max = drawn * 1.12
+  const pct = v => `${((v / max) * 100).toFixed(2)}%`
+  const baseDelay = index * 110
+  const bars = [
+    {
+      label: 'POSTED',
+      amount: posted,
+      delayMs: baseDelay + 150,
+      amountColor: 'rgba(238,237,255,0.6)',
+      fill: {
+        background: 'repeating-linear-gradient(-45deg, rgba(201,198,240,0.28) 0 6px, rgba(201,198,240,0.12) 6px 12px)',
+      },
+    },
+    {
+      label: 'DRAWN',
+      amount: drawn,
+      delayMs: baseDelay + 450,
+      shimmer: true,
+      amountColor: '#EEEDFF',
+      fill: {
+        background: 'linear-gradient(90deg, var(--accent) 0%, #8B7BFF 100%)',
+        boxShadow: '0 0 20px rgba(107,95,255,0.35)',
+      },
+    },
+  ]
+
+  return (
+    <div className="usecase-card" style={{
+      position: 'relative',
+      height: '100%',
+      background: 'var(--dark)',
+      border: '1px solid rgba(238,237,255,0.1)',
+      borderRadius: 14,
+      padding: '26px 26px 28px',
+      overflow: 'hidden',
+      display: 'flex',
+      flexDirection: 'column',
+    }}>
+      {/* Ambient indigo glow, same family as the CTA band */}
+      <span aria-hidden className="usecase-glow" style={{
+        position: 'absolute',
+        inset: 0,
+        background: 'radial-gradient(115% 80% at 88% 0%, rgba(107,95,255,0.2) 0%, transparent 58%)',
+        pointerEvents: 'none',
+      }} />
+
+      <div style={{ position: 'relative', display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: 12, marginBottom: 18 }}>
+        <span className="eyebrow" style={{ fontSize: 10, color: 'rgba(238,237,255,0.5)' }}>[ {tag} ]</span>
+        <span style={{ display: 'inline-flex', alignItems: 'center', gap: 7 }}>
+          <span aria-hidden style={{ width: 6, height: 6, borderRadius: 99, background: '#57E39A', boxShadow: '0 0 8px #57E39A' }} />
+          <span style={{ ...mono, fontSize: 11, color: 'rgba(238,237,255,0.55)', letterSpacing: '0.01em' }}>{caption}</span>
+        </span>
+      </div>
+
+      <h3 style={{ position: 'relative', fontWeight: 500, fontSize: 18, letterSpacing: '-0.015em', color: '#fff', lineHeight: 1.3, margin: '0 0 8px' }}>
+        {title}
+      </h3>
+      <p style={{ position: 'relative', fontSize: 14, color: 'rgba(238,237,255,0.6)', lineHeight: 1.6, margin: 0 }}>
+        {description}
+      </p>
+
+      {/* Mini posted-vs-drawn viz, same language as the collateral comparison */}
+      <div
+        role="img"
+        aria-label={`With $${posted.toLocaleString('en-US')} posted you draw $${drawn.toLocaleString('en-US')}.`}
+        style={{ position: 'relative', marginTop: 'auto', paddingTop: 26, display: 'flex', flexDirection: 'column', gap: 14 }}
+      >
+        {bars.map(({ label, amount, delayMs, shimmer, amountColor, fill }) => (
+          <div key={label}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 7 }}>
+              <span className="eyebrow" style={{ fontSize: 9, color: 'rgba(238,237,255,0.45)' }}>[ {label} ]</span>
+              <span style={{ ...mono, fontSize: 15, fontWeight: 500, letterSpacing: '-0.02em', color: amountColor }}>
+                <CountUp to={amount} active={active} delay={delayMs + 150} duration={900} />
+              </span>
+            </div>
+            <div style={{
+              position: 'relative',
+              height: 18,
+              borderRadius: 5,
+              background: 'rgba(238,237,255,0.05)',
+              border: '1px solid rgba(238,237,255,0.1)',
+              overflow: 'hidden',
+            }}>
+              <div style={{
+                position: 'absolute',
+                left: 0,
+                top: 0,
+                bottom: 0,
+                width: active ? pct(amount) : '0%',
+                borderRadius: 5,
+                overflow: 'hidden',
+                transition: `width 1s cubic-bezier(0.22, 1, 0.36, 1) ${delayMs}ms`,
+                ...fill,
+              }}>
+                {shimmer && <span className="bar-shimmer" aria-hidden />}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+function UseCaseGrid() {
+  const [ref, active] = useInView(0.2)
+  return (
+    <div ref={ref} className="usecases-grid" style={{
+      display: 'grid',
+      gridTemplateColumns: 'repeat(2, 1fr)',
+      gap: 28,
+    }}>
+      {USE_CASES.map((uc, i) => (
+        <Reveal key={uc.tag} delay={i * 70}>
+          <UseCaseCard {...uc} index={i} active={active} />
+        </Reveal>
+      ))}
+    </div>
+  )
+}
+
 export default function Home() {
   return (
     <div style={{ fontFamily: 'var(--font-sans)', background: 'var(--paper)', color: 'var(--ink)' }}>
@@ -637,14 +766,21 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Use cases — Stripe-style feature cards with placeholder art */}
+      {/* Use cases — dark animated draw-receipt cards on the soft band */}
       <section className="usecases-section" style={{
         borderTop: '1px solid var(--hairline-soft)',
         background: 'var(--paper-soft)',
         padding: '0 32px',
       }}>
         <div style={{ maxWidth: 1160, margin: '0 auto', padding: '96px 0 104px' }}>
-          <Reveal style={{ marginBottom: 56 }}>
+          <Reveal className="usecases-header" style={{
+            marginBottom: 56,
+            display: 'flex',
+            alignItems: 'flex-end',
+            justifyContent: 'space-between',
+            gap: 32,
+            flexWrap: 'wrap',
+          }}>
             <h2 style={{
               fontWeight: 300,
               fontSize: 'clamp(30px, 3.6vw, 48px)',
@@ -655,69 +791,12 @@ export default function Home() {
               <span style={{ display: 'block' }}>Real money,</span>
               <span style={{ display: 'block', color: 'var(--ink-30)' }}>for real life.</span>
             </h2>
+            <p style={{ fontSize: 15, color: 'var(--ink-60)', lineHeight: 1.7, maxWidth: 340, margin: 0 }}>
+              Draw USDC against your score and put it to work. No selling, no taxable event, no waiting.
+            </p>
           </Reveal>
 
-          <div className="usecases-grid" style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(4, 1fr)',
-            gap: 24,
-          }}>
-            {USE_CASES.map(({ tag, title, description, image, chip }, i) => (
-              <Reveal key={tag} delay={i * 70}>
-                <div className="usecase-card" style={{
-                  background: 'var(--surface)',
-                  border: '1px solid var(--hairline)',
-                  borderRadius: 12,
-                  overflow: 'hidden',
-                  height: '100%',
-                  display: 'flex',
-                  flexDirection: 'column',
-                }}>
-                  <div style={{
-                    position: 'relative',
-                    aspectRatio: '3 / 2',
-                    overflow: 'hidden',
-                    borderBottom: '1px solid var(--hairline-soft)',
-                  }}>
-                    <img
-                      src={image}
-                      alt={title}
-                      loading="lazy"
-                      className="usecase-img"
-                      style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
-                    />
-                    {/* Draw-notification chip, same motif as the hero score card */}
-                    <div className="usecase-chip" aria-hidden style={{
-                      position: 'absolute',
-                      left: 12,
-                      bottom: 12,
-                      background: 'var(--surface)',
-                      border: '1px solid var(--hairline)',
-                      borderRadius: 8,
-                      boxShadow: '0 10px 22px -10px rgba(13,37,61,0.35), 0 1px 4px rgba(13,37,61,0.08)',
-                      padding: '7px 11px 8px',
-                    }}>
-                      <p style={{ fontFamily: 'var(--font-mono)', fontSize: 12, fontWeight: 500, color: '#0E8345', margin: 0, letterSpacing: '-0.01em' }}>
-                        {chip[0]}
-                      </p>
-                      <p style={{ fontSize: 10.5, color: 'var(--ink-45)', margin: '2px 0 0' }}>
-                        {chip[1]}
-                      </p>
-                    </div>
-                  </div>
-                  <div style={{ padding: '22px 24px 26px', display: 'flex', flexDirection: 'column', gap: 8, flex: 1 }}>
-                    <p className="eyebrow" style={{ fontSize: 10, color: 'var(--ink-45)', margin: 0 }}>[ {tag} ]</p>
-                    <h3 style={{ fontWeight: 500, fontSize: 18, letterSpacing: '-0.015em', lineHeight: 1.3, margin: 0 }}>
-                      {title}
-                    </h3>
-                    <p style={{ fontSize: 14.5, color: 'var(--ink-60)', lineHeight: 1.55, margin: 0 }}>
-                      {description}
-                    </p>
-                  </div>
-                </div>
-              </Reveal>
-            ))}
-          </div>
+          <UseCaseGrid />
         </div>
       </section>
 
