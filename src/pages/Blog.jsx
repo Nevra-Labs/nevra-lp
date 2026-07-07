@@ -67,7 +67,15 @@ export default function Blog() {
                   border: '1px solid var(--hairline)',
                   boxShadow: '0 1px 3px rgba(0,55,112,0.08)',
                 }}>
-                  <BlogCover variant={i % 3} featured={i === 0} />
+                  {article.cover ? (
+                    <img
+                      src={article.cover}
+                      alt=""
+                      style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                    />
+                  ) : (
+                    <BlogCover variant={i % 3} featured={i === 0} />
+                  )}
                 </div>
 
                 <div style={{
