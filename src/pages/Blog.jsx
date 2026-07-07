@@ -12,13 +12,7 @@ export default function Blog() {
       <main className="page-main" style={{ maxWidth: 960, margin: '0 auto', padding: '128px 32px 140px' }}>
         {/* Header */}
         <div style={{ marginBottom: 72, maxWidth: 640 }}>
-          <p className="eyebrow enter-up" style={{
-            color: 'var(--ink)',
-            marginBottom: 24,
-          }}>
-            / The Nevra journal
-          </p>
-          <h1 className="enter-up enter-delay-1" style={{
+          <h1 className="enter-up" style={{
             fontWeight: 300,
             fontSize: 'clamp(34px, 4.4vw, 54px)',
             letterSpacing: '-0.025em',
@@ -28,7 +22,7 @@ export default function Blog() {
             <span style={{ display: 'block' }}>Notes on credit, collateral,</span>
             <span style={{ display: 'block', color: 'var(--ink-45)' }}>and the crypto economy.</span>
           </h1>
-          <p className="enter-up enter-delay-2" style={{
+          <p className="enter-up enter-delay-1" style={{
             fontSize: 16,
             color: 'var(--ink-60)',
             lineHeight: 1.65,
