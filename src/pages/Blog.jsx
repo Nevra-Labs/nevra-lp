@@ -28,14 +28,6 @@ export default function Blog() {
             <span style={{ display: 'block' }}>Notes on credit, collateral,</span>
             <span style={{ display: 'block', color: 'var(--ink-45)' }}>and the crypto economy.</span>
           </h1>
-          <p className="enter-up enter-delay-1" style={{
-            fontSize: 16,
-            color: 'var(--ink-60)',
-            lineHeight: 1.65,
-            maxWidth: 520,
-          }}>
-            Deep dives, product updates, and plain-English explainers from the team building undercollateralized credit for crypto.
-          </p>
         </div>
 
         {/* Article grid */}

@@ -66,8 +66,8 @@ const optionBtnHover = {
 export default function Apply() {
   const privy = PRIVY_ENABLED
     ? usePrivy()
-    : { ready: true, authenticated: false, user: null, login: () => alert('Set VITE_PRIVY_APP_ID and VITE_PRIVY_CLIENT_ID in .env'), logout: () => {} }
-  const { ready, authenticated, user, login, logout } = privy
+    : { ready: true, authenticated: false, user: null, login: () => alert('Set VITE_PRIVY_APP_ID and VITE_PRIVY_CLIENT_ID in .env') }
+  const { ready, authenticated, user, login } = privy
 
   const [answers, setAnswers] = useState({})
   const [step, setStep] = useState(0)
@@ -136,28 +136,7 @@ export default function Apply() {
       display: 'flex',
       flexDirection: 'column',
     }}>
-      <Nav rightExtra={authenticated ? (
-        <button
-          onClick={logout}
-          className="fade-in"
-          style={{
-            fontSize: 13,
-            fontWeight: 500,
-            color: 'rgba(0,0,0,0.35)',
-            background: 'none',
-            border: 'none',
-            cursor: 'pointer',
-            padding: '8px 12px',
-            letterSpacing: '0.01em',
-            transition: 'color 0.15s',
-            fontFamily: 'inherit',
-          }}
-          onMouseEnter={e => e.currentTarget.style.color = 'rgba(0,0,0,0.7)'}
-          onMouseLeave={e => e.currentTarget.style.color = 'rgba(0,0,0,0.35)'}
-        >
-          Disconnect
-        </button>
-      ) : null} />
+      <Nav />
 
       {/* Content */}
       <div style={{
