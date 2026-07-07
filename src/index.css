@@ -163,26 +163,17 @@ a {
   50%       { opacity: 1;    transform: scale(1); }
 }
 
-/* Use-case draw cards: dark navy panels that lift + brighten on hover */
+/* Use-case cards: white panels with cropped product mocks that lift on hover */
 .usecase-card {
-  box-shadow: 0 20px 44px -30px rgba(13, 37, 61, 0.6);
-  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.35s ease;
+  box-shadow: 0 2px 6px rgba(13, 37, 61, 0.04), 0 18px 40px -28px rgba(13, 37, 61, 0.22);
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1);
   will-change: transform;
-}
-
-.usecase-glow {
-  opacity: 0.7;
-  transition: opacity 0.4s ease;
 }
 
 @media (hover: hover) {
   .usecase-card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 34px 64px -32px rgba(13, 37, 61, 0.72);
-    border-color: rgba(201, 198, 240, 0.34) !important;
-  }
-  .usecase-card:hover .usecase-glow {
-    opacity: 1;
+    transform: translateY(-4px);
+    box-shadow: 0 2px 6px rgba(13, 37, 61, 0.05), 0 30px 56px -28px rgba(13, 37, 61, 0.3);
   }
 }
 

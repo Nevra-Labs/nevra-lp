@@ -95,33 +95,25 @@ const USE_CASES = [
     tag: 'EVERYDAY',
     title: 'Living expenses',
     description: 'Cover rent and day-to-day spending without selling your stack.',
-    drawn: 1450,
-    posted: 600,
-    caption: 'rent covered',
+    well: 'linear-gradient(135deg, #F6F9FC 0%, #EDF1FF 100%)',
   },
   {
     tag: 'BUSINESS',
     title: 'Start something',
     description: 'Fund your company or side project while your portfolio keeps working.',
-    drawn: 12000,
-    posted: 5000,
-    caption: 'company funded',
+    well: 'linear-gradient(135deg, #F6F9FC 0%, #F1EEFF 100%)',
   },
   {
     tag: 'INVESTING',
     title: 'Stay in the market',
     description: 'Seize opportunities without triggering a taxable sale.',
-    drawn: 3200,
-    posted: 1400,
-    caption: '0 tokens sold',
+    well: 'linear-gradient(135deg, #F6F9FC 0%, #E9F8F1 100%)',
   },
   {
     tag: 'MILESTONES',
     title: 'Big moments',
     description: 'Finance a car, a move, or a wedding at a rate your score earned.',
-    drawn: 8000,
-    posted: 3500,
-    caption: 'keys in hand',
+    well: 'linear-gradient(135deg, #F6F9FC 0%, #EAF4FF 100%)',
   },
 ]
 
@@ -428,109 +420,197 @@ function ComparisonViz() {
   )
 }
 
-function UseCaseCard({ tag, title, description, drawn, posted, caption, index, active }) {
-  const mono = { fontFamily: 'var(--font-mono)' }
-  // Per-card scale: the drawn bar nearly fills the track, posted stays proportional,
-  // so each card shows its own leverage ratio at a glance.
-  const max = drawn * 1.12
-  const pct = v => `${((v / max) * 100).toFixed(2)}%`
-  const baseDelay = index * 110
-  const bars = [
-    {
-      label: 'POSTED',
-      amount: posted,
-      delayMs: baseDelay + 150,
-      amountColor: 'rgba(238,237,255,0.6)',
-      fill: {
-        background: 'repeating-linear-gradient(-45deg, rgba(201,198,240,0.28) 0 6px, rgba(201,198,240,0.12) 6px 12px)',
-      },
-    },
-    {
-      label: 'DRAWN',
-      amount: drawn,
-      delayMs: baseDelay + 450,
-      shimmer: true,
-      amountColor: '#EEEDFF',
-      fill: {
-        background: 'linear-gradient(90deg, var(--accent) 0%, #8B7BFF 100%)',
-        boxShadow: '0 0 20px rgba(107,95,255,0.35)',
-      },
-    },
-  ]
+// Shared surface for the mini product mocks inside use-case cards.
+const mockPanel = {
+  background: 'var(--surface)',
+  border: '1px solid var(--hairline)',
+  borderRadius: 10,
+  boxShadow: '0 16px 32px -18px rgba(13,37,61,0.28), 0 2px 6px rgba(13,37,61,0.05)',
+}
 
+const mockMono = { fontFamily: 'var(--font-mono)' }
+
+function MockRise({ active, delay, children, style }) {
+  return (
+    <div style={{
+      ...style,
+      opacity: active ? 1 : 0,
+      transform: active ? 'translateY(0)' : 'translateY(10px)',
+      transition: `opacity 0.45s ease ${delay}ms, transform 0.45s cubic-bezier(0, 0, 0.2, 1) ${delay}ms`,
+    }}>
+      {children}
+    </div>
+  )
+}
+
+// Everyday: card-spend feed paid from the credit line.
+function EverydayMock({ active, d }) {
+  const rows = [
+    ['Rent', '$1,450.00', true],
+    ['Groceries', '$86.20', false],
+    ['Utilities', '$112.40', false],
+  ]
+  return (
+    <MockRise active={active} delay={d} style={{ ...mockPanel, maxWidth: 320, margin: '0 auto', padding: '14px 18px 16px' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 10 }}>
+        <span className="eyebrow" style={{ fontSize: 9, color: 'var(--ink-45)' }}>Nevra credit</span>
+        <span style={{ ...mockMono, fontSize: 11.5, fontWeight: 500, color: '#0E8345' }}>
+          +<CountUp to={1450} active={active} delay={d + 300} duration={900} /> drawn
+        </span>
+      </div>
+      {rows.map(([name, amount, paid], i) => (
+        <MockRise key={name} active={active} delay={d + 200 + i * 130}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10, padding: '9px 0', borderTop: '1px solid var(--hairline-soft)' }}>
+            <span style={{ fontSize: 13, color: 'var(--ink)' }}>{name}</span>
+            <span style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}>
+              {paid && (
+                <span style={{ ...mockMono, fontSize: 9, fontWeight: 500, color: '#0E8345', background: 'rgba(14,131,69,0.09)', borderRadius: 99, padding: '2px 7px' }}>
+                  Paid
+                </span>
+              )}
+              <span style={{ ...mockMono, fontSize: 12, color: 'var(--ink-60)' }}>{amount}</span>
+            </span>
+          </div>
+        </MockRise>
+      ))}
+    </MockRise>
+  )
+}
+
+// Business: draw sheet, the "payment sheet" moment of the product.
+function BusinessMock({ active, d }) {
+  return (
+    <MockRise active={active} delay={d} style={{ ...mockPanel, maxWidth: 290, margin: '0 auto', padding: '16px 18px 18px' }}>
+      <p className="eyebrow" style={{ fontSize: 9, color: 'var(--ink-45)', marginBottom: 10 }}>Draw from credit line</p>
+      <p style={{ ...mockMono, fontSize: 30, fontWeight: 500, letterSpacing: '-0.03em', color: 'var(--ink)', margin: '0 0 14px' }}>
+        <CountUp to={12000} active={active} delay={d + 250} duration={1000} />
+      </p>
+      <MockRise active={active} delay={d + 300}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10, padding: '10px 0 12px', borderTop: '1px solid var(--hairline-soft)' }}>
+          <span style={{ fontSize: 12.5, color: 'var(--ink-60)' }}>To</span>
+          <span style={{ ...mockMono, fontSize: 11.5, color: 'var(--ink)' }}>Business checking ••4821</span>
+        </div>
+      </MockRise>
+      <MockRise active={active} delay={d + 450}>
+        <div style={{
+          background: 'var(--accent)',
+          color: '#fff',
+          borderRadius: 99,
+          textAlign: 'center',
+          fontSize: 13,
+          fontWeight: 400,
+          padding: '9px 0',
+          letterSpacing: '0.01em',
+        }}>
+          Confirm draw
+        </div>
+      </MockRise>
+    </MockRise>
+  )
+}
+
+// Investing: portfolio stays intact, nothing sold.
+function InvestingMock({ active, d }) {
+  const rows = [
+    ['SOL', '142.00'],
+    ['mSOL', '86.40'],
+  ]
+  return (
+    <MockRise active={active} delay={d} style={{ ...mockPanel, maxWidth: 320, margin: '0 auto', padding: '14px 18px 16px' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 8 }}>
+        <span className="eyebrow" style={{ fontSize: 9, color: 'var(--ink-45)' }}>Portfolio</span>
+        <span style={{ ...mockMono, fontSize: 10, fontWeight: 500, color: '#0E8345', background: 'rgba(14,131,69,0.09)', borderRadius: 99, padding: '2px 8px' }}>
+          0 sold
+        </span>
+      </div>
+      <svg viewBox="0 0 280 44" style={{ display: 'block', width: '100%', height: 44, marginBottom: 6 }}>
+        <path
+          d="M0 36 C 30 34, 45 22, 70 24 S 115 34, 140 26 S 185 8, 210 12 S 260 6, 280 4"
+          fill="none"
+          stroke="#0E8345"
+          strokeWidth="1.6"
+          strokeLinecap="round"
+          strokeDasharray="340"
+          strokeDashoffset={active ? 0 : 340}
+          style={{ transition: `stroke-dashoffset 1.3s cubic-bezier(0.22, 1, 0.36, 1) ${d + 250}ms` }}
+        />
+      </svg>
+      {rows.map(([token, qty], i) => (
+        <MockRise key={token} active={active} delay={d + 350 + i * 130}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10, padding: '9px 0', borderTop: '1px solid var(--hairline-soft)' }}>
+            <span style={{ ...mockMono, fontSize: 12, color: 'var(--ink)' }}>{token}</span>
+            <span style={{ display: 'inline-flex', alignItems: 'baseline', gap: 8 }}>
+              <span style={{ ...mockMono, fontSize: 12, color: 'var(--ink-60)' }}>{qty}</span>
+              <span style={{ fontSize: 11, color: 'var(--ink-45)' }}>held</span>
+            </span>
+          </div>
+        </MockRise>
+      ))}
+    </MockRise>
+  )
+}
+
+// Milestones: the approval moment, rate earned by the score.
+function MilestonesMock({ active, d }) {
+  return (
+    <MockRise active={active} delay={d} style={{ ...mockPanel, maxWidth: 290, margin: '0 auto', padding: '16px 18px 16px' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
+        <svg width="15" height="15" viewBox="0 0 15 15">
+          <circle cx="7.5" cy="7.5" r="7" fill="rgba(14,131,69,0.12)" />
+          <path d="M4.6 7.8 l2 2 L10.6 5.6" stroke="#0E8345" strokeWidth="1.4" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+        <span style={{ fontSize: 13, fontWeight: 500, color: 'var(--ink)', letterSpacing: '-0.01em' }}>Draw approved</span>
+      </div>
+      <p style={{ ...mockMono, fontSize: 30, fontWeight: 500, letterSpacing: '-0.03em', color: 'var(--ink)', margin: '0 0 12px' }}>
+        <CountUp to={8000} active={active} delay={d + 250} duration={1000} />
+      </p>
+      {[['Your rate', '9.2% APR'], ['Backed by', 'score 742']].map(([label, value], i) => (
+        <MockRise key={label} active={active} delay={d + 350 + i * 130}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10, padding: '9px 0', borderTop: '1px solid var(--hairline-soft)' }}>
+            <span style={{ fontSize: 12.5, color: 'var(--ink-60)' }}>{label}</span>
+            <span style={{ ...mockMono, fontSize: 11.5, color: 'var(--ink)' }}>{value}</span>
+          </div>
+        </MockRise>
+      ))}
+    </MockRise>
+  )
+}
+
+const USE_CASE_MOCKS = [EverydayMock, BusinessMock, InvestingMock, MilestonesMock]
+
+function UseCaseCard({ tag, title, description, well, index, active }) {
+  const Mock = USE_CASE_MOCKS[index]
+  const baseDelay = index * 120
   return (
     <div className="usecase-card" style={{
-      position: 'relative',
       height: '100%',
-      background: 'var(--dark)',
-      border: '1px solid rgba(238,237,255,0.1)',
+      background: 'var(--surface)',
+      border: '1px solid var(--hairline)',
       borderRadius: 14,
-      padding: '26px 26px 28px',
       overflow: 'hidden',
       display: 'flex',
       flexDirection: 'column',
     }}>
-      {/* Ambient indigo glow, same family as the CTA band */}
-      <span aria-hidden className="usecase-glow" style={{
-        position: 'absolute',
-        inset: 0,
-        background: 'radial-gradient(115% 80% at 88% 0%, rgba(107,95,255,0.2) 0%, transparent 58%)',
-        pointerEvents: 'none',
-      }} />
-
-      <div style={{ position: 'relative', display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: 12, marginBottom: 18 }}>
-        <span className="eyebrow" style={{ fontSize: 10, color: 'rgba(238,237,255,0.5)' }}>[ {tag} ]</span>
-        <span style={{ display: 'inline-flex', alignItems: 'center', gap: 7 }}>
-          <span aria-hidden style={{ width: 6, height: 6, borderRadius: 99, background: '#57E39A', boxShadow: '0 0 8px #57E39A' }} />
-          <span style={{ ...mono, fontSize: 11, color: 'rgba(238,237,255,0.55)', letterSpacing: '0.01em' }}>{caption}</span>
-        </span>
+      {/* Tinted well with a cropped product mock, Stripe-style */}
+      <div aria-hidden style={{
+        background: well,
+        borderBottom: '1px solid var(--hairline-soft)',
+        padding: '30px 28px 0',
+        height: 196,
+        overflow: 'hidden',
+        flexShrink: 0,
+      }}>
+        <Mock active={active} d={baseDelay + 150} />
       </div>
 
-      <h3 style={{ position: 'relative', fontWeight: 500, fontSize: 18, letterSpacing: '-0.015em', color: '#fff', lineHeight: 1.3, margin: '0 0 8px' }}>
-        {title}
-      </h3>
-      <p style={{ position: 'relative', fontSize: 14, color: 'rgba(238,237,255,0.6)', lineHeight: 1.6, margin: 0 }}>
-        {description}
-      </p>
-
-      {/* Mini posted-vs-drawn viz, same language as the collateral comparison */}
-      <div
-        role="img"
-        aria-label={`With $${posted.toLocaleString('en-US')} posted you draw $${drawn.toLocaleString('en-US')}.`}
-        style={{ position: 'relative', marginTop: 'auto', paddingTop: 26, display: 'flex', flexDirection: 'column', gap: 14 }}
-      >
-        {bars.map(({ label, amount, delayMs, shimmer, amountColor, fill }) => (
-          <div key={label}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 7 }}>
-              <span className="eyebrow" style={{ fontSize: 9, color: 'rgba(238,237,255,0.45)' }}>[ {label} ]</span>
-              <span style={{ ...mono, fontSize: 15, fontWeight: 500, letterSpacing: '-0.02em', color: amountColor }}>
-                <CountUp to={amount} active={active} delay={delayMs + 150} duration={900} />
-              </span>
-            </div>
-            <div style={{
-              position: 'relative',
-              height: 18,
-              borderRadius: 5,
-              background: 'rgba(238,237,255,0.05)',
-              border: '1px solid rgba(238,237,255,0.1)',
-              overflow: 'hidden',
-            }}>
-              <div style={{
-                position: 'absolute',
-                left: 0,
-                top: 0,
-                bottom: 0,
-                width: active ? pct(amount) : '0%',
-                borderRadius: 5,
-                overflow: 'hidden',
-                transition: `width 1s cubic-bezier(0.22, 1, 0.36, 1) ${delayMs}ms`,
-                ...fill,
-              }}>
-                {shimmer && <span className="bar-shimmer" aria-hidden />}
-              </div>
-            </div>
-          </div>
-        ))}
+      <div style={{ padding: '22px 26px 26px', display: 'flex', flexDirection: 'column', flex: 1 }}>
+        <p className="eyebrow" style={{ fontSize: 10, color: 'var(--ink-45)', marginBottom: 12 }}>[ {tag} ]</p>
+        <h3 style={{ fontWeight: 500, fontSize: 18, letterSpacing: '-0.015em', color: 'var(--ink)', lineHeight: 1.3, margin: '0 0 8px' }}>
+          {title}
+        </h3>
+        <p style={{ fontSize: 14, color: 'var(--ink-60)', lineHeight: 1.6, margin: 0 }}>
+          {description}
+        </p>
       </div>
     </div>
   )
