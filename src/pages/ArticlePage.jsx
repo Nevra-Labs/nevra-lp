@@ -25,6 +25,11 @@ export default function ArticlePage() {
     window.scrollTo(0, 0)
   }, [id])
 
+  useEffect(() => {
+    document.title = article ? `${article.title} | Nevra` : 'Article not found | Nevra'
+    return () => { document.title = 'Nevra | Real credit for crypto-native people' }
+  }, [article])
+
   if (!article) {
     return (
       <div style={{ background: 'var(--paper)', minHeight: '100vh', color: 'var(--ink)' }}>
