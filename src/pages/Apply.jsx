@@ -74,6 +74,11 @@ export default function Apply() {
   const [animKey, setAnimKey] = useState(0)
   const [phase, setPhase] = useState('loading') // loading | landing | questionnaire | done
 
+  useEffect(() => {
+    document.title = 'Apply | Nevra'
+    return () => { document.title = 'Nevra | Real credit for crypto-native people' }
+  }, [])
+
   // Once Privy is ready, show landing or check existing submission
   useEffect(() => {
     if (!ready) return
@@ -108,12 +113,13 @@ export default function Apply() {
       setAnimKey(k => k + 1)
     } else {
       if (supabase && user) {
-        await supabase.from('applications').upsert({
+        const { error } = await supabase.from('applications').upsert({
           privy_user_id: user.id,
           email: user.email?.address ?? null,
           ...next,
           [questionId]: option,
         }, { onConflict: 'privy_user_id' })
+        if (error) console.error('Application save failed:', error.message)
       }
       setPhase('done')
       setAnimKey(k => k + 1)

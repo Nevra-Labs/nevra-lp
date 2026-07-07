@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import Nav from '../components/Nav'
 import { articles } from '../data/articles'
@@ -5,6 +6,11 @@ import BlogCover from '../components/BlogCover'
 import '../responsive.css'
 
 export default function Blog() {
+  useEffect(() => {
+    document.title = 'Blog | Nevra'
+    return () => { document.title = 'Nevra | Real credit for crypto-native people' }
+  }, [])
+
   return (
     <div style={{ background: 'var(--paper)', minHeight: '100vh', color: 'var(--ink)' }}>
       <Nav />
