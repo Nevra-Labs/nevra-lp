@@ -95,28 +95,24 @@ const USE_CASES = [
     tag: 'EVERYDAY',
     title: 'Living expenses',
     description: 'Cover rent and day-to-day spending without selling your stack.',
-    caption: 'rent covered',
     well: 'linear-gradient(135deg, #F6F9FC 0%, #EDF1FF 100%)',
   },
   {
     tag: 'BUSINESS',
     title: 'Start something',
     description: 'Fund your company or side project while your portfolio keeps working.',
-    caption: 'company funded',
     well: 'linear-gradient(135deg, #F6F9FC 0%, #F1EEFF 100%)',
   },
   {
     tag: 'INVESTING',
     title: 'Stay in the market',
     description: 'Seize opportunities without triggering a taxable sale.',
-    caption: '0 tokens sold',
     well: 'linear-gradient(135deg, #F6F9FC 0%, #E9F8F1 100%)',
   },
   {
     tag: 'MILESTONES',
     title: 'Big moments',
     description: 'Finance a car, a move, or a wedding at a rate your score earned.',
-    caption: 'keys in hand',
     well: 'linear-gradient(135deg, #F6F9FC 0%, #EAF4FF 100%)',
   },
 ]
@@ -582,7 +578,7 @@ function MilestonesMock({ active, d }) {
 
 const USE_CASE_MOCKS = [EverydayMock, BusinessMock, InvestingMock, MilestonesMock]
 
-function UseCaseCard({ tag, title, description, caption, well, index, active }) {
+function UseCaseCard({ tag, title, description, well, index, active }) {
   const Mock = USE_CASE_MOCKS[index]
   const baseDelay = index * 120
   return (
@@ -608,13 +604,7 @@ function UseCaseCard({ tag, title, description, caption, well, index, active }) 
       </div>
 
       <div style={{ padding: '22px 26px 26px', display: 'flex', flexDirection: 'column', flex: 1 }}>
-        <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: 12, marginBottom: 12 }}>
-          <span className="eyebrow" style={{ fontSize: 10, color: 'var(--ink-45)' }}>[ {tag} ]</span>
-          <span style={{ display: 'inline-flex', alignItems: 'center', gap: 7 }}>
-            <span aria-hidden style={{ width: 6, height: 6, borderRadius: 99, background: '#0E8345' }} />
-            <span style={{ ...mockMono, fontSize: 11, color: 'var(--ink-45)', letterSpacing: '0.01em' }}>{caption}</span>
-          </span>
-        </div>
+        <p className="eyebrow" style={{ fontSize: 10, color: 'var(--ink-45)', marginBottom: 12 }}>[ {tag} ]</p>
         <h3 style={{ fontWeight: 500, fontSize: 18, letterSpacing: '-0.015em', color: 'var(--ink)', lineHeight: 1.3, margin: '0 0 8px' }}>
           {title}
         </h3>
