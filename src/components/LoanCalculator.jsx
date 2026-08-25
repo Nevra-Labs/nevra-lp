@@ -1,32 +1,41 @@
 import { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
-import { Clock, Percent, Contrast, ChevronDown, ArrowRight } from 'lucide-react'
+import { Clock, Percent, Wallet, ChevronDown, ArrowRight } from 'lucide-react'
 
-// Illustrative spot prices in USD. The calculator is a marketing estimate, not a
-// quote, so these are static constants rather than a live feed.
-const ASSETS = [
-  { code: 'BTC', name: 'Bitcoin', price: 95000, max: 5,   step: 0.01, mark: '₿', bg: '#F7931A' },
-  { code: 'ETH', name: 'Ethereum', price: 3200, max: 120, step: 0.1,  mark: 'Ξ', bg: '#627EEA' },
-  { code: 'SOL', name: 'Solana',  price: 185,  max: 2000, step: 1,    mark: '◎', bg: '#14F195' },
-]
-
-// Rates against USD, same illustrative-constant rule as ASSETS.
+// Rates against USD. Illustrative constants, not a live feed — the calculator
+// is a marketing estimate, not a quote.
 const CURRENCIES = [
   { code: 'USD', symbol: '$', rate: 1,    flag: '🇺🇸' },
   { code: 'EUR', symbol: '€', rate: 0.92, flag: '🇪🇺' },
   { code: 'GBP', symbol: '£', rate: 0.79, flag: '🇬🇧' },
 ]
 
-const LTV = 0.6
+// Nevra score band. Below FLOOR there is no line yet; the hero gauge sits at
+// 742, which is also where the slider starts so the section opens on a real
+// number instead of zero.
+const SCORE_MIN = 300
+const SCORE_MAX = 850
+const SCORE_FLOOR = 550
+const SCORE_START = 742
 
-const TERMS = [
-  { icon: Clock,    label: 'Duration up to',    value: '12 months' },
-  { icon: Percent,  label: 'Loan APR',          value: '7.25%' },
-  { icon: Contrast, label: 'Loan-To-Value (LTV)', value: 'Up to 60%' },
-]
+/* Everything the score decides, in one place.
+   Credit grows faster at the top of the band, so the curve is mildly convex;
+   APR and the collateral requirement fall off linearly. */
+function quote(score) {
+  if (score < SCORE_FLOOR) {
+    return { eligible: false, line: 0, apr: null, collateralPct: null }
+  }
+  const t = (score - SCORE_FLOOR) / (SCORE_MAX - SCORE_FLOOR)
+  return {
+    eligible: true,
+    line: Math.round((1000 + Math.pow(t, 1.6) * 24000) / 100) * 100,
+    apr: 13.5 - t * 7,
+    collateralPct: Math.round((1 - t) * 50),
+  }
+}
 
-/* Round pill token: circular mark + code + chevron, opens a small menu. */
-function TokenSelect({ options, selected, onSelect, renderMark }) {
+/* Currency pill: circular flag + code + chevron, opens a small menu. */
+function CurrencySelect({ selected, onSelect }) {
   const [open, setOpen] = useState(false)
   const ref = useRef(null)
 
@@ -51,17 +60,17 @@ function TokenSelect({ options, selected, onSelect, renderMark }) {
         className="calc-token focus-ring"
         aria-haspopup="listbox"
         aria-expanded={open}
-        aria-label={`Change ${selected.code}`}
+        aria-label={`Change currency, currently ${selected.code}`}
         onClick={() => setOpen(v => !v)}
       >
-        {renderMark(selected)}
+        <span className="calc-mark calc-mark-flag" aria-hidden="true">{selected.flag}</span>
         <span className="calc-token-code">{selected.code}</span>
         <ChevronDown size={18} strokeWidth={1.8} style={{ color: 'var(--ink-30)', flexShrink: 0 }} />
       </button>
 
       {open && (
         <div className="calc-menu fade-up" role="listbox">
-          {options.map(opt => (
+          {CURRENCIES.map(opt => (
             <button
               key={opt.code}
               type="button"
@@ -70,7 +79,7 @@ function TokenSelect({ options, selected, onSelect, renderMark }) {
               className="calc-menu-item"
               onClick={() => { onSelect(opt); setOpen(false) }}
             >
-              {renderMark(opt)}
+              <span className="calc-mark calc-mark-flag" aria-hidden="true">{opt.flag}</span>
               <span style={{ fontWeight: opt.code === selected.code ? 500 : 400 }}>{opt.code}</span>
             </button>
           ))}
@@ -80,20 +89,24 @@ function TokenSelect({ options, selected, onSelect, renderMark }) {
   )
 }
 
-function AssetMark({ bg, mark }) {
+/* SCORE reads as a token for rhythm with the currency pill, but there is
+   nothing to choose — it is a span, has no chevron, and does not react. */
+function ScoreToken() {
   return (
-    <span className="calc-mark" style={{ background: bg, color: '#FFFFFF' }} aria-hidden="true">
-      {mark}
+    <span className="calc-token calc-token-static">
+      <span className="calc-mark calc-mark-score" aria-hidden="true">
+        <svg viewBox="0 0 24 24" style={{ width: '72%', height: '72%', display: 'block' }}>
+          <path d="M 4.5 16.5 A 7.5 7.5 0 0 1 19.5 16.5" fill="none" stroke="#FFFFFF" strokeWidth="2.4" strokeLinecap="round" />
+          <circle cx="12" cy="16.5" r="1.9" fill="#FFFFFF" />
+        </svg>
+      </span>
+      <span className="calc-token-code">SCORE</span>
     </span>
   )
 }
 
-function FlagMark({ flag }) {
-  return <span className="calc-mark calc-mark-flag" aria-hidden="true">{flag}</span>
-}
-
 /* Labelled slider row: caption, big value, unit, track. */
-function SliderRow({ label, display, unit, max, step, value, onChange, ariaLabel }) {
+function SliderRow({ label, display, unit, min = 0, max, step, value, onChange, ariaLabel, disabled, note }) {
   return (
     <div className="calc-slider-row">
       <p className="calc-slider-label">{label}</p>
@@ -104,63 +117,52 @@ function SliderRow({ label, display, unit, max, step, value, onChange, ariaLabel
       <input
         type="range"
         className="calc-range"
-        min={0}
+        min={min}
         max={max}
         step={step}
         value={value}
+        disabled={disabled}
         onChange={e => onChange(Number(e.target.value))}
         aria-label={ariaLabel}
       />
+      {note && <p className="calc-slider-note">{note}</p>}
     </div>
   )
 }
 
 export default function LoanCalculator() {
-  const [asset, setAsset] = useState(ASSETS[0])
   const [currency, setCurrency] = useState(CURRENCIES[0])
-  const [collateral, setCollateral] = useState(0)
+  const [score, setScore] = useState(SCORE_START)
+  // How much of the available line the visitor wants to draw, 0–1. Kept as a
+  // ratio so moving the score rescales the draw instead of resetting it.
+  const [drawRatio, setDrawRatio] = useState(1)
 
-  // Switching asset keeps the slider inside the new asset's range.
-  const handleAsset = next => {
-    setAsset(next)
-    setCollateral(c => Math.min(c, next.max))
-  }
+  const { eligible, line, apr, collateralPct } = quote(score)
+  const maxBorrow = line * currency.rate
+  const borrow = maxBorrow * drawRatio
 
-  const maxBorrow = asset.max * asset.price * LTV * currency.rate
-  const borrow = collateral * asset.price * LTV * currency.rate
-
-  // Dragging the borrow slider back-solves the collateral it would take.
-  const handleBorrow = amount => {
-    setCollateral(amount / (asset.price * LTV * currency.rate))
-  }
-
-  const collateralText = collateral === 0
-    ? '0'
-    : collateral.toLocaleString('en-US', { maximumFractionDigits: asset.step < 1 ? 2 : 0 })
-
-  const borrowText = currency.symbol + borrow.toLocaleString('en-US', {
+  const money = n => currency.symbol + n.toLocaleString('en-US', {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   })
+
+  const terms = [
+    { icon: Clock, label: 'Duration up to', value: '12 months' },
+    { icon: Percent, label: 'Loan APR', value: eligible ? `${apr.toFixed(2)}%` : '—' },
+    {
+      icon: Wallet,
+      label: 'Collateral required',
+      value: !eligible ? '—' : collateralPct === 0 ? 'None' : `${collateralPct}% of draw`,
+    },
+  ]
 
   return (
     <section id="calculator" className="calc-section" aria-labelledby="calc-heading">
       <div className="calc-headline-band">
         <h2 id="calc-heading" className="calc-headline">
           How much{' '}
-          <TokenSelect
-            options={CURRENCIES}
-            selected={currency}
-            onSelect={setCurrency}
-            renderMark={c => <FlagMark flag={c.flag} />}
-          />{' '}
-          will your{' '}
-          <TokenSelect
-            options={ASSETS}
-            selected={asset}
-            onSelect={handleAsset}
-            renderMark={a => <AssetMark bg={a.bg} mark={a.mark} />}
-          />{' '}
+          <CurrencySelect selected={currency} onSelect={setCurrency} />{' '}
+          will your <ScoreToken />{' '}
           <em className="calc-headline-em">unlock?</em>
         </h2>
       </div>
@@ -168,23 +170,28 @@ export default function LoanCalculator() {
       <div className="calc-body">
         <div className="calc-sliders">
           <SliderRow
-            label="Collateral you can post"
-            display={collateralText}
-            unit={asset.code}
-            max={asset.max}
-            step={asset.step}
-            value={collateral}
-            onChange={setCollateral}
-            ariaLabel={`Collateral to post in ${asset.code}`}
+            label="Your onchain credit score"
+            display={score}
+            unit="SCORE"
+            min={SCORE_MIN}
+            max={SCORE_MAX}
+            step={1}
+            value={score}
+            onChange={setScore}
+            ariaLabel="Your Nevra credit score"
+            note={eligible
+              ? 'Every repayment moves this. Your rate and collateral follow it down.'
+              : `Not scored for credit yet. A score of ${SCORE_FLOOR} opens your first line.`}
           />
           <SliderRow
             label="Amount you can borrow"
-            display={borrowText}
+            display={money(borrow)}
             unit={currency.code}
-            max={maxBorrow}
-            step={maxBorrow / 500}
+            max={maxBorrow || 1}
+            step={(maxBorrow || 1) / 500}
             value={borrow}
-            onChange={handleBorrow}
+            disabled={!eligible}
+            onChange={amount => setDrawRatio(maxBorrow ? amount / maxBorrow : 0)}
             ariaLabel={`Amount to borrow in ${currency.code}`}
           />
         </div>
@@ -192,7 +199,7 @@ export default function LoanCalculator() {
         <div className="calc-overview">
           <p className="calc-overview-title">Loan Overview</p>
           <dl className="calc-terms">
-            {TERMS.map(({ icon: Icon, label, value }) => (
+            {terms.map(({ icon: Icon, label, value }) => (
               <div key={label} className="calc-term">
                 <dt>
                   <Icon size={16} strokeWidth={1.6} />
@@ -206,6 +213,9 @@ export default function LoanCalculator() {
             Start my loan
             <ArrowRight size={16} strokeWidth={1.8} />
           </Link>
+          <p className="calc-fineprint">
+            Illustrative. Your rate and line are set after verification.
+          </p>
         </div>
       </div>
     </section>
