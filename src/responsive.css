@@ -1,4 +1,11 @@
 /* Tablet: drop the four-across grids to two before going single column. */
+/* Below this the four centred nav links crowd the right-hand controls. */
+@media (max-width: 1080px) {
+  .nav-center {
+    display: none !important;
+  }
+}
+
 @media (max-width: 1040px) {
   .usecases,
   .principles {

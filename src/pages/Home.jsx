@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { useState, useEffect, useRef } from 'react'
 import { ShieldCheck, KeyRound, TrendingUp, Umbrella, ArrowRight } from 'lucide-react'
 import Nav from '../components/Nav'
@@ -100,6 +100,17 @@ const FAQS = [
 ]
 
 export default function Home() {
+  const { hash } = useLocation()
+
+  useEffect(() => {
+    if (!hash) return
+    const el = document.getElementById(hash.slice(1))
+    if (!el) return
+    // One frame so the section has laid out before we measure it.
+    const raf = requestAnimationFrame(() => el.scrollIntoView({ behavior: 'smooth', block: 'start' }))
+    return () => cancelAnimationFrame(raf)
+  }, [hash])
+
   return (
     <div>
       <Nav />
@@ -181,7 +192,7 @@ export default function Home() {
       </section>
 
       {/* ── How it works ─────────────────────────────────────────────── */}
-      <section className="section shell">
+      <section id="how-it-works" className="section shell">
         <Reveal style={{ maxWidth: 620, marginBottom: 72 }}>
           <p className="eyebrow" style={{ marginBottom: 20 }}>How it works</p>
           <h2 className="display-sm">
@@ -210,7 +221,7 @@ export default function Home() {
       <LoanCalculator />
 
       {/* ── Use cases ────────────────────────────────────────────────── */}
-      <section className="section shell">
+      <section id="use-cases" className="section shell">
         <Reveal style={{ maxWidth: 620, marginBottom: 56 }}>
           <p className="eyebrow" style={{ marginBottom: 20 }}>Use cases</p>
           <h2 className="display-sm">

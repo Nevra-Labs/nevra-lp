@@ -144,7 +144,7 @@ export default function LoanCalculator() {
   })
 
   return (
-    <section className="calc-section" aria-labelledby="calc-heading">
+    <section id="calculator" className="calc-section" aria-labelledby="calc-heading">
       <div className="calc-headline-band">
         <h2 id="calc-heading" className="calc-headline">
           How much{' '}

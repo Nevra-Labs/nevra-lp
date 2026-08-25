@@ -1,19 +1,44 @@
-import { Link } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 
-// Minimal navbar: no bottom rule, no frame. It floats transparent over the
-// hero and only fades in a blurred white backing once the page scrolls, so
-// nothing draws a line across the layout.
+// Arch-style navbar (archlending.com): 64px fixed bar, logo left, centered
+// section links, and a right cluster of text link + outline button + filled
+// dark button. Transparent over the hero, solid white once the page scrolls.
+//
+// Measured off Arch: 36px control height, 8px 16px padding, 8px radius,
+// 14px/500 labels, 16px gap between the right-hand controls.
+//
 // `rightExtra` renders extra controls before the Apply button (e.g. Disconnect on /apply).
+
+const SECTION_LINKS = [
+  { label: 'How it works', id: 'how-it-works' },
+  { label: 'Calculator', id: 'calculator' },
+  { label: 'Use cases', id: 'use-cases' },
+]
+
 export default function Nav({ rightExtra = null }) {
   const [scrolled, setScrolled] = useState(false)
+  const { pathname } = useLocation()
+  const navigate = useNavigate()
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 12)
+    const onScroll = () => setScrolled(window.scrollY > 8)
     onScroll()
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
+
+  // In-page anchors: scroll directly when already on the landing page,
+  // otherwise route home and let Home's hash effect finish the jump. Doing it
+  // by hand keeps Lenis's smooth scrolling from fighting native hash jumps.
+  const goToSection = (e, id) => {
+    e.preventDefault()
+    if (pathname === '/') {
+      document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    } else {
+      navigate(`/#${id}`)
+    }
+  }
 
   return (
     <header style={{
@@ -21,43 +46,49 @@ export default function Nav({ rightExtra = null }) {
       top: 0,
       left: 0,
       right: 0,
-      zIndex: 20,
+      zIndex: 50,
+      height: 64,
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
       padding: '0 24px',
-      background: scrolled ? 'rgba(255,255,255,0.78)' : 'transparent',
-      backdropFilter: scrolled ? 'blur(14px)' : 'none',
-      WebkitBackdropFilter: scrolled ? 'blur(14px)' : 'none',
-      transition: 'background 0.3s ease, backdrop-filter 0.3s ease',
+      background: scrolled ? 'var(--paper)' : 'transparent',
+      transition: 'background 150ms ease',
     }}>
       <div style={{
+        width: '100%',
         maxWidth: 'var(--shell)',
-        margin: '0 auto',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        padding: '18px 0',
       }}>
         <Link to="/" style={{ display: 'flex', alignItems: 'center' }} aria-label="Nevra home">
           <img src="/logo.png" alt="Nevra" style={{ width: 26, height: 26, display: 'block' }} />
         </Link>
 
-        <nav style={{ display: 'flex', alignItems: 'center', gap: 28 }}>
-          <Link to="/blog" className="nav-text-links" style={navLink}>Blog</Link>
-          <a href="/pdf/whitepaper.pdf" target="_blank" rel="noopener noreferrer" className="nav-text-links" style={navLink}>
+        <nav className="nav-center nav-text-links" style={{ display: 'flex', alignItems: 'center' }}>
+          {SECTION_LINKS.map(({ label, id }) => (
+            <a key={id} href={`/#${id}`} onClick={e => goToSection(e, id)} className="nav-item focus-ring">
+              {label}
+            </a>
+          ))}
+          <Link to="/blog" className="nav-item focus-ring">Blog</Link>
+        </nav>
+
+        <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+          <Link to="/apply" className="nav-item nav-item-quiet nav-text-links focus-ring">Sign in</Link>
+          {rightExtra}
+          <a
+            href="/pdf/whitepaper.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="nav-btn nav-btn-outline focus-ring"
+          >
             Whitepaper
           </a>
-          {rightExtra}
-          <Link to="/apply" className="btn btn-primary focus-ring" style={{ fontSize: 14, padding: '10px 18px' }}>
-            Apply
-          </Link>
-        </nav>
+          <Link to="/apply" className="nav-btn nav-btn-solid focus-ring">Apply now</Link>
+        </div>
       </div>
     </header>
   )
-}
-
-const navLink = {
-  fontSize: 14,
-  fontWeight: 400,
-  color: 'var(--ink-60)',
-  letterSpacing: '-0.005em',
 }
