@@ -1,16 +1,16 @@
 const VARIANTS = [
   {
-    bg: 'radial-gradient(120% 140% at 20% 20%, #2a2660 0%, #0f0d2b 60%, #050416 100%)',
+    bg: 'radial-gradient(120% 140% at 20% 20%, #3A3B40 0%, #1A1B1F 60%, #0E0F12 100%)',
     accent: '#c9c6f0',
     accentSoft: 'rgba(201, 198, 240, 0.35)',
   },
   {
-    bg: 'radial-gradient(120% 140% at 80% 20%, #1a3564 0%, #0c1a3a 60%, #060d1f 100%)',
+    bg: 'radial-gradient(120% 140% at 80% 20%, #34353A 0%, #17181C 60%, #0E0F12 100%)',
     accent: '#b8d4f0',
     accentSoft: 'rgba(184, 212, 240, 0.35)',
   },
   {
-    bg: 'radial-gradient(120% 140% at 30% 80%, #322a5f 0%, #17123a 60%, #080615 100%)',
+    bg: 'radial-gradient(120% 140% at 30% 80%, #3E3F44 0%, #1C1D21 60%, #0E0F12 100%)',
     accent: '#d0c6f0',
     accentSoft: 'rgba(208, 198, 240, 0.35)',
   },

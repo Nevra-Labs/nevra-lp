@@ -1,42 +1,55 @@
 # Brand — Nevra
 
-_Status: active_
+_Status: active. Live reference at `/design` (`src/pages/DesignSystem.jsx`). Tokens live in
+`:root` in `src/index.css`; the reference page mirrors them, so edit both together._
 
-Stripe-inspired system set July 2026. References: stripe.com (white canvas, deep-navy ink, thin display type with negative tracking, indigo reserved for CTAs, pill buttons), tryportola.com (flat navbar aligned to the structural frame, hairline grids, two-tone headlines).
+Minimal system distilled from avon.xyz, altitude.xyz, apxlending.com and archlending.com.
+The shared rules across all four: white canvas, near-black ink, **no structural rails or
+frames**, one tight grotesque at large sizes with negative tracking, mono uppercase
+micro-labels, 12–16px radii, near-black button fills.
 
 ## Palette (CSS variables in `src/index.css`)
 
 | Token | Value | Use |
 |---|---|---|
-| `--paper` | `#FFFFFF` | Site background (white canvas) |
-| `--paper-soft` | `#F6F9FC` | Cool off-white feature bands |
-| `--surface` | `#FFFFFF` | Cards, elevated panels |
-| `--ink` | `#0D253D` | Text — deep navy, never pure black |
-| `--ink-60/-45/-30` | ink at 62/46/32% | Body copy, captions, faint headings |
-| `--accent` | `#533AFD` | Indigo — CTAs only, one filled pill per band |
-| `--dark` | `#0D253D` | Full-bleed dark sections (problem, CTA) |
-| `--hairline` | `#E3E8EE` | Borders, dividers |
-| `--hairline-soft` | `#EAEFF5` | Structural frame rails |
+| `--paper` | `#FFFFFF` | Site background |
+| `--paper-soft` | `#FAFAFA` | Chart tracks, pill backgrounds |
+| `--surface` | `#FFFFFF` | Cards |
+| `--ink` | `#0E0F12` | Text and primary buttons — near-black, never pure black |
+| `--ink-60/-45/-30` | ink at 60/45/28% | Body copy, mono labels, disclaimers |
+| `--hairline` | `#EAEAEA` | Card borders and FAQ rules **only** |
+| `--link` | `#0051FF` | Focus rings and inline links, nothing else |
+| `--dark` | `#0E0F12` | The inset CTA block |
 
 ## Typography
 
-- **Sans (everything):** Inter — `font-feature-settings: 'ss01'` globally, body weight 300
-- **Display:** weight 300 with negative tracking (~-0.026em at hero size); bumping display above 300 kills the editorial air
-- **Mono (labels, data):** IBM Plex Mono — eyebrows `/ SECTION` or `[ LABEL ]`, uppercase, 0.14em tracking (`.eyebrow` class)
-- Headlines are two-tone (strong line + muted line), no serif, no italic display
+- **One family: Inter Tight.** No serif, no italic display, no second typeface.
+- Display 72px / 500 / -0.038em; section headings 46px / 500 / -0.032em.
+- Second headline line is `--ink-45`, not a different font.
+- **Mono (labels):** IBM Plex Mono, uppercase, 11px, 0.13em tracking (`.eyebrow`).
+
+## Layout
+
+- **No frames.** No side rails, no full-width section rules, no shared cell dividers.
+  Sections are separated by `--gap-section` (112px) of white space.
+- Content sits in `.shell` (1120px, centered).
+- Navbar is transparent over the hero and fades in a blurred white backing on scroll.
+  It has no bottom border.
 
 ## Buttons
 
-Stripe pills: `border-radius: 9999px`, tight padding (12px 22px), label weight 400. The filled indigo pill is the primary CTA; secondary is a hairline outline pill. Never rounded-rectangles.
+Radius 12px, padding 14px 22px, weight 500. `.btn-primary` is a near-black fill;
+`.btn-outline` is a hairline outline. Never pills.
 
-## Motifs
+## Motion
 
-- Flat Portola-style navbar: full-width hairline bottom border, content constrained to the same 1160px frame as sections, logo mark only (no wordmark), "↳ Apply" text CTA
-- Structural frame: content-width side rails, full-width section rules, cells sharing hairline dividers
-- Lucide icons (1.6px stroke, ink color) in white rounded tiles
-- Dashboard mock cards with mono data, marked "ILLUSTRATIVE"
-- Giant faint footer wordmark
+Inline animated SVGs in `src/components/motion.jsx`, styled by `src/motion.css`:
+stroke-drawing (`stroke-dasharray`/`dashoffset`), SMIL `animateMotion` for dots riding a
+path, staggered `--delay` per element. Everything is gated on a `.play` class added when
+the graphic scrolls into view, and every animation has a `prefers-reduced-motion` fallback
+that shows the finished state.
 
 ## Voice
 
-Plain-English, confident, no hype. "Post less than you borrow." Credit is boring on purpose — clear rules, honest data. Never "revolutionary," never exclamation marks.
+Plain-English, confident, no hype. "Post less than you borrow." Credit is boring on
+purpose — clear rules, honest data. Never "revolutionary," never exclamation marks.

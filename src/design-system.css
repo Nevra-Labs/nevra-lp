@@ -1,0 +1,355 @@
+/* ── Nevra Design System ──────────────────────────────────────────────────
+   Distilled from avon.xyz, altitude.xyz, apxlending.com and archlending.com.
+   These values mirror `:root` in index.css one-for-one — this page documents
+   the system the site actually runs, so the two must be edited together.
+
+   Scoped under `.ds` only so the reference page can style its own chrome
+   (sidebar, swatch grid) without leaking into the site. */
+.ds {
+  /* Ink */
+  --ds-ink:        #0E0F12;
+  --ds-ink-2:      #2A2C31;
+  --ds-body:       rgba(14, 15, 18, 0.60);
+  --ds-muted:      rgba(14, 15, 18, 0.45);
+  --ds-faint:      rgba(14, 15, 18, 0.28);
+
+  /* Surface */
+  --ds-white:      #FFFFFF;
+  --ds-off:        #FAFAFA;
+  --ds-sunk:       #F5F5F5;
+  --ds-tint:       #FAFAFA;
+
+  /* Line */
+  --ds-line:       #EAEAEA;
+  --ds-line-2:     #DDDDDD;
+
+  /* Accent */
+  --ds-blue:       #0051FF;
+  --ds-blue-tint:  #E5EEFF;
+
+  /* Radius */
+  --ds-r-sm:  8px;
+  --ds-r:     12px;
+  --ds-r-lg:  16px;
+  --ds-r-xl:  24px;
+  --ds-r-pill: 999px;
+
+  /* Type */
+  --ds-font: 'Inter Tight', Inter, Arial, system-ui, sans-serif;
+  --ds-mono: 'IBM Plex Mono', ui-monospace, Menlo, monospace;
+
+  font-family: var(--ds-font);
+  color: var(--ds-ink);
+  background: var(--ds-white);
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Layout ── */
+.ds-shell {
+  display: grid;
+  grid-template-columns: 232px minmax(0, 1fr);
+  gap: 56px;
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 32px 140px;
+}
+
+.ds-masthead {
+  border-bottom: 1px solid var(--ds-line);
+  margin-bottom: 56px;
+}
+
+.ds-masthead-inner {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 72px 32px 56px;
+}
+
+.ds-kicker {
+  font-family: var(--ds-mono);
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ds-muted);
+  margin: 0 0 20px;
+}
+
+.ds-lede {
+  font-size: 18px;
+  line-height: 1.55;
+  color: var(--ds-body);
+  max-width: 620px;
+  margin: 20px 0 0;
+}
+
+/* ── Sidebar ── */
+.ds-side {
+  position: sticky;
+  top: 32px;
+  align-self: start;
+  border-left: 1px solid var(--ds-line);
+}
+
+.ds-side a {
+  display: block;
+  padding: 9px 16px;
+  font-size: 14px;
+  color: var(--ds-body);
+  border-left: 2px solid transparent;
+  margin-left: -1px;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.ds-side a:hover {
+  color: var(--ds-ink);
+  border-left-color: var(--ds-ink);
+}
+
+/* ── Sections ── */
+.ds-section + .ds-section {
+  margin-top: 88px;
+}
+
+.ds-section-head {
+  border-bottom: 1px solid var(--ds-line);
+  padding-bottom: 16px;
+  margin-bottom: 32px;
+}
+
+.ds-section-head p {
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--ds-body);
+  margin: 8px 0 0;
+  max-width: 620px;
+}
+
+/* ── Type scale ── */
+.ds-h1 { font-size: 72px; font-weight: 500; line-height: 1.2;  letter-spacing: -0.01em; margin: 0; }
+.ds-h2 { font-size: 46px; font-weight: 500; line-height: 1.2;  margin: 0; }
+.ds-h3 { font-size: 32px; font-weight: 500; line-height: 1.2;  margin: 0; }
+.ds-h4 { font-size: 24px; font-weight: 500; line-height: 1.3;  margin: 0; }
+.ds-h5 { font-size: 18px; font-weight: 500; line-height: 1.3;  margin: 0; }
+.ds-body-lg { font-size: 16px; font-weight: 400; line-height: 1.5; color: var(--ds-body); margin: 0; }
+.ds-body-sm { font-size: 14px; font-weight: 400; line-height: 1.5; color: var(--ds-body); margin: 0; }
+.ds-caption { font-size: 12px; font-weight: 500; line-height: 1.35; color: var(--ds-muted); margin: 0; }
+
+.ds-type-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 220px;
+  gap: 32px;
+  align-items: baseline;
+  padding: 22px 0;
+  border-bottom: 1px solid var(--ds-line);
+}
+
+.ds-spec {
+  font-family: var(--ds-mono);
+  font-size: 11px;
+  line-height: 1.7;
+  color: var(--ds-muted);
+  white-space: pre-line;
+  text-align: right;
+}
+
+/* ── Swatches ── */
+.ds-swatches {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(168px, 1fr));
+  gap: 16px;
+}
+
+.ds-swatch {
+  border: 1px solid var(--ds-line);
+  border-radius: var(--ds-r);
+  overflow: hidden;
+  background: var(--ds-white);
+}
+
+.ds-swatch-chip {
+  height: 88px;
+  border-bottom: 1px solid var(--ds-line);
+}
+
+.ds-swatch-meta {
+  padding: 12px 14px 14px;
+}
+
+.ds-swatch-meta strong {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.ds-swatch-meta code,
+.ds-token-code {
+  font-family: var(--ds-mono);
+  font-size: 11px;
+  color: var(--ds-muted);
+}
+
+.ds-swatch-use {
+  display: block;
+  font-size: 12px;
+  color: var(--ds-body);
+  margin-top: 6px;
+  line-height: 1.45;
+}
+
+/* ── Component specimens ── */
+.ds-specimen {
+  border: 1px solid var(--ds-line);
+  border-radius: var(--ds-r);
+  background: var(--ds-off);
+  padding: 36px 32px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+}
+
+.ds-specimen + .ds-caption { margin-top: 12px; }
+
+.ds-grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+
+@media (max-width: 640px) {
+  .ds-grid-2 { grid-template-columns: 1fr; }
+}
+
+/* ── Buttons ── */
+.ds-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: var(--ds-r);
+  padding: 10px 18px;
+  font-family: var(--ds-font);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.45;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+}
+
+.ds-btn-primary { background: var(--ds-ink); color: var(--ds-white); }
+.ds-btn-primary:hover { background: var(--ds-ink-2); }
+
+.ds-btn-secondary { background: var(--ds-white); color: var(--ds-ink); border-color: var(--ds-line); }
+.ds-btn-secondary:hover { border-color: var(--ds-line-2); background: var(--ds-off); }
+
+.ds-btn-ghost { background: transparent; color: var(--ds-ink); }
+.ds-btn-ghost:hover { background: var(--ds-sunk); }
+
+.ds-btn:focus-visible {
+  outline: 2px solid var(--ds-blue);
+  outline-offset: 2px;
+}
+
+/* ── Card ── */
+.ds-card {
+  background: var(--ds-white);
+  border: 1px solid var(--ds-line);
+  border-radius: var(--ds-r);
+  padding: 20px;
+}
+
+.ds-card h4 { font-size: 16px; font-weight: 500; margin: 0 0 6px; }
+.ds-card p  { font-size: 14px; line-height: 1.5; color: var(--ds-body); margin: 0; }
+
+/* ── Badge ── */
+.ds-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border-radius: var(--ds-r-pill);
+  padding: 5px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  background: var(--ds-sunk);
+  color: var(--ds-ink);
+}
+
+.ds-badge-accent { background: var(--ds-blue-tint); color: #143AA5; }
+.ds-badge-dark   { background: var(--ds-ink); color: var(--ds-white); }
+
+/* ── Field ── */
+.ds-field { display: flex; flex-direction: column; gap: 7px; min-width: 232px; }
+
+.ds-field label { font-size: 13px; font-weight: 500; }
+
+.ds-field input {
+  font-family: var(--ds-font);
+  font-size: 14px;
+  color: var(--ds-ink);
+  background: var(--ds-white);
+  border: 1px solid var(--ds-line);
+  border-radius: var(--ds-r);
+  padding: 11px 14px;
+  transition: border-color 0.18s ease;
+}
+
+.ds-field input::placeholder { color: var(--ds-faint); }
+.ds-field input:focus { outline: none; border-color: var(--ds-ink); }
+
+/* ── Radius + spacing scales ── */
+.ds-scale {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+
+.ds-scale-item { text-align: center; }
+
+.ds-scale-box {
+  width: 88px;
+  height: 88px;
+  background: var(--ds-sunk);
+  border: 1px solid var(--ds-line);
+  margin-bottom: 10px;
+}
+
+.ds-bar {
+  background: var(--ds-ink);
+  height: 12px;
+  border-radius: 2px;
+  margin-bottom: 10px;
+}
+
+/* ── Voice table ── */
+.ds-voice {
+  border: 1px solid var(--ds-line);
+  border-radius: var(--ds-r);
+  overflow: hidden;
+}
+
+.ds-voice-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.ds-voice-row + .ds-voice-row { border-top: 1px solid var(--ds-line); }
+
+.ds-voice-cell { padding: 18px 20px; font-size: 14px; line-height: 1.55; }
+.ds-voice-cell + .ds-voice-cell { border-left: 1px solid var(--ds-line); }
+.ds-voice-yes { color: var(--ds-ink); }
+.ds-voice-no  { color: var(--ds-muted); text-decoration: line-through; text-decoration-color: var(--ds-line-2); }
+
+@media (max-width: 900px) {
+  .ds-shell { grid-template-columns: 1fr; gap: 40px; padding: 0 20px 96px; }
+  .ds-side { position: static; border-left: none; display: flex; flex-wrap: wrap; gap: 4px; }
+  .ds-side a { border-left: none; padding: 6px 12px; background: var(--ds-sunk); border-radius: var(--ds-r-pill); }
+  .ds-masthead-inner { padding: 48px 20px 40px; }
+  .ds-h1 { font-size: 40px; }
+  .ds-h2 { font-size: 30px; }
+  .ds-type-row { grid-template-columns: 1fr; gap: 12px; }
+  .ds-spec { text-align: left; }
+  .ds-voice-row { grid-template-columns: 1fr; }
+  .ds-voice-cell + .ds-voice-cell { border-left: none; border-top: 1px solid var(--ds-line); }
+}

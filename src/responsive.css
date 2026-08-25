@@ -1,118 +1,85 @@
+/* Tablet: drop the four-across grids to two before going single column. */
+@media (max-width: 1040px) {
+  .usecases,
+  .principles {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  .split {
+    grid-template-columns: 1fr !important;
+    gap: 48px !important;
+  }
+
+  :root {
+    --gap-section: 104px;
+  }
+}
+
 @media (max-width: 768px) {
+  :root {
+    --gap-section: 80px;
+  }
+
   /* ── Nav ── */
-  .nav-text-links,
   .nav-text-links {
     display: none !important;
   }
 
-  /* ── Structural frame cells ──
-     Vertical hairline dividers become horizontal when grids stack. */
-  .cell-divider {
-    border-left: none !important;
-    border-top: 1px solid rgba(13, 37, 61, 0.08) !important;
-  }
-
-  .pad-cell {
-    padding: 56px 24px 48px !important;
-  }
-
   /* ── Hero ── */
-  .hero-grid {
+  .hero {
+    padding-top: 116px !important;
+  }
+
+  .hero-viz {
+    margin-top: 40px !important;
+  }
+
+  /* ── Stacked grids ── */
+  .steps,
+  .usecases,
+  .principles {
     grid-template-columns: 1fr !important;
   }
 
-  .hero-copy-cell {
-    padding: 80px 24px 56px !important;
+  .steps {
+    gap: 44px !important;
   }
 
-  .hero-card {
-    padding: 48px 24px 56px !important;
+  .usecases,
+  .principles {
+    gap: 28px !important;
   }
 
-  .hero-meta {
+  /* ── Loan calculator: single column, card below the sliders ── */
+  .calc-headline-band {
+    margin-bottom: 48px !important;
+  }
+
+  .calc-headline {
+    line-height: 1.5 !important;
+  }
+
+  .calc-body {
     grid-template-columns: 1fr !important;
+    gap: 44px !important;
   }
 
-  .hero-meta > div {
-    padding: 18px 24px 20px !important;
-  }
-
-  .hero-meta > div + div {
-    border-left: none !important;
-    border-top: 1px solid rgba(13, 37, 61, 0.08) !important;
-  }
-
-  /* Wrap CTA buttons if they overflow */
-  .hero-ctas {
-    flex-wrap: wrap !important;
-  }
-
-  /* ── Section wrappers: tighter gutters, frames keep their own padding ── */
-  .how-it-works-section,
-  .principles-section,
-  .faq-section,
-  .problem-section,
-  .cta-section {
-    padding-left: 16px !important;
-    padding-right: 16px !important;
-  }
-
-  /* ── How it works section ── */
-  .how-it-works-grid {
-    grid-template-columns: 1fr !important;
-  }
-
-  .step-cell {
-    padding: 32px 24px 40px !important;
-  }
-
-  /* ── Two-column split sections (principles, FAQ) ── */
-  .split-grid {
-    grid-template-columns: 1fr !important;
-  }
-
-  .principles-grid {
-    grid-template-columns: 1fr !important;
-  }
-
-  .principles-grid > .reveal {
-    border-left: none !important;
-  }
-
-  .principles-grid > .reveal + .reveal {
-    border-top: 1px solid rgba(13, 37, 61, 0.08) !important;
-  }
-
-  /* ── Use cases ── */
-  .usecases-section {
-    padding-left: 16px !important;
-    padding-right: 16px !important;
-  }
-
-  .usecases-grid {
-    grid-template-columns: 1fr !important;
-    gap: 16px !important;
+  /* ── CTA ── */
+  .cta-block {
+    padding: 64px 24px !important;
+    border-radius: var(--r-lg) !important;
   }
 
   /* ── Footer ── */
-  .footer-frame {
-    padding: 48px 24px 0 !important;
-  }
-
   .footer-inner {
     flex-direction: column !important;
     gap: 32px !important;
   }
 
   .footer-cols {
-    flex-direction: column !important;
-    gap: 28px !important;
+    flex-direction: row !important;
+    gap: 48px !important;
     justify-content: flex-start !important;
-  }
-
-  .footer-wordmark {
-    font-size: 22vw !important;
-    margin-left: -0.02em !important;
   }
 
   /* ── Blog / Article pages ── */
@@ -135,6 +102,7 @@
     grid-template-columns: 1fr !important;
     gap: 40px !important;
   }
+
   .blog-grid > li {
     grid-column: auto !important;
   }

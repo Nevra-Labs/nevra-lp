@@ -1,0 +1,118 @@
+/* ── SVG animation layer ──────────────────────────────────────────────────
+   Stroke-drawing, staggered reveals and motion-path travel for the inline
+   SVGs in src/components/motion.jsx. Everything animates `stroke-dashoffset`,
+   `transform` or `opacity` so the browser can composite it on the GPU.
+
+   Animations are gated on a `.play` class the components add when the graphic
+   scrolls into view, so nothing burns frames off-screen. */
+
+/* Stroke drawing. Each path declares its own length via --len. */
+.draw {
+  stroke-dasharray: var(--len, 400);
+  stroke-dashoffset: var(--len, 400);
+}
+
+.play .draw {
+  animation: draw 1.15s cubic-bezier(0.33, 1, 0.68, 1) forwards;
+  animation-delay: var(--delay, 0s);
+}
+
+@keyframes draw {
+  to { stroke-dashoffset: 0; }
+}
+
+/* Partial draw: the gauge arc stops at the score instead of closing the
+   semicircle. --end is the residual offset that leaves the gap. */
+.draw-arc {
+  stroke-dasharray: var(--len, 400);
+  stroke-dashoffset: var(--len, 400);
+}
+
+.play .draw-arc {
+  animation: drawArc 1.35s cubic-bezier(0.33, 1, 0.68, 1) forwards;
+  animation-delay: var(--delay, 0s);
+}
+
+@keyframes drawArc {
+  to { stroke-dashoffset: var(--end, 0); }
+}
+
+/* Fade + rise for labels and chips inside an SVG. */
+.pop { opacity: 0; }
+
+.play .pop {
+  animation: pop 0.55s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation-delay: var(--delay, 0s);
+}
+
+@keyframes pop {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* The gauge needle sweeps from empty to the score. */
+.needle {
+  transform-box: fill-box;
+  transform-origin: 0% 50%;
+  opacity: 0;
+}
+
+.play .needle {
+  animation: needle 1.35s cubic-bezier(0.33, 1, 0.68, 1) forwards;
+  animation-delay: 0.25s;
+}
+
+@keyframes needle {
+  from { opacity: 1; transform: rotate(-180deg); }
+  to   { opacity: 1; transform: rotate(var(--angle, -23deg)); }
+}
+
+/* Slow breathing halo behind the score. */
+.play .halo {
+  animation: halo 3.6s cubic-bezier(0.4, 0, 0.6, 1) 1.2s infinite;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+@keyframes halo {
+  0%, 100% { opacity: 0.35; transform: scale(0.94); }
+  50%      { opacity: 0.7;  transform: scale(1.04); }
+}
+
+/* Bars in the comparison graphic grow from the left. */
+.bar-grow {
+  transform-box: fill-box;
+  transform-origin: left center;
+  transform: scaleX(0);
+}
+
+.play .bar-grow {
+  animation: barGrow 1.1s cubic-bezier(0.33, 1, 0.68, 1) forwards;
+  animation-delay: var(--delay, 0s);
+}
+
+@keyframes barGrow {
+  to { transform: scaleX(1); }
+}
+
+/* Glint that sweeps the Nevra bar once it has grown. */
+.play .glint {
+  animation: glint 3.2s cubic-bezier(0.4, 0, 0.2, 1) 1.6s infinite;
+}
+
+@keyframes glint {
+  0%       { transform: translateX(-40px); opacity: 0; }
+  18%      { opacity: 1; }
+  55%      { transform: translateX(520px); opacity: 0; }
+  100%     { transform: translateX(520px); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* Show the finished state rather than an empty canvas. */
+  .draw     { stroke-dashoffset: 0 !important; animation: none !important; }
+  .draw-arc { stroke-dashoffset: var(--end, 0) !important; animation: none !important; }
+  .pop    { opacity: 1 !important; animation: none !important; }
+  .needle { opacity: 1 !important; transform: rotate(var(--angle, -23deg)) !important; animation: none !important; }
+  .bar-grow { transform: scaleX(1) !important; animation: none !important; }
+  .halo, .glint { animation: none !important; }
+}
