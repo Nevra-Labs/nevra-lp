@@ -312,16 +312,18 @@ a {
   pointer-events: none;
 }
 
-/* Darkening scrim. APX's clip is graded dark already; a supplied clip may not
-   be, so the text stays legible regardless of the footage. */
+/* Darkening scrim. The shipped clip is a night aerial and already very dark,
+   so this is tuned light enough to let the skyline read while still holding
+   contrast under the headline. Swap in brighter footage and these values need
+   to come up. */
 .hero-scrim {
   position: absolute;
   inset: 0;
   z-index: -1;
   pointer-events: none;
   background:
-    linear-gradient(180deg, rgba(10, 11, 13, 0.72) 0%, rgba(10, 11, 13, 0.55) 42%, rgba(10, 11, 13, 0.82) 100%),
-    radial-gradient(118% 88% at 50% 46%, transparent 34%, rgba(0, 0, 0, 0.5) 100%);
+    linear-gradient(180deg, rgba(10, 11, 13, 0.58) 0%, rgba(10, 11, 13, 0.34) 44%, rgba(10, 11, 13, 0.74) 100%),
+    radial-gradient(112% 84% at 50% 44%, transparent 40%, rgba(0, 0, 0, 0.42) 100%);
 }
 
 .hero-backdrop {
