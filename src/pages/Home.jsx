@@ -3,7 +3,9 @@ import { useState, useEffect, useRef } from 'react'
 import { ShieldCheck, KeyRound, TrendingUp, Umbrella, ArrowRight } from 'lucide-react'
 import Nav from '../components/Nav'
 import LoanCalculator from '../components/LoanCalculator'
-import { ScoreGauge, CollateralCompare, StepGlyph, HeroBackdrop } from '../components/motion'
+import { ScoreGauge, CollateralCompare, StepGlyph } from '../components/motion'
+import HeroVideo from '../components/HeroVideo'
+import ProductBento from '../components/ProductBento'
 import '../responsive.css'
 
 function Reveal({ children, delay = 0, className = '', style }) {
@@ -122,7 +124,7 @@ export default function Home() {
           darkened photograph; ours comes from an oversized echo of the score
           arc, so the backdrop is the product rather than stock imagery. */}
       <div className="hero-dark">
-        <HeroBackdrop />
+        <HeroVideo />
 
         <a href="/blog/why-crypto-never-solved-credit" className="announce">
           <span className="announce-tag">New</span>
@@ -179,10 +181,18 @@ export default function Home() {
         </div>
       </div>
 
-      {/* ── The score ─────────────────────────────────────────────────────
-          The gauge gets its own moment now that the hero is text-only. */}
-      <section className="section shell" style={{ textAlign: 'center' }}>
-        <Reveal style={{ maxWidth: 780, margin: '0 auto' }}>
+      {/* ── Calculator ─────────────────────────────────────────────────
+          APX puts its loan calculator immediately below the hero: the
+          interactive thing that quotes you is the product demo, so it goes
+          first rather than fourth. */}
+      <LoanCalculator />
+
+      {/* ── Product showcase ──────────────────────────────────────────
+          ui.shadcn.com shows real surfaces from the product in a bento of
+          bordered cards rather than describing them. Same idea here: the
+          score, the line it opens, the rate it sets, and what we read. */}
+      <section className="section shell">
+        <Reveal style={{ maxWidth: 780, marginBottom: 48, textAlign: 'center', marginLeft: 'auto', marginRight: 'auto' }}>
           <h2 className="display-sm">
             <span style={{ display: 'block' }}>Your whole financial life,</span>
             <span className="dim" style={{ display: 'block' }}>resolved into one score.</span>
@@ -193,8 +203,8 @@ export default function Home() {
           </p>
         </Reveal>
 
-        <Reveal delay={120} style={{ maxWidth: 720, margin: '48px auto 0' }}>
-          <ScoreGauge />
+        <Reveal delay={120}>
+          <ProductBento />
         </Reveal>
       </section>
 
@@ -245,9 +255,6 @@ export default function Home() {
           ))}
         </div>
       </section>
-
-      {/* ── Calculator ───────────────────────────────────────────────── */}
-      <LoanCalculator />
 
       {/* ── Use cases ────────────────────────────────────────────────── */}
       <section id="use-cases" className="section shell">
