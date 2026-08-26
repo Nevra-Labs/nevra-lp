@@ -33,23 +33,46 @@
   }
 
   /* ── Hero ── */
-  .hero {
-    padding-top: 64px !important;
-  }
-
   .announce {
     font-size: 13px !important;
-    padding: 12px 16px !important;
+    height: auto !important;
+    padding: 11px 16px !important;
+    text-align: center;
+  }
+
+  .hero {
+    padding: 40px 20px !important;
+  }
+
+  .hero-badge {
+    font-size: 13px !important;
+    padding: 7px 12px !important;
+  }
+
+  /* At the global min of 34px, "Money when you need it." orphans its last
+     word on a 390px screen. Scale from the viewport instead. */
+  .hero-title {
+    font-size: clamp(26px, 7.1vw, 40px) !important;
+    line-height: 1.1 !important;
+  }
+
+  .hero-sub {
+    font-size: 16px !important;
+  }
+
+  .hero-ctas {
+    margin-top: 32px !important;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .hero-logos {
+    padding: 20px 0 26px !important;
   }
 
   /* At 700 the display packs tight; give it room to breathe on phones. */
   .display {
     line-height: 1.02 !important;
-  }
-
-  .hero-viz {
-    margin-top: 40px !important;
-    padding-bottom: 64px !important;
   }
 
   /* ── Stacked grids ── */

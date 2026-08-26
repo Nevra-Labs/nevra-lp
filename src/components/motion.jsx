@@ -305,3 +305,57 @@ export function StepGlyph({ index }) {
     </span>
   )
 }
+
+/* ── Hero backdrop ─────────────────────────────────────────────────────────
+   APX fills its hero with a darkened photograph; this does the same job with
+   an oversized echo of the score arc, so the depth comes from the product
+   rather than from stock imagery. Pure decoration: aria-hidden, no reflow. */
+export function HeroBackdrop() {
+  return (
+    <svg
+      className="hero-backdrop"
+      viewBox="0 0 1440 900"
+      preserveAspectRatio="xMidYMid slice"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <defs>
+        <radialGradient id="hb-glow" cx="50%" cy="76%" r="52%">
+          <stop offset="0%" stopColor="#FFD9A8" stopOpacity="0.20" />
+          <stop offset="100%" stopColor="#FFD9A8" stopOpacity="0" />
+        </radialGradient>
+        <radialGradient id="hb-top" cx="50%" cy="0%" r="62%">
+          <stop offset="0%" stopColor="#FFFFFF" stopOpacity="0.10" />
+          <stop offset="100%" stopColor="#FFFFFF" stopOpacity="0" />
+        </radialGradient>
+        <linearGradient id="hb-arc" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stopColor="#FFFFFF" stopOpacity="0.02" />
+          <stop offset="52%" stopColor="#FFFFFF" stopOpacity="0.16" />
+          <stop offset="100%" stopColor="#FFFFFF" stopOpacity="0.02" />
+        </linearGradient>
+        <pattern id="hb-dots" width="26" height="26" patternUnits="userSpaceOnUse">
+          <circle cx="1" cy="1" r="1" fill="#FFFFFF" fillOpacity="0.05" />
+        </pattern>
+        {/* Fades the dot field out before it reaches the headline. */}
+        <radialGradient id="hb-dotmask" cx="50%" cy="92%" r="58%">
+          <stop offset="0%" stopColor="#FFFFFF" stopOpacity="1" />
+          <stop offset="100%" stopColor="#FFFFFF" stopOpacity="0" />
+        </radialGradient>
+        <mask id="hb-mask">
+          <rect width="1440" height="900" fill="url(#hb-dotmask)" />
+        </mask>
+      </defs>
+
+      <rect width="1440" height="900" fill="url(#hb-top)" />
+      <rect width="1440" height="900" fill="url(#hb-dots)" mask="url(#hb-mask)" />
+      <rect width="1440" height="900" fill="url(#hb-glow)" />
+
+      {/* Three concentric arcs, the outermost faintest, echoing the gauge. */}
+      <g fill="none" strokeLinecap="round">
+        <path d="M 300 1080 A 420 420 0 0 1 1140 1080" stroke="url(#hb-arc)" strokeWidth="1.5" />
+        <path d="M 180 1080 A 540 540 0 0 1 1260 1080" stroke="#FFFFFF" strokeOpacity="0.05" strokeWidth="1.5" />
+        <path d="M 60 1080 A 660 660 0 0 1 1380 1080" stroke="#FFFFFF" strokeOpacity="0.03" strokeWidth="1.5" />
+      </g>
+    </svg>
+  )
+}

@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from 'react'
 import { ShieldCheck, KeyRound, TrendingUp, Umbrella, ArrowRight } from 'lucide-react'
 import Nav from '../components/Nav'
 import LoanCalculator from '../components/LoanCalculator'
-import { ScoreGauge, CollateralCompare, StepGlyph } from '../components/motion'
+import { ScoreGauge, CollateralCompare, StepGlyph, HeroBackdrop } from '../components/motion'
 import '../responsive.css'
 
 function Reveal({ children, delay = 0, className = '', style }) {
@@ -116,11 +116,14 @@ export default function Home() {
       <Nav />
 
       {/* ── Announcement + hero ──────────────────────────────────────────
-          apxlending.com's shape: dark announcement strip, then a full-bleed
-          dark hero with a centred badge, headline, sub-copy and two CTAs.
-          Warmed up for a consumer audience — APX leads on a cold skyline and
-          regulator language; this leads on the borrower's own score. */}
+          apxlending.com's hero, measured: 100vh block, announcement strip on
+          top, content stack centred at 12 / 16 / 48px gaps, 48px CTAs, and a
+          partner marquee pinned to the bottom edge. Their depth comes from a
+          darkened photograph; ours comes from an oversized echo of the score
+          arc, so the backdrop is the product rather than stock imagery. */}
       <div className="hero-dark">
+        <HeroBackdrop />
+
         <a href="/blog/why-crypto-never-solved-credit" className="announce">
           <span className="announce-tag">New</span>
           Why crypto never solved credit
@@ -128,57 +131,71 @@ export default function Home() {
         </a>
 
         <section className="hero">
-          <p className="pill pill-onDark enter-up enter-delay-1">
-            <span className="pill-dot" aria-hidden />
-            No credit checks. Your keys stay yours.
-          </p>
+          <div className="hero-stack">
+            <p className="hero-badge enter-up enter-delay-1">
+              <span className="pill-dot" aria-hidden />
+              No credit checks. Your keys stay yours.
+            </p>
 
-          <h1 className="display enter-up enter-delay-2" style={{ margin: '26px 0 0', color: '#FFFFFF' }}>
-            <span style={{ display: 'block' }}>Money when you need it.</span>
-            <span style={{ display: 'block', color: 'rgba(255,255,255,0.48)' }}>
-              Without selling a thing.
-            </span>
-          </h1>
+            <h1 className="hero-title enter-up enter-delay-2">
+              <span style={{ display: 'block' }}>Money when you need it.</span>
+              <span style={{ display: 'block', color: 'rgba(255,255,255,0.5)' }}>
+                Without selling a thing.
+              </span>
+            </h1>
 
-          <p className="lede enter-up enter-delay-3" style={{ maxWidth: 580, margin: '24px auto 0', color: 'rgba(255,255,255,0.66)' }}>
-            Connect your bank and wallets once. Nevra turns your whole financial life into one
-            real credit score, and lends against it from 7.25% APR.
-          </p>
+            <p className="hero-sub enter-up enter-delay-3">
+              Connect your bank and wallets once. Nevra turns your whole financial life into
+              one real credit score, and lends against it from 7.25% APR.
+            </p>
 
-          <div className="hero-ctas enter-up enter-delay-4">
-            <Link to="/apply" className="btn btn-light focus-ring-light">
-              Apply now <ArrowRight size={16} strokeWidth={2} />
-            </Link>
-            <a href="/pdf/whitepaper.pdf" target="_blank" rel="noopener noreferrer" className="btn btn-glass focus-ring-light">
-              Read the whitepaper
-            </a>
-          </div>
-
-          <div className="hero-viz enter-up enter-delay-5">
-            <ScoreGauge tone="dark" />
+            <div className="hero-ctas enter-up enter-delay-4">
+              <Link to="/apply" className="btn-hero btn-hero-light focus-ring-light">
+                Apply now <ArrowRight size={16} strokeWidth={2} />
+              </Link>
+              <a href="/pdf/whitepaper.pdf" target="_blank" rel="noopener noreferrer" className="btn-hero btn-hero-glass focus-ring-light">
+                Read the whitepaper
+              </a>
+            </div>
           </div>
         </section>
-      </div>
 
-      {/* ── Partners ─────────────────────────────────────────────────── */}
-      <section style={{ padding: '104px 0 0' }}>
-        <p style={{ textAlign: 'center', marginBottom: 32, fontSize: 14, color: 'var(--ink-45)' }}>
-          Built with
-        </p>
-        <div className="logo-mask">
-          <div className="logo-track">
-            {[...PARTNER_LOGOS, ...PARTNER_LOGOS, ...PARTNER_LOGOS, ...PARTNER_LOGOS].map((logo, i) => (
-              <img
-                key={`${logo.name}-${i}`}
-                src={logo.src}
-                alt={i < PARTNER_LOGOS.length ? logo.name : ''}
-                aria-hidden={i >= PARTNER_LOGOS.length}
-                className="partner-logo"
-                style={{ height: 26, opacity: 0.4, margin: '0 44px', flexShrink: 0 }}
-              />
-            ))}
+        {/* Partner marquee, pinned to the hero's bottom edge like APX. */}
+        <div className="hero-logos">
+          <div className="logo-mask">
+            <div className="logo-track">
+              {[...PARTNER_LOGOS, ...PARTNER_LOGOS, ...PARTNER_LOGOS, ...PARTNER_LOGOS].map((logo, i) => (
+                <img
+                  key={`${logo.name}-${i}`}
+                  src={logo.src}
+                  alt={i < PARTNER_LOGOS.length ? logo.name : ''}
+                  aria-hidden={i >= PARTNER_LOGOS.length}
+                  className="partner-logo partner-logo-dark"
+                  style={{ height: 24, margin: '0 40px', flexShrink: 0 }}
+                />
+              ))}
+            </div>
           </div>
         </div>
+      </div>
+
+      {/* ── The score ─────────────────────────────────────────────────────
+          The gauge gets its own moment now that the hero is text-only. */}
+      <section className="section shell" style={{ textAlign: 'center' }}>
+        <Reveal style={{ maxWidth: 780, margin: '0 auto' }}>
+          <h2 className="display-sm">
+            <span style={{ display: 'block' }}>Your whole financial life,</span>
+            <span className="dim" style={{ display: 'block' }}>resolved into one score.</span>
+          </h2>
+          <p className="lede" style={{ marginTop: 22, maxWidth: 540, marginLeft: 'auto', marginRight: 'auto' }}>
+            Wallet history and bank cash flow, read together. That number sets your limit and
+            your rate — and it moves every time you repay.
+          </p>
+        </Reveal>
+
+        <Reveal delay={120} style={{ maxWidth: 720, margin: '48px auto 0' }}>
+          <ScoreGauge />
+        </Reveal>
       </section>
 
       {/* ── Why Nevra ────────────────────────────────────────────────── */}

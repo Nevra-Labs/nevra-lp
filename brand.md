@@ -45,14 +45,31 @@ and tracking at roughly zero. The weight carries the headline, not the tracking.
 
 ## Hero
 
-Follows apxlending.com's shape: dark announcement strip, then a full-bleed dark block
-with a centred badge, headline, sub-copy and two CTAs (white fill + glass outline).
+Proportions measured off apxlending.com at 1440x900 and matched exactly:
 
-Two departures, both to read consumer rather than institutional: there is no skyline
-photograph — the base is a warm-tinted dark (`#17181C`) with a low amber glow — and the
-ambient visual is the borrower's own score gauge, not a building. The hero headline runs
-at a smaller step than the global display scale (`clamp(34px, 4.6vw, 62px)`) so both
-lines set full width, the way APX's 56px headline does.
+| | Value |
+|---|---|
+| Dark block | one viewport tall (`100svh`) |
+| Announcement strip | 55px, below the 64px navbar |
+| badge → headline | 12px |
+| headline → sub-copy | 16px |
+| sub-copy → CTAs | 48px |
+| CTA height / radius | 48px / 12px |
+| Partner marquee | pinned to the bottom edge |
+
+Badge is a soft rectangle (`--r-sm`), not a pill. Primary CTA is a white fill; secondary
+is glass — `rgba(255,255,255,.10)` on a `rgba(255,255,255,.45)` border.
+
+Three things are deliberately ours rather than theirs, so the page reads consumer and
+ships no third-party assets:
+
+- **No photograph.** APX darkens a city at dusk. The backdrop here is `HeroBackdrop` —
+  an oversized echo of the score arc over a warm dark (`#17181C`), with a dot field and a
+  hand-built vignette standing in for the depth a photo would give.
+- **The visual is the product.** The score gauge gets its own section below the hero
+  rather than competing with the headline.
+- **Plain-English copy.** APX leads on regulator language; this leads on what the
+  borrower gets.
 
 Graphics that appear on dark get `.viz-dark`, which remaps `--ink`, `--surface` and
 `--hairline` on the wrapper instead of branching every fill. Anything drawn on `--ink`
