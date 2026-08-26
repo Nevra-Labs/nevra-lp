@@ -50,23 +50,6 @@
   to   { opacity: 1; transform: none; }
 }
 
-/* The gauge needle sweeps from empty to the score. */
-.needle {
-  transform-box: fill-box;
-  transform-origin: 0% 50%;
-  opacity: 0;
-}
-
-.play .needle {
-  animation: needle 1.35s cubic-bezier(0.33, 1, 0.68, 1) forwards;
-  animation-delay: 0.25s;
-}
-
-@keyframes needle {
-  from { opacity: 1; transform: rotate(-180deg); }
-  to   { opacity: 1; transform: rotate(var(--angle, -23deg)); }
-}
-
 /* Slow breathing halo behind the score. */
 .play .halo {
   animation: halo 3.6s cubic-bezier(0.4, 0, 0.6, 1) 1.2s infinite;
@@ -112,7 +95,6 @@
   .draw     { stroke-dashoffset: 0 !important; animation: none !important; }
   .draw-arc { stroke-dashoffset: var(--end, 0) !important; animation: none !important; }
   .pop    { opacity: 1 !important; animation: none !important; }
-  .needle { opacity: 1 !important; transform: rotate(var(--angle, -23deg)) !important; animation: none !important; }
   .bar-grow { transform: scaleX(1) !important; animation: none !important; }
   .halo, .glint { animation: none !important; }
 }

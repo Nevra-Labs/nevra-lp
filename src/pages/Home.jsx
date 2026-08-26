@@ -152,7 +152,9 @@ export default function Home() {
 
       {/* ── Partners ─────────────────────────────────────────────────── */}
       <section style={{ padding: '104px 0 0' }}>
-        <p className="eyebrow" style={{ textAlign: 'center', marginBottom: 32 }}>Built with</p>
+        <p style={{ textAlign: 'center', marginBottom: 32, fontSize: 14, color: 'var(--ink-45)' }}>
+          Built with
+        </p>
         <div className="logo-mask">
           <div className="logo-track">
             {[...PARTNER_LOGOS, ...PARTNER_LOGOS, ...PARTNER_LOGOS, ...PARTNER_LOGOS].map((logo, i) => (
@@ -173,8 +175,7 @@ export default function Home() {
       <section className="section shell">
         <div className="split" style={{ display: 'grid', gridTemplateColumns: '0.85fr 1.15fr', gap: 72, alignItems: 'center' }}>
           <Reveal>
-            <p className="eyebrow" style={{ marginBottom: 20 }}>The problem</p>
-            <h2 className="display-sm">
+              <h2 className="display-sm">
               Same collateral.{' '}
               <span className="dim">Very different loan.</span>
             </h2>
@@ -194,7 +195,6 @@ export default function Home() {
       {/* ── How it works ─────────────────────────────────────────────── */}
       <section id="how-it-works" className="section shell">
         <Reveal style={{ maxWidth: 620, marginBottom: 72 }}>
-          <p className="eyebrow" style={{ marginBottom: 20 }}>How it works</p>
           <h2 className="display-sm">
             From wallet to credit line{' '}
             <span className="dim">in three steps.</span>
@@ -205,8 +205,10 @@ export default function Home() {
           {STEPS.map((step, i) => (
             <Reveal key={step.title} delay={i * 90}>
               <StepGlyph index={i} />
-              <p className="eyebrow" style={{ margin: '28px 0 12px' }}>{step.number}</p>
-              <h3 style={{ fontSize: 20, fontWeight: 500, letterSpacing: '-0.02em', lineHeight: 1.25, margin: '0 0 10px' }}>
+              <p style={{ margin: '28px 0 12px', fontSize: 14, fontWeight: 600, color: 'var(--ink-30)' }}>
+                {step.number}
+              </p>
+              <h3 style={{ fontSize: 20, fontWeight: 600, letterSpacing: '-0.005em', lineHeight: 1.25, margin: '0 0 10px' }}>
                 {step.title}
               </h3>
               <p style={{ fontSize: 15, color: 'var(--ink-60)', lineHeight: 1.65, margin: 0 }}>
@@ -223,7 +225,6 @@ export default function Home() {
       {/* ── Use cases ────────────────────────────────────────────────── */}
       <section id="use-cases" className="section shell">
         <Reveal style={{ maxWidth: 620, marginBottom: 56 }}>
-          <p className="eyebrow" style={{ marginBottom: 20 }}>Use cases</p>
           <h2 className="display-sm">
             Real money,{' '}
             <span className="dim">for real life.</span>
@@ -238,8 +239,7 @@ export default function Home() {
           {USE_CASES.map((uc, i) => (
             <Reveal key={uc.tag} delay={i * 70}>
               <div className="card usecase-card" style={{ height: '100%' }}>
-                <p className="eyebrow" style={{ fontSize: 10, marginBottom: 40 }}>{uc.tag}</p>
-                <h3 style={{ fontSize: 17, fontWeight: 500, letterSpacing: '-0.015em', margin: '0 0 8px' }}>
+                <h3 style={{ fontSize: 17, fontWeight: 600, letterSpacing: '-0.005em', margin: '0 0 8px' }}>
                   {uc.title}
                 </h3>
                 <p style={{ fontSize: 14, color: 'var(--ink-60)', lineHeight: 1.6, margin: 0 }}>
@@ -254,7 +254,6 @@ export default function Home() {
       {/* ── Principles ───────────────────────────────────────────────── */}
       <section className="section shell">
         <Reveal style={{ maxWidth: 620, marginBottom: 56 }}>
-          <p className="eyebrow" style={{ marginBottom: 20 }}>Principles</p>
           <h2 className="display-sm">
             Boring credit,{' '}
             <span className="dim">done right.</span>
@@ -265,8 +264,7 @@ export default function Home() {
           {PRINCIPLES.map(({ icon: Icon, tag, title, body }, i) => (
             <Reveal key={tag} delay={i * 70}>
               <Icon size={22} strokeWidth={1.6} color="var(--ink)" aria-hidden />
-              <p className="eyebrow" style={{ fontSize: 10, margin: '22px 0 10px' }}>{tag}</p>
-              <h3 style={{ fontSize: 16, fontWeight: 500, letterSpacing: '-0.015em', lineHeight: 1.35, margin: '0 0 8px' }}>
+              <h3 style={{ fontSize: 16, fontWeight: 600, letterSpacing: '-0.005em', lineHeight: 1.35, margin: '0 0 8px' }}>
                 {title}
               </h3>
               <p style={{ fontSize: 14, color: 'var(--ink-60)', lineHeight: 1.6, margin: 0 }}>{body}</p>
@@ -278,7 +276,6 @@ export default function Home() {
       {/* ── FAQ ──────────────────────────────────────────────────────── */}
       <section className="section shell">
         <Reveal style={{ textAlign: 'center', maxWidth: 560, margin: '0 auto 48px' }}>
-          <p className="eyebrow" style={{ marginBottom: 20 }}>FAQ</p>
           <h2 className="display-sm">
             Frequently asked{' '}
             <span className="dim">questions.</span>
@@ -368,7 +365,7 @@ function FaqItem({ faq, index }) {
           transition: 'color 0.2s ease',
         }}
       >
-        <span style={{ fontSize: 16, fontWeight: 500, letterSpacing: '-0.015em', lineHeight: 1.45 }}>
+        <span style={{ fontSize: 16, fontWeight: 600, letterSpacing: '-0.005em', lineHeight: 1.45 }}>
           {faq.question}
         </span>
         <span aria-hidden style={{
@@ -404,7 +401,7 @@ function FaqItem({ faq, index }) {
 function FooterCol({ title, links }) {
   return (
     <div>
-      <p className="eyebrow" style={{ fontSize: 10, marginBottom: 18 }}>{title}</p>
+      <p style={{ fontSize: 14, fontWeight: 600, marginBottom: 18 }}>{title}</p>
       <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 11 }}>
         {links.map(({ label, href, internal }) => (
           <li key={label}>

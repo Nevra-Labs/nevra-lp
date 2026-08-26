@@ -2,12 +2,11 @@ import { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { Clock, Percent, Wallet, ChevronDown, ArrowRight } from 'lucide-react'
 
-// Rates against USD. Illustrative constants, not a live feed — the calculator
-// is a marketing estimate, not a quote.
-const CURRENCIES = [
-  { code: 'USD', symbol: '$', rate: 1,    flag: '🇺🇸' },
-  { code: 'EUR', symbol: '€', rate: 0.92, flag: '🇪🇺' },
-  { code: 'GBP', symbol: '£', rate: 0.79, flag: '🇬🇧' },
+// Settlement tokens. Both are dollar-pegged, so there is no FX rate to apply:
+// the same line, settled in whichever token the borrower wants.
+const TOKENS = [
+  { code: 'USDC', tint: '#2775CA' },
+  { code: 'USDT', tint: '#009393' },
 ]
 
 // Nevra score band. Below FLOOR there is no line yet; the hero gauge sits at
@@ -34,8 +33,8 @@ function quote(score) {
   }
 }
 
-/* Currency pill: circular flag + code + chevron, opens a small menu. */
-function CurrencySelect({ selected, onSelect }) {
+/* Token pill: circular mark + code + chevron, opens a small menu. */
+function TokenSelect({ selected, onSelect }) {
   const [open, setOpen] = useState(false)
   const ref = useRef(null)
 
@@ -60,17 +59,17 @@ function CurrencySelect({ selected, onSelect }) {
         className="calc-token focus-ring"
         aria-haspopup="listbox"
         aria-expanded={open}
-        aria-label={`Change currency, currently ${selected.code}`}
+        aria-label={`Change settlement token, currently ${selected.code}`}
         onClick={() => setOpen(v => !v)}
       >
-        <span className="calc-mark calc-mark-flag" aria-hidden="true">{selected.flag}</span>
+        <span className="calc-mark" style={{ background: selected.tint }} aria-hidden="true">$</span>
         <span className="calc-token-code">{selected.code}</span>
         <ChevronDown size={18} strokeWidth={1.8} style={{ color: 'var(--ink-30)', flexShrink: 0 }} />
       </button>
 
       {open && (
         <div className="calc-menu fade-up" role="listbox">
-          {CURRENCIES.map(opt => (
+          {TOKENS.map(opt => (
             <button
               key={opt.code}
               type="button"
@@ -79,8 +78,8 @@ function CurrencySelect({ selected, onSelect }) {
               className="calc-menu-item"
               onClick={() => { onSelect(opt); setOpen(false) }}
             >
-              <span className="calc-mark calc-mark-flag" aria-hidden="true">{opt.flag}</span>
-              <span style={{ fontWeight: opt.code === selected.code ? 500 : 400 }}>{opt.code}</span>
+              <span className="calc-mark" style={{ background: opt.tint }} aria-hidden="true">$</span>
+              <span style={{ fontWeight: opt.code === selected.code ? 600 : 400 }}>{opt.code}</span>
             </button>
           ))}
         </div>
@@ -89,7 +88,7 @@ function CurrencySelect({ selected, onSelect }) {
   )
 }
 
-/* SCORE reads as a token for rhythm with the currency pill, but there is
+/* SCORE reads as a token for rhythm with the token pill, but there is
    nothing to choose — it is a span, has no chevron, and does not react. */
 function ScoreToken() {
   return (
@@ -131,17 +130,17 @@ function SliderRow({ label, display, unit, min = 0, max, step, value, onChange, 
 }
 
 export default function LoanCalculator() {
-  const [currency, setCurrency] = useState(CURRENCIES[0])
+  const [token, setToken] = useState(TOKENS[0])
   const [score, setScore] = useState(SCORE_START)
   // How much of the available line the visitor wants to draw, 0–1. Kept as a
   // ratio so moving the score rescales the draw instead of resetting it.
   const [drawRatio, setDrawRatio] = useState(1)
 
   const { eligible, line, apr, collateralPct } = quote(score)
-  const maxBorrow = line * currency.rate
+  const maxBorrow = line
   const borrow = maxBorrow * drawRatio
 
-  const money = n => currency.symbol + n.toLocaleString('en-US', {
+  const money = n => '$' + n.toLocaleString('en-US', {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   })
@@ -161,7 +160,7 @@ export default function LoanCalculator() {
       <div className="calc-headline-band">
         <h2 id="calc-heading" className="calc-headline">
           How much{' '}
-          <CurrencySelect selected={currency} onSelect={setCurrency} />{' '}
+          <TokenSelect selected={token} onSelect={setToken} />{' '}
           will your <ScoreToken />{' '}
           <em className="calc-headline-em">unlock?</em>
         </h2>
@@ -186,13 +185,13 @@ export default function LoanCalculator() {
           <SliderRow
             label="Amount you can borrow"
             display={money(borrow)}
-            unit={currency.code}
+            unit={token.code}
             max={maxBorrow || 1}
             step={(maxBorrow || 1) / 500}
             value={borrow}
             disabled={!eligible}
             onChange={amount => setDrawRatio(maxBorrow ? amount / maxBorrow : 0)}
-            ariaLabel={`Amount to borrow in ${currency.code}`}
+            ariaLabel={`Amount to borrow in ${token.code}`}
           />
         </div>
 

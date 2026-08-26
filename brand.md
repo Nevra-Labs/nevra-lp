@@ -3,10 +3,10 @@
 _Status: active. Live reference at `/design` (`src/pages/DesignSystem.jsx`). Tokens live in
 `:root` in `src/index.css`; the reference page mirrors them, so edit both together._
 
-Minimal system distilled from avon.xyz, altitude.xyz, apxlending.com and archlending.com.
-The shared rules across all four: white canvas, near-black ink, **no structural rails or
-frames**, one tight grotesque at large sizes with negative tracking, mono uppercase
-micro-labels, 12–16px radii, near-black button fills.
+Minimal system distilled from avon.xyz, altitude.xyz, apxlending.com and archlending.com,
+with type weights from traderepublic.com. White canvas, near-black ink, **no structural
+rails or frames**, **no mono eyebrow labels**, one tight grotesque set heavy at large
+sizes, 12–16px radii, near-black button fills.
 
 ## Palette (CSS variables in `src/index.css`)
 
@@ -23,10 +23,17 @@ micro-labels, 12–16px radii, near-black button fills.
 
 ## Typography
 
+Weights and tracking follow traderepublic.com: a heavy display, tight leading,
+and tracking at roughly zero. The weight carries the headline, not the tracking.
+
 - **One family: Inter Tight.** No serif, no italic display, no second typeface.
-- Display 72px / 500 / -0.038em; section headings 46px / 500 / -0.032em.
+- Display: 700, up to 80px, 0.98 leading, -0.005em. Section headings: 700, up
+  to 52px.
+- Interface text (buttons, nav, card titles) sits at **600**, not 400/500.
 - Second headline line is `--ink-45`, not a different font.
-- **Mono (labels):** IBM Plex Mono, uppercase, 11px, 0.13em tracking (`.eyebrow`).
+- **No mono eyebrow labels on the landing page.** `/ THE PROBLEM`-style
+  kickers above headings are gone: the headline names the section. `.eyebrow`
+  survives only where the label is real metadata (Blog category, `[ 404 ]`).
 
 ## Layout
 

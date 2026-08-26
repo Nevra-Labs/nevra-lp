@@ -40,7 +40,7 @@ function useCountUp(to, active, duration = 1400) {
     const start = performance.now()
     const tick = now => {
       const t = Math.min(1, (now - start) / duration)
-      // Same ease-out curve as the needle sweep, so they land together.
+      // Ease-out cubic, matched to the arc draw so they land together.
       setValue(Math.round(to * (1 - Math.pow(1 - t, 3))))
       if (t < 1) raf = requestAnimationFrame(tick)
     }
@@ -59,8 +59,6 @@ const ARC_LEN = 471
 const SCORE = 742
 const SCORE_MAX = 850
 const FRACTION = SCORE / SCORE_MAX
-// Needle rests at -180° (empty) and sweeps to -(180 - 180·fraction).
-const ANGLE = -(180 - 180 * FRACTION)
 
 export function ScoreGauge() {
   const [ref, playing] = usePlay(0.3)
@@ -136,12 +134,12 @@ export function ScoreGauge() {
         <g className="pop" style={{ '--delay': '0.05s' }}>
           <rect x="24" y="74" width="144" height="44" rx="12" fill="var(--surface)" stroke="var(--hairline)" />
           <circle cx="48" cy="96" r="4" fill="var(--ink-30)" />
-          <text x="64" y="101" fontFamily="var(--font-mono)" fontSize="12" letterSpacing="0.08em" fill="var(--ink-60)">WALLETS</text>
+          <text x="64" y="101" fontFamily="var(--font-sans)" fontSize="14" fontWeight="500" fill="var(--ink-60)">Wallets</text>
         </g>
         <g className="pop" style={{ '--delay': '0.18s' }}>
           <rect x="552" y="74" width="144" height="44" rx="12" fill="var(--surface)" stroke="var(--hairline)" />
           <circle cx="576" cy="96" r="4" fill="var(--ink-30)" />
-          <text x="592" y="101" fontFamily="var(--font-mono)" fontSize="12" letterSpacing="0.08em" fill="var(--ink-60)">BANK</text>
+          <text x="592" y="101" fontFamily="var(--font-sans)" fontSize="14" fontWeight="500" fill="var(--ink-60)">Bank</text>
         </g>
 
         {/* Gauge track + drawn value arc */}
@@ -156,29 +154,25 @@ export function ScoreGauge() {
           strokeLinecap="round"
         />
 
-        {/* Needle: rotates about its own left edge, parked at the arc centre. */}
-        <g style={{ transform: 'translate(360px, 250px)' }}>
-          <rect className="needle" style={{ '--angle': `${ANGLE}deg` }} x="0" y="-2" width="96" height="4" rx="2" fill="var(--ink)" />
+        {/* Marker at the end of the value arc. The arc already carries the
+            reading, so a needle would only duplicate it and cross the label. */}
+        <g className="pop" style={{ '--delay': '1.35s' }}>
+          <circle cx="498" cy="192" r="9" fill="var(--surface)" />
+          <circle cx="498" cy="192" r="5.5" fill="var(--ink)" />
         </g>
-        <circle cx="360" cy="250" r="9" fill="var(--ink)" />
-        <circle cx="360" cy="250" r="3.5" fill="var(--surface)" />
 
-        {/* Readout: label above, score, short denominator — kept clear of the
-            needle's sweep, which tops out around x=433. */}
-        <text x="360" y="152" textAnchor="middle" fontFamily="var(--font-mono)" fontSize="11" letterSpacing="0.13em" fill="var(--ink-45)">
-          NEVRA SCORE
-        </text>
-        <text x="360" y="207" textAnchor="middle" fontFamily="var(--font-sans)" fontSize="62" fontWeight="500" letterSpacing="-0.04em" fill="var(--ink)">
+        {/* Readout, centred in the dial. */}
+        <text x="360" y="228" textAnchor="middle" fontFamily="var(--font-sans)" fontSize="76" fontWeight="700" letterSpacing="-0.015em" fill="var(--ink)">
           {score}
         </text>
-        <text x="360" y="230" textAnchor="middle" fontFamily="var(--font-mono)" fontSize="12" letterSpacing="0.08em" fill="var(--ink-30)">
-          / {SCORE_MAX}
+        <text x="360" y="254" textAnchor="middle" fontFamily="var(--font-sans)" fontSize="15" fill="var(--ink-45)">
+          Nevra score
         </text>
 
         {/* Outcome chip under the dial */}
         <g className="pop" style={{ '--delay': '1.15s' }}>
           <rect x="252" y="286" width="216" height="40" rx="12" fill="var(--ink)" />
-          <text x="360" y="311" textAnchor="middle" fontFamily="var(--font-sans)" fontSize="14" fontWeight="500" fill="#FFFFFF">
+          <text x="360" y="311" textAnchor="middle" fontFamily="var(--font-sans)" fontSize="15" fontWeight="600" fill="#FFFFFF">
             $6,000 credit line
           </text>
         </g>
@@ -220,25 +214,25 @@ export function CollateralCompare() {
         </defs>
 
         {/* Typical lender — 25% of the track. */}
-        <text x="0" y="30" fontFamily="var(--font-mono)" fontSize="11" letterSpacing="0.13em" fill="var(--ink-45)">
-          TYPICAL OVERCOLLATERALIZED
+        <text x="0" y="30" fontFamily="var(--font-sans)" fontSize="15" fontWeight="500" fill="var(--ink-45)">
+          Typical overcollateralized
         </text>
         <rect x="0" y="52" width="520" height="56" rx="14" fill="var(--paper-soft)" />
         <rect className="bar-grow" style={{ '--delay': '0.1s' }} x="0" y="52" width="130" height="56" rx="14" fill="var(--ink-30)" />
-        <text className="pop" style={{ '--delay': '0.7s' }} x="544" y="88" fontFamily="var(--font-sans)" fontSize="22" fontWeight="500" fill="var(--ink-45)">
+        <text className="pop" style={{ '--delay': '0.7s' }} x="544" y="88" fontFamily="var(--font-sans)" fontSize="22" fontWeight="600" fill="var(--ink-45)">
           ${other.toLocaleString('en-US')}
         </text>
 
         {/* Nevra — the full track. */}
-        <text x="0" y="148" fontFamily="var(--font-mono)" fontSize="11" letterSpacing="0.13em" fill="var(--ink)">
-          NEVRA
+        <text x="0" y="148" fontFamily="var(--font-sans)" fontSize="15" fontWeight="600" fill="var(--ink)">
+          Nevra
         </text>
         <rect x="0" y="170" width="520" height="56" rx="14" fill="var(--paper-soft)" />
         <rect className="bar-grow" style={{ '--delay': '0.35s' }} x="0" y="170" width="520" height="56" rx="14" fill="var(--ink)" />
         <g clipPath="url(#nevra-clip)">
           <rect className="glint" x="0" y="170" width="90" height="56" fill="url(#glint-grad)" />
         </g>
-        <text className="pop" style={{ '--delay': '1s' }} x="544" y="206" fontFamily="var(--font-sans)" fontSize="22" fontWeight="500" fill="var(--ink)">
+        <text className="pop" style={{ '--delay': '1s' }} x="544" y="206" fontFamily="var(--font-sans)" fontSize="22" fontWeight="700" fill="var(--ink)">
           ${nevra.toLocaleString('en-US')}
         </text>
 

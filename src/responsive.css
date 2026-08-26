@@ -37,6 +37,11 @@
     padding-top: 116px !important;
   }
 
+  /* At 700 the display packs tight; give it room to breathe on phones. */
+  .display {
+    line-height: 1.02 !important;
+  }
+
   .hero-viz {
     margin-top: 40px !important;
   }
