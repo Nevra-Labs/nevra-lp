@@ -60,12 +60,16 @@ const SCORE = 742
 const SCORE_MAX = 850
 const FRACTION = SCORE / SCORE_MAX
 
-export function ScoreGauge() {
+export function ScoreGauge({ tone = 'light' }) {
   const [ref, playing] = usePlay(0.3)
   const score = useCountUp(SCORE, playing)
 
   return (
-    <div ref={ref} className={playing ? 'play' : ''} style={{ width: '100%' }}>
+    <div
+      ref={ref}
+      className={`${playing ? 'play' : ''} ${tone === 'dark' ? 'viz-dark' : ''}`}
+      style={{ width: '100%' }}
+    >
       <svg
         viewBox="0 0 720 330"
         role="img"
@@ -172,7 +176,7 @@ export function ScoreGauge() {
         {/* Outcome chip under the dial */}
         <g className="pop" style={{ '--delay': '1.15s' }}>
           <rect x="252" y="286" width="216" height="40" rx="12" fill="var(--ink)" />
-          <text x="360" y="311" textAnchor="middle" fontFamily="var(--font-sans)" fontSize="15" fontWeight="600" fill="#FFFFFF">
+          <text x="360" y="311" textAnchor="middle" fontFamily="var(--font-sans)" fontSize="15" fontWeight="600" fill="var(--surface)">
             $6,000 credit line
           </text>
         </g>

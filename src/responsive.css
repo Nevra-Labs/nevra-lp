@@ -34,7 +34,12 @@
 
   /* ── Hero ── */
   .hero {
-    padding-top: 116px !important;
+    padding-top: 64px !important;
+  }
+
+  .announce {
+    font-size: 13px !important;
+    padding: 12px 16px !important;
   }
 
   /* At 700 the display packs tight; give it room to breathe on phones. */
@@ -44,6 +49,7 @@
 
   .hero-viz {
     margin-top: 40px !important;
+    padding-bottom: 64px !important;
   }
 
   /* ── Stacked grids ── */

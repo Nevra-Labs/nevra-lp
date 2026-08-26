@@ -1,9 +1,9 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-import { useEffect, useState } from 'react'
 
 // Arch-style navbar (archlending.com): 64px fixed bar, logo left, centered
 // section links, and a right cluster of text link + outline button + filled
-// dark button. Transparent over the hero, solid white once the page scrolls.
+// dark button. Solid white throughout — like APX, the bar sits above the dark
+// hero rather than floating over it.
 //
 // Measured off Arch: 36px control height, 8px 16px padding, 8px radius,
 // 14px/500 labels, 16px gap between the right-hand controls.
@@ -17,16 +17,8 @@ const SECTION_LINKS = [
 ]
 
 export default function Nav({ rightExtra = null }) {
-  const [scrolled, setScrolled] = useState(false)
   const { pathname } = useLocation()
   const navigate = useNavigate()
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8)
-    onScroll()
-    window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
-  }, [])
 
   // In-page anchors: scroll directly when already on the landing page,
   // otherwise route home and let Home's hash effect finish the jump. Doing it
@@ -52,8 +44,7 @@ export default function Nav({ rightExtra = null }) {
       alignItems: 'center',
       justifyContent: 'center',
       padding: '0 24px',
-      background: scrolled ? 'var(--paper)' : 'transparent',
-      transition: 'background 150ms ease',
+      background: 'var(--paper)',
     }}>
       <div style={{
         width: '100%',

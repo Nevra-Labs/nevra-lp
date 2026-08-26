@@ -115,40 +115,50 @@ export default function Home() {
     <div>
       <Nav />
 
-      {/* ── Hero ─────────────────────────────────────────────────────────
-          Centered, no rails. Badge, two-tone headline, lede, two buttons,
-          then the animated score gauge. */}
-      <section className="hero" style={{ padding: '148px 24px 0', textAlign: 'center' }}>
-        <div style={{ maxWidth: 900, margin: '0 auto' }}>
-          <p className="pill enter-up enter-delay-1">
+      {/* ── Announcement + hero ──────────────────────────────────────────
+          apxlending.com's shape: dark announcement strip, then a full-bleed
+          dark hero with a centred badge, headline, sub-copy and two CTAs.
+          Warmed up for a consumer audience — APX leads on a cold skyline and
+          regulator language; this leads on the borrower's own score. */}
+      <div className="hero-dark">
+        <a href="/blog/why-crypto-never-solved-credit" className="announce">
+          <span className="announce-tag">New</span>
+          Why crypto never solved credit
+          <ArrowRight size={14} strokeWidth={2} />
+        </a>
+
+        <section className="hero">
+          <p className="pill pill-onDark enter-up enter-delay-1">
             <span className="pill-dot" aria-hidden />
-            Undercollateralized credit, from 7.25% APR
+            No credit checks. Your keys stay yours.
           </p>
 
-          <h1 className="display enter-up enter-delay-2" style={{ margin: '28px 0 0' }}>
-            <span style={{ display: 'block' }}>Consumer credit for</span>
-            <span className="dim" style={{ display: 'block' }}>crypto-native people.</span>
+          <h1 className="display enter-up enter-delay-2" style={{ margin: '26px 0 0', color: '#FFFFFF' }}>
+            <span style={{ display: 'block' }}>Money when you need it.</span>
+            <span style={{ display: 'block', color: 'rgba(255,255,255,0.48)' }}>
+              Without selling a thing.
+            </span>
           </h1>
 
-          <p className="lede enter-up enter-delay-3" style={{ maxWidth: 560, margin: '26px auto 0', fontSize: 18 }}>
-            Verify once, connect your bank and wallets, and get one real credit score from your
-            entire financial life. Then borrow against it.
+          <p className="lede enter-up enter-delay-3" style={{ maxWidth: 580, margin: '24px auto 0', color: 'rgba(255,255,255,0.66)' }}>
+            Connect your bank and wallets once. Nevra turns your whole financial life into one
+            real credit score, and lends against it from 7.25% APR.
           </p>
 
-          <div className="enter-up enter-delay-4" style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap', marginTop: 34 }}>
-            <Link to="/apply" className="btn btn-primary focus-ring">
+          <div className="hero-ctas enter-up enter-delay-4">
+            <Link to="/apply" className="btn btn-light focus-ring-light">
               Apply now <ArrowRight size={16} strokeWidth={2} />
             </Link>
-            <a href="/pdf/whitepaper.pdf" target="_blank" rel="noopener noreferrer" className="btn btn-outline focus-ring">
+            <a href="/pdf/whitepaper.pdf" target="_blank" rel="noopener noreferrer" className="btn btn-glass focus-ring-light">
               Read the whitepaper
             </a>
           </div>
-        </div>
 
-        <div className="hero-viz enter-up enter-delay-5" style={{ maxWidth: 760, margin: '56px auto 0' }}>
-          <ScoreGauge />
-        </div>
-      </section>
+          <div className="hero-viz enter-up enter-delay-5">
+            <ScoreGauge tone="dark" />
+          </div>
+        </section>
+      </div>
 
       {/* ── Partners ─────────────────────────────────────────────────── */}
       <section style={{ padding: '104px 0 0' }}>

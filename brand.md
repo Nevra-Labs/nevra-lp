@@ -40,8 +40,23 @@ and tracking at roughly zero. The weight carries the headline, not the tracking.
 - **No frames.** No side rails, no full-width section rules, no shared cell dividers.
   Sections are separated by `--gap-section` (112px) of white space.
 - Content sits in `.shell` (1120px, centered).
-- Navbar is transparent over the hero and fades in a blurred white backing on scroll.
-  It has no bottom border.
+- Navbar is a solid white 64px bar with no bottom border. Like APX, it sits above the
+  dark hero rather than floating over it.
+
+## Hero
+
+Follows apxlending.com's shape: dark announcement strip, then a full-bleed dark block
+with a centred badge, headline, sub-copy and two CTAs (white fill + glass outline).
+
+Two departures, both to read consumer rather than institutional: there is no skyline
+photograph — the base is a warm-tinted dark (`#17181C`) with a low amber glow — and the
+ambient visual is the borrower's own score gauge, not a building. The hero headline runs
+at a smaller step than the global display scale (`clamp(34px, 4.6vw, 62px)`) so both
+lines set full width, the way APX's 56px headline does.
+
+Graphics that appear on dark get `.viz-dark`, which remaps `--ink`, `--surface` and
+`--hairline` on the wrapper instead of branching every fill. Anything drawn on `--ink`
+must take its contrasting colour from `--surface`, never a hardcoded `#FFFFFF`.
 
 ## Buttons
 
