@@ -78,6 +78,33 @@ const USE_CASES = [
   { tag: 'MILESTONES', title: 'Big moments', description: 'Finance a car, a move, or a wedding at a rate your score earned.' },
 ]
 
+const STACK = [
+  {
+    name: 'Plaid',
+    src: '/logos/plaid_logo.svg',
+    role: 'Bank connections',
+    detail: 'Read-only access to balances and cash flow. Your credentials go to Plaid, never to us.',
+  },
+  {
+    name: 'Alchemy',
+    src: '/logos/alchemy_logo.svg',
+    role: 'Onchain data',
+    detail: 'Wallet history across chains — positions, repayments, liquidations — read at archive depth.',
+  },
+  {
+    name: 'Helius',
+    src: '/logos/helius_logo.svg',
+    role: 'Solana infrastructure',
+    detail: 'Transaction indexing and settlement for draws and repayments on Solana.',
+  },
+  {
+    name: 'FairScale',
+    src: '/logos/fairscale_logo.svg',
+    role: 'Scoring models',
+    detail: 'The modelling layer that turns two histories into one number you can be lent against.',
+  },
+]
+
 const FAQS = [
   {
     question: 'How is my credit score calculated?',
@@ -302,6 +329,33 @@ export default function Home() {
                 {title}
               </h3>
               <p style={{ fontSize: 14, color: 'var(--ink-60)', lineHeight: 1.6, margin: 0 }}>{body}</p>
+            </Reveal>
+          ))}
+        </div>
+      </section>
+
+      {/* ── Infrastructure ────────────────────────────────────────────
+          APX gives its infrastructure a section of its own rather than a
+          logo strip. A logo proves nothing until you say what it does. */}
+      <section className="section shell">
+        <Reveal style={{ maxWidth: 680, marginBottom: 56 }}>
+          <h2 className="display-sm">
+            <span style={{ display: 'block' }}>Built on infrastructure</span>
+            <span className="dim" style={{ display: 'block' }}>banks already trust.</span>
+          </h2>
+          <p className="lede" style={{ marginTop: 22, maxWidth: 520 }}>
+            Nothing about your score is a black box we invented. Here is what reads what.
+          </p>
+        </Reveal>
+
+        <div className="stack-grid">
+          {STACK.map((item, i) => (
+            <Reveal key={item.name} delay={i * 70}>
+              <div className="stack-card">
+                <img src={item.src} alt={item.name} className="stack-logo" />
+                <p className="stack-role">{item.role}</p>
+                <p className="stack-detail">{item.detail}</p>
+              </div>
             </Reveal>
           ))}
         </div>

@@ -692,6 +692,59 @@ a {
   .bento-card-wide { grid-column: span 1; }
 }
 
+/* ── Infrastructure grid ───────────────────────────────────────────────────
+   Names what each partner does instead of scrolling a logo past the viewer.
+   Card chrome matches the bento: hairline border, no shadow. */
+.stack-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.stack-card {
+  height: 100%;
+  background: var(--surface);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-lg);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+}
+
+.stack-logo {
+  height: 22px;
+  width: auto;
+  align-self: flex-start;
+  margin-bottom: 28px;
+  /* The supplied marks carry their own colours — FairScale's is white, which
+     vanishes on a white card. Flatten all four to ink so the row reads as one
+     set rather than four brand treatments. */
+  filter: brightness(0);
+  opacity: 0.72;
+}
+
+.stack-role {
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  margin: 0 0 8px;
+}
+
+.stack-detail {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--ink-60);
+  margin: 0;
+}
+
+@media (max-width: 1040px) {
+  .stack-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 600px) {
+  .stack-grid { grid-template-columns: 1fr; }
+}
+
 /* ── Navbar ────────────────────────────────────────────────────────────────
    Arch-style controls: 36px tall, 8px 16px padding, 8px radius, 14px/500.
    Section links sit flush against each other — the padding is the gap. */
