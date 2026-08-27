@@ -166,7 +166,7 @@ export default function DesignSystem() {
           <Section
             id="typography"
             title="Typography"
-            blurb="Inter Tight for everything, IBM Plex Mono for labels and data. Headings stay at weight 400 — the tight face already carries the authority, and bolding it makes the page shout."
+            blurb="Inter Tight for everything, IBM Plex Mono for labels and data. Headings stay at weight 400, because the tight face already carries the authority, and bolding it makes the page shout."
           >
             {TYPE.map(t => (
               <div key={t.cls} className="ds-type-row">
@@ -238,7 +238,7 @@ export default function DesignSystem() {
             </div>
           </Section>
 
-          <Section id="forms" title="Forms" blurb="Labels above the field, always visible. Focus turns the border black — the blue ring is reserved for keyboard focus.">
+          <Section id="forms" title="Forms" blurb="Labels above the field, always visible. Focus turns the border black. The blue ring is reserved for keyboard focus.">
             <div className="ds-specimen">
               <div className="ds-field">
                 <label htmlFor="ds-email">Email</label>

@@ -3,7 +3,7 @@
    archlending.com. The shared rules across all four:
 
      · white canvas, near-black ink, no structural rails or frames
-     · whitespace separates sections — borders only close a card
+     · whitespace separates sections, borders only close a card
      · one tight grotesque (Inter Tight) at large sizes with negative tracking
      · mono uppercase micro-labels
      · 12–16px radii, pills for badges, near-black fills for buttons
@@ -45,11 +45,15 @@
   --r-xl: 24px;
   --r-pill: 999px;
 
-  /* Section rhythm — the only thing separating sections is space.
+  /* Section rhythm. The only thing separating sections is space.
      This is the gap BETWEEN two sections; .section contributes half of it at
      each edge so adjacent sections don't double it. */
   --gap-section: 112px;
-  --shell: 1120px;
+  /* apxlending.com runs no max-width at all: every section is the full frame
+     with a fixed 80px gutter, so the content keeps growing with the viewport
+     instead of capping. Matched here. Prose blocks still carry their own
+     max-widths so line length stays readable on wide screens. */
+  --shell-pad: 80px;
 
   /* Depth. APX buys its consumer warmth with saturated gradient panels; we
      stay monochrome and buy it with a recessed panel plus one lift instead. */
@@ -92,7 +96,7 @@ a {
 
 /* ── Screen frame ─────────────────────────────────────────────────────────
    apxlending.com floats its page in an 8px #F5F5F5 gutter with 12px corners,
-   with the header sitting ABOVE the frame — full width, on the same grey, so
+   with the header sitting ABOVE the frame: full width, on the same grey, so
    the bar and the gutter read as one surround. Their frame is a fixed-height
    scroll container, which is how their gutter stays visible on all four sides
    at every scroll position. Reproducing that container would cost us document
@@ -109,7 +113,7 @@ a {
 /* The gutter, painted over the content on every side but the top. The
    spotlight trick: a rounded window the exact size of the visible page, with
    a shadow spread wide enough to flood everything outside it. That keeps the
-   left, right and bottom gutters — and the frame's top corners — on screen at
+   left, right and bottom gutters, and the frame's top corners, on screen at
    any scroll position, which margins alone can only do at the end of the
    page. */
 .screen-frame {
@@ -133,18 +137,15 @@ a {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0 24px;
   background: var(--frame);
 }
 
 /* ── Shared primitives ─────────────────────────────────────────────────── */
 
-/* Page shell: one centered column, no side rails. */
+/* Page shell: full width with a fixed gutter, no centred column and no cap. */
 .shell {
   width: 100%;
-  max-width: var(--shell);
-  margin: 0 auto;
-  padding: 0 24px;
+  padding: 0 var(--shell-pad);
 }
 
 .section {
@@ -163,8 +164,8 @@ a {
   scroll-margin-top: calc(var(--nav-h) + 24px);
 }
 
-/* Mono micro-label. Retired from the landing page — the headline carries the
-   section — but Blog, Apply and the 404 still use it for real metadata. */
+/* Mono micro-label. Retired from the landing page, where the headline carries
+   the section, but Blog, Apply and the 404 still use it for real metadata. */
 .eyebrow {
   font-family: var(--font-mono);
   font-size: 11px;
@@ -415,7 +416,7 @@ a {
 }
 
 /* Announcement strip, sitting flush at the top of the frame. The navbar no
-   longer overlaps the hero — it lives above the frame — so this no longer
+   longer overlaps the hero, it lives above the frame, so this no longer
    needs to clear it. */
 .announce {
   flex-shrink: 0;
@@ -745,7 +746,7 @@ a {
   width: auto;
   align-self: flex-start;
   margin-bottom: 28px;
-  /* The supplied marks carry their own colours — FairScale's is white, which
+  /* The supplied marks carry their own colours. FairScale's is white, which
      vanishes on a white card. Flatten all four to ink so the row reads as one
      set rather than four brand treatments. */
   filter: brightness(0);
@@ -776,7 +777,7 @@ a {
 
 /* ── Navbar ────────────────────────────────────────────────────────────────
    Arch-style controls: 36px tall, 8px 16px padding, 8px radius, 14px/500.
-   Section links sit flush against each other — the padding is the gap. */
+   Section links sit flush against each other; the padding is the gap. */
 .nav-item {
   display: inline-flex;
   align-items: center;
@@ -845,8 +846,103 @@ a {
 
 .faq-toggle:hover { color: var(--ink-60) !important; }
 
-.footer-link { transition: color 0.15s ease; }
-.footer-link:hover { color: var(--ink) !important; }
+/* ── Footer ───────────────────────────────────────────────────────────────
+   Large-name footer from 21st.dev, rebuilt on our tokens: brand block and
+   link columns, then the wordmark sized to the exact content width. */
+.footer {
+  padding-top: calc(var(--gap-section) / 2);
+  padding-bottom: 48px;
+  overflow: hidden;
+}
+
+.footer-top {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 64px;
+  align-items: start;
+}
+
+.footer-brand {
+  max-width: 320px;
+}
+
+.footer-logo {
+  width: 26px;
+  height: 26px;
+  display: block;
+  margin-bottom: 18px;
+}
+
+.footer-tagline {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--ink-60);
+  margin: 0 0 14px;
+}
+
+.footer-copy {
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--ink-45);
+  margin: 0;
+}
+
+.footer-cols {
+  display: flex;
+  gap: 72px;
+}
+
+.footer-col-title {
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0 0 18px;
+}
+
+.footer-col-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+}
+
+.footer-link {
+  font-size: 13.5px;
+  font-weight: 400;
+  color: var(--ink-60);
+  transition: color 0.15s ease;
+}
+
+.footer-link:hover { color: var(--ink); }
+
+.footer-note {
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--ink-30);
+  max-width: 640px;
+  margin: 56px 0 0;
+}
+
+/* The wordmark fills the content column exactly: 'Nevra' in Inter Tight 700 at
+   this tracking measures 2.513x its font-size, so 0.398 of the available width
+   is the size that lands flush on both edges at any viewport. Line-height
+   crops the font's own leading, which is dead space above the caps. */
+.footer-wordmark {
+  margin-top: 24px;
+  font-size: calc((100vw - var(--shell-pad) * 2) * 0.398);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  /* line-height 1 keeps the letterforms whole; anything tighter slices the
+     bowls off the e and the a. The negative margins then remove the font's
+     own leading and the descender band, which 'Nevra' never uses, so the
+     wordmark sits tight without being cropped. */
+  line-height: 1;
+  margin-bottom: -0.12em;
+  color: var(--ink);
+  user-select: none;
+  white-space: nowrap;
+}
 
 .focus-ring:focus-visible {
   outline: 2px solid var(--link);
@@ -884,22 +980,19 @@ a {
    Centered headline with inline token pills, linked sliders, terms card. */
 .calc-section {
   background: var(--paper);
-  padding: 84px 24px calc(var(--gap-section) / 2);
+  padding: 84px var(--shell-pad) calc(var(--gap-section) / 2);
 }
 
 /* The panel is the section's anchor: a recessed grey field that gives the
    calculator an edge on the white canvas, with the quote card lifted off it. */
 .calc-panel {
-  max-width: var(--shell);
-  margin: 0 auto;
   background: var(--panel);
   border-radius: var(--r-xl);
   padding: 56px 56px 60px;
 }
 
 .calc-headline-band {
-  max-width: var(--shell);
-  margin: 0 auto 72px;
+  margin: 0 0 72px;
   padding: 0 0 8px;
   text-align: center;
 }
@@ -1025,8 +1118,6 @@ a {
 }
 
 .calc-body {
-  max-width: var(--shell);
-  margin: 0 auto;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 64px;

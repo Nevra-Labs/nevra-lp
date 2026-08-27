@@ -89,7 +89,7 @@ function TokenSelect({ selected, onSelect }) {
 }
 
 /* SCORE reads as a token for rhythm with the token pill, but there is
-   nothing to choose — it is a span, has no chevron, and does not react. */
+   nothing to choose. It is a span, has no chevron, and does not react. */
 function ScoreToken() {
   return (
     <span className="calc-token calc-token-static">
@@ -147,11 +147,11 @@ export default function LoanCalculator() {
 
   const terms = [
     { icon: Clock, label: 'Duration up to', value: '12 months' },
-    { icon: Percent, label: 'Loan APR', value: eligible ? `${apr.toFixed(2)}%` : '—' },
+    { icon: Percent, label: 'Loan APR', value: eligible ? `${apr.toFixed(2)}%` : '-' },
     {
       icon: Wallet,
       label: 'Collateral required',
-      value: !eligible ? '—' : collateralPct === 0 ? 'None' : `${collateralPct}% of draw`,
+      value: !eligible ? '-' : collateralPct === 0 ? 'None' : `${collateralPct}% of draw`,
     },
   ]
 

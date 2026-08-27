@@ -2,7 +2,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 
 // Arch-style navbar (archlending.com): 64px fixed bar, logo left, centered
 // section links, and a right cluster of text link + outline button + filled
-// dark button. Solid white throughout — like APX, the bar sits above the dark
+// dark button. Solid white throughout. Like APX, the bar sits above the dark
 // hero rather than floating over it.
 //
 // Measured off Arch: 36px control height, 8px 16px padding, 8px radius,
@@ -36,7 +36,7 @@ export default function Nav({ rightExtra = null }) {
     <header className="nav-bar">
       <div style={{
         width: '100%',
-        maxWidth: 'var(--shell)',
+        padding: '0 var(--shell-pad)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',

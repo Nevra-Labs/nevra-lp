@@ -72,7 +72,7 @@ const STACK = [
     name: 'Alchemy',
     src: '/logos/alchemy_logo.svg',
     role: 'Onchain data',
-    detail: 'Wallet history across chains — positions, repayments, liquidations — read at archive depth.',
+    detail: 'Wallet history across chains: positions, repayments, liquidations, read at archive depth.',
   },
   {
     name: 'Helius',
@@ -225,7 +225,7 @@ export default function Home() {
       </section>
 
       {/* ── Why Nevra: feature cards ─────────────────────────────────
-          APX's "Why APX Lending?" grid — a headline, a one-line reason, then
+          APX's "Why APX Lending?" grid: a headline, a one-line reason, then
           cards that show the surface rather than describe it. */}
       <section className="section shell">
         <Reveal style={{ marginBottom: 48 }}>
@@ -338,8 +338,8 @@ export default function Home() {
       {/* ── CTA ──────────────────────────────────────────────────────────
           Inset rounded dark block rather than a full-bleed band, so the white
           canvas still frames it. */}
-      <section style={{ padding: '0 24px 112px' }}>
-        <Reveal style={{ maxWidth: 'var(--shell)', margin: '0 auto' }}>
+      <section style={{ padding: '0 var(--shell-pad) 112px' }}>
+        <Reveal>
           <div className="cta-block" style={{
             background: 'var(--dark)',
             borderRadius: 'var(--r-xl)',
@@ -447,13 +447,13 @@ function FaqItem({ faq, index }) {
 function FooterCol({ title, links }) {
   return (
     <div>
-      <p style={{ fontSize: 14, fontWeight: 600, marginBottom: 18 }}>{title}</p>
-      <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 11 }}>
+      <p className="footer-col-title">{title}</p>
+      <ul className="footer-col-list">
         {links.map(({ label, href, internal }) => (
           <li key={label}>
             {internal
-              ? <Link to={href} className="footer-link" style={footerLink}>{label}</Link>
-              : <a href={href} target="_blank" rel="noopener noreferrer" className="footer-link" style={footerLink}>{label}</a>}
+              ? <Link to={href} className="footer-link">{label}</Link>
+              : <a href={href} target="_blank" rel="noopener noreferrer" className="footer-link">{label}</a>}
           </li>
         ))}
       </ul>
@@ -461,21 +461,30 @@ function FooterCol({ title, links }) {
   )
 }
 
-const footerLink = { fontSize: 13.5, color: 'var(--ink-60)', fontWeight: 400 }
-
+/* Large-name footer, the pattern from 21st.dev: brand block and link columns
+   on top, then the wordmark set to the full content width to close the page.
+   Their source is Tailwind on shadcn primitives, so this is the layout rebuilt
+   on our own tokens rather than the component dropped in. */
 function Footer() {
   return (
-    <footer className="shell" style={{ paddingBottom: 56 }}>
-      <div className="footer-inner" style={{ display: 'flex', gap: 64, marginBottom: 64 }}>
-        <div style={{ minWidth: 200 }}>
-          <img src="/logo.png" alt="Nevra" style={{ width: 24, height: 24, marginBottom: 14 }} />
-          <p style={{ fontSize: 13, color: 'var(--ink-45)', lineHeight: 1.6 }}>
-            ©Nevra Inc. 2026<br />All rights reserved.
+    <footer className="footer shell">
+      <div className="footer-top">
+        <div className="footer-brand">
+          <img src="/logo.png" alt="Nevra" className="footer-logo" />
+          <p className="footer-tagline">
+            One real credit score from your whole financial life, onchain and off.
           </p>
+          <p className="footer-copy">&copy; Nevra Inc. 2026. All rights reserved.</p>
         </div>
-        <div className="footer-cols" style={{ display: 'flex', gap: 64, flex: 1, justifyContent: 'flex-end' }}>
+
+        <div className="footer-cols">
           <FooterCol title="Product" links={[
             { label: 'Apply', href: '/apply', internal: true },
+            { label: 'Calculator', href: '/#calculator', internal: true },
+            { label: 'How it works', href: '/#how-it-works', internal: true },
+            { label: 'Use cases', href: '/#use-cases', internal: true },
+          ]} />
+          <FooterCol title="Resources" links={[
             { label: 'Whitepaper', href: '/pdf/whitepaper.pdf' },
             { label: 'Blog', href: '/blog', internal: true },
             { label: 'Design system', href: '/design', internal: true },
@@ -488,10 +497,14 @@ function Footer() {
           ]} />
         </div>
       </div>
-      <p style={{ fontSize: 12, color: 'var(--ink-30)', lineHeight: 1.6, maxWidth: 640 }}>
+
+      <p className="footer-note">
         Nevra is not a bank. Figures shown on this page are illustrative and do not constitute a
         credit offer.
       </p>
+
+      {/* Decorative: the name is already in the logo above and in the page title. */}
+      <div className="footer-wordmark" aria-hidden="true">Nevra</div>
     </footer>
   )
 }

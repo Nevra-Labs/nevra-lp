@@ -19,6 +19,7 @@
 
   :root {
     --gap-section: 104px;
+    --shell-pad: 48px;
   }
 
   .how-wrapper {
@@ -37,6 +38,7 @@
 @media (max-width: 768px) {
   :root {
     --gap-section: 80px;
+    --shell-pad: 24px;
   }
 
   /* ── Nav ── */
@@ -174,15 +176,14 @@
   }
 
   /* ── Footer ── */
-  .footer-inner {
-    flex-direction: column !important;
-    gap: 32px !important;
+  .footer-top {
+    grid-template-columns: 1fr;
+    gap: 48px;
   }
 
   .footer-cols {
-    flex-direction: row !important;
-    gap: 48px !important;
-    justify-content: flex-start !important;
+    gap: 40px;
+    flex-wrap: wrap;
   }
 
   /* ── Blog / Article pages ── */

@@ -1,4 +1,4 @@
-# Brand — Nevra
+# Brand: Nevra
 
 _Status: active. Live reference at `/design` (`src/pages/DesignSystem.jsx`). Tokens live in
 `:root` in `src/index.css`; the reference page mirrors them, so edit both together._
@@ -15,7 +15,7 @@ sizes, 12–16px radii, near-black button fills.
 | `--paper` | `#FFFFFF` | Site background |
 | `--paper-soft` | `#FAFAFA` | Chart tracks, pill backgrounds |
 | `--surface` | `#FFFFFF` | Cards |
-| `--ink` | `#0E0F12` | Text and primary buttons — near-black, never pure black |
+| `--ink` | `#0E0F12` | Text and primary buttons, near-black, never pure black |
 | `--ink-60/-45/-30` | ink at 60/45/28% | Body copy, mono labels, disclaimers |
 | `--hairline` | `#EAEAEA` | Card borders and FAQ rules **only** |
 | `--link` | `#0051FF` | Focus rings and inline links, nothing else |
@@ -85,7 +85,7 @@ Proportions measured off apxlending.com at 1440x900 and matched exactly:
 | Partner marquee | pinned to the bottom edge |
 
 Badge is a soft rectangle (`--r-sm`), not a pill. Primary CTA is a white fill; secondary
-is glass — `rgba(255,255,255,.10)` on a `rgba(255,255,255,.45)` border.
+is glass: `rgba(255,255,255,.10)` on a `rgba(255,255,255,.45)` border.
 
 Two things are deliberately ours rather than theirs, so the page reads consumer:
 
@@ -102,7 +102,7 @@ must take its contrasting colour from `--surface`, never a hardcoded `#FFFFFF`.
 ## Calculator
 
 Structure mirrors APX's: centred question, then the interactive quote. The question
-carries two inline pills (settlement token, SCORE) and is capped at 40px — the largest
+carries two inline pills (settlement token, SCORE) and is capped at 40px, the largest
 size that keeps it on one line inside the shell. Balancing it across two lines orphans
 "unlock?" and opens gaps around the pills, so it does not wrap by design at desktop.
 Pills are `vertical-align: middle` so the selectable one and the static one share an
@@ -126,13 +126,13 @@ media sits 4px inside the card edge and rounds off with it. Copy block padded
 reserve three, so every media panel in a row starts at the same y.
 
 Their media is a saturated blue gradient behind an app screenshot. Ours is one
-photograph — `public/img/panel.jpg`, a black abstract curve — behind the live
+photograph, `public/img/panel.jpg`, a black abstract curve, behind the live
 product surface. It is the one place a surface sits on dark, so it takes
 `--lift-lg` on white.
 
 The four panels share that single file and are pulled apart by crop alone: each
 sets its own `background-position`, and the three narrow ones set a
-`background-size` above 100% as well. Panning without zooming is not enough —
+`background-size` above 100% as well. Panning without zooming is not enough:
 they are a third the width of the wide panel, so equal-scale crops all land on
 the same curve and the row reads as a repeat.
 
@@ -155,4 +155,8 @@ that shows the finished state.
 ## Voice
 
 Plain-English, confident, no hype. "Post less than you borrow." Credit is boring on
-purpose — clear rules, honest data. Never "revolutionary," never exclamation marks.
+purpose: clear rules, honest data. Never "revolutionary," never exclamation marks.
+
+**No em dashes.** Not in copy, not in code comments, not in this file. Use a
+comma, a colon, a semicolon, or two sentences. The site is checked for this, so a
+stray one (U+2014) is a regression, not a style choice.

@@ -20,7 +20,7 @@ A night aerial over midtown Manhattan, supplied by Hugo.
 ## Replacing it
 
 Encode with ffmpeg. Night footage compresses very well, so CRF 28 at 1080p lands
-near 1.3 MB — keep it under ~3 MB, it is the first thing that loads.
+near 1.3 MB. Keep it under ~3 MB, it is the first thing that loads.
 
     ffmpeg -i source.mov -t 9 -an -vf "scale=1920:-2" \
       -c:v libx264 -crf 20 -preset fast -pix_fmt yuv420p src9.mp4
@@ -42,5 +42,5 @@ will lose contrast.
 
 Footage must be cleared for commercial use. Pexels, Pixabay and Coverr are free for
 it; Artgrid, Filmsupply, Getty and Adobe Stock sell per-clip or subscription
-licences. Never reuse a clip lifted from another company's site — theirs is their
+licences. Never reuse a clip lifted from another company's site; theirs is their
 asset, not a layout convention.

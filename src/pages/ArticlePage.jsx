@@ -225,7 +225,7 @@ function ArticleBody({ content }) {
       continue
     }
 
-    // Unordered list — collect all consecutive `- ` blocks (each item may be its own block)
+    // Unordered list: collect all consecutive `- ` blocks (each item may be its own block)
     if (/^-\s/.test(block)) {
       const items = []
       while (i < blocks.length && /^-\s/.test(blocks[i])) {

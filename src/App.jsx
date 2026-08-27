@@ -46,7 +46,7 @@ export default function App() {
       <SmoothScroll />
       <ScrollToTop />
       {/* The gutter APX floats its whole site in, painted over the page so it
-          survives scrolling. Purely decorative — the page itself is .screen. */}
+          survives scrolling. Purely decorative; the page itself is .screen. */}
       <div className="screen-frame" aria-hidden />
 
       <div className="screen">

@@ -120,7 +120,7 @@ export function ScoreGauge({ tone = 'light' }) {
           strokeLinecap="round"
         />
 
-        {/* Dots riding the feeder curves — SMIL keeps them independent of React. */}
+        {/* Dots riding the feeder curves. SMIL keeps them independent of React. */}
         <circle r="4" fill="var(--ink)">
           <animateMotion dur="2.6s" begin="1.1s" repeatCount="indefinite" keyPoints="0;1" keyTimes="0;1" calcMode="spline" keySplines="0.4 0 0.2 1">
             <mpath href="#feed-left" />
@@ -217,7 +217,7 @@ export function CollateralCompare() {
           </clipPath>
         </defs>
 
-        {/* Typical lender — 25% of the track. */}
+        {/* Typical lender: 25% of the track. */}
         <text x="0" y="30" fontFamily="var(--font-sans)" fontSize="15" fontWeight="500" fill="var(--ink-45)">
           Typical overcollateralized
         </text>
@@ -227,7 +227,7 @@ export function CollateralCompare() {
           ${other.toLocaleString('en-US')}
         </text>
 
-        {/* Nevra — the full track. */}
+        {/* Nevra: the full track. */}
         <text x="0" y="148" fontFamily="var(--font-sans)" fontSize="15" fontWeight="600" fill="var(--ink)">
           Nevra
         </text>

@@ -4,7 +4,7 @@ import { HeroBackdrop } from './motion'
 /* Hero background video, same treatment as apxlending.com: autoplay, looped,
    muted, object-fit cover behind a darkening scrim.
 
-   The file is NOT in the repo — drop a licensed clip at `public/hero.mp4` and
+   The file is NOT in the repo. Drop a licensed clip at `public/hero.mp4` and
    it takes over automatically. Until then (and whenever the file 404s, the
    codec is unsupported, or the viewer asks for reduced motion) HeroBackdrop
    renders instead, so the hero is never empty. */

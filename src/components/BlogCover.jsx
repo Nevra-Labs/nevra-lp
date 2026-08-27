@@ -37,7 +37,7 @@ export default function BlogCover({ variant = 0, featured = false }) {
         background: 'radial-gradient(circle at 50% 50%, rgba(255,255,255,0.06) 0%, transparent 55%)',
       }} />
 
-      {/* Orbital geometry — the Nevra "credit orbit" motif */}
+      {/* Orbital geometry: the Nevra "credit orbit" motif */}
       <svg
         viewBox="0 0 800 400"
         preserveAspectRatio="xMidYMid slice"
@@ -81,7 +81,7 @@ export default function BlogCover({ variant = 0, featured = false }) {
           stroke={v.accentSoft}
           strokeWidth="1.2"
         />
-        {/* Inner orbit — glowing accent arc */}
+        {/* Inner orbit: glowing accent arc */}
         <ellipse
           cx="500"
           cy="200"
@@ -102,7 +102,7 @@ export default function BlogCover({ variant = 0, featured = false }) {
         <circle cx="500" cy="200" r="16" fill={v.accent} opacity="0.95" />
         <circle cx="500" cy="200" r="24" fill="none" stroke={v.accent} strokeOpacity="0.4" strokeWidth="1" />
 
-        {/* Grid dots — bottom left corner */}
+        {/* Grid dots: bottom left corner */}
         {featured && Array.from({ length: 4 }).flatMap((_, r) =>
           Array.from({ length: 6 }).map((_, c) => (
             <circle
