@@ -3,9 +3,10 @@ import { useState, useEffect, useRef } from 'react'
 import { ShieldCheck, KeyRound, TrendingUp, Umbrella, ArrowRight } from 'lucide-react'
 import Nav from '../components/Nav'
 import LoanCalculator from '../components/LoanCalculator'
-import { ScoreGauge, CollateralCompare, StepGlyph } from '../components/motion'
+import { CollateralCompare } from '../components/motion'
 import HeroVideo from '../components/HeroVideo'
-import ProductBento from '../components/ProductBento'
+import HowItWorks from '../components/HowItWorks'
+import FeatureCards from '../components/FeatureCards'
 import '../responsive.css'
 
 function Reveal({ children, delay = 0, className = '', style }) {
@@ -44,24 +45,6 @@ const PARTNER_LOGOS = [
   { name: 'Alchemy', src: '/logos/alchemy_logo.svg' },
   { name: 'Helius', src: '/logos/helius_logo.svg' },
   { name: 'FairScale', src: '/logos/fairscale_logo.svg' },
-]
-
-const STEPS = [
-  {
-    number: '01',
-    title: 'Connect your wallets',
-    description: 'Link as many wallets as you want in one click. Your combined onchain history starts building your profile instantly.',
-  },
-  {
-    number: '02',
-    title: 'Verify your identity',
-    description: 'Complete KYC and link your bank. We combine your offchain financial data with your onchain history into one score.',
-  },
-  {
-    number: '03',
-    title: 'Access your credit line',
-    description: 'Post less than you borrow. Your score unlocks a credit line you can draw from anytime, no overcollateral, no waiting.',
-  },
 ]
 
 const PRINCIPLES = [
@@ -214,26 +197,11 @@ export default function Home() {
           first rather than fourth. */}
       <LoanCalculator />
 
-      {/* ── Product showcase ──────────────────────────────────────────
-          ui.shadcn.com shows real surfaces from the product in a bento of
-          bordered cards rather than describing them. Same idea here: the
-          score, the line it opens, the rate it sets, and what we read. */}
-      <section className="section shell">
-        <Reveal style={{ maxWidth: 780, marginBottom: 48, textAlign: 'center', marginLeft: 'auto', marginRight: 'auto' }}>
-          <h2 className="display-sm">
-            <span style={{ display: 'block' }}>Your whole financial life,</span>
-            <span className="dim" style={{ display: 'block' }}>resolved into one score.</span>
-          </h2>
-          <p className="lede" style={{ marginTop: 22, maxWidth: 540, marginLeft: 'auto', marginRight: 'auto' }}>
-            Wallet history and bank cash flow, read together. That number sets your limit and
-            your rate — and it moves every time you repay.
-          </p>
-        </Reveal>
-
-        <Reveal delay={120}>
-          <ProductBento />
-        </Reveal>
-      </section>
+      {/* ── How it works ─────────────────────────────────────────────
+          apxlending.com's block, in the slot the score-showcase used to hold:
+          the steps carry the explanation, and the panel beside them shows the
+          surface each step actually produces. */}
+      <HowItWorks />
 
       {/* ── Why Nevra ────────────────────────────────────────────────── */}
       <section className="section shell">
@@ -256,33 +224,21 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── How it works ─────────────────────────────────────────────── */}
-      <section id="how-it-works" className="section section-band">
-        <div className="shell">
-        <Reveal style={{ maxWidth: 620, marginBottom: 72 }}>
-          <h2 className="display-sm">
-            From wallet to credit line{' '}
-            <span className="dim">in three steps.</span>
-          </h2>
+      {/* ── Why Nevra: feature cards ─────────────────────────────────
+          APX's "Why APX Lending?" grid — a headline, a one-line reason, then
+          cards that show the surface rather than describe it. */}
+      <section className="section shell">
+        <Reveal style={{ marginBottom: 48 }}>
+          <h2 className="display-sm">Why Nevra?</h2>
+          <p className="lede" style={{ marginTop: 18, maxWidth: 640 }}>
+            One score, a line you can draw on, a rate that falls as you repay, and read-only
+            access to the data behind it. Here is each of them, working.
+          </p>
         </Reveal>
 
-        <div className="steps" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 56 }}>
-          {STEPS.map((step, i) => (
-            <Reveal key={step.title} delay={i * 90}>
-              <StepGlyph index={i} />
-              <p style={{ margin: '28px 0 12px', fontSize: 14, fontWeight: 600, color: 'var(--ink-30)' }}>
-                {step.number}
-              </p>
-              <h3 style={{ fontSize: 20, fontWeight: 600, letterSpacing: '-0.005em', lineHeight: 1.25, margin: '0 0 10px' }}>
-                {step.title}
-              </h3>
-              <p style={{ fontSize: 15, color: 'var(--ink-60)', lineHeight: 1.65, margin: 0 }}>
-                {step.description}
-              </p>
-            </Reveal>
-          ))}
-        </div>
-        </div>
+        <Reveal delay={100}>
+          <FeatureCards />
+        </Reveal>
       </section>
 
       {/* ── Use cases ────────────────────────────────────────────────── */}

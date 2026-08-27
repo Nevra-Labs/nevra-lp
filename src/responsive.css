@@ -20,6 +20,18 @@
   :root {
     --gap-section: 104px;
   }
+
+  .how-wrapper {
+    grid-template-columns: 340px minmax(0, 1fr) !important;
+  }
+
+  .feature-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  .feature-card-wide {
+    grid-column: span 2 !important;
+  }
 }
 
 @media (max-width: 768px) {
@@ -109,6 +121,50 @@
   .calc-panel {
     padding: 32px 20px 36px !important;
     border-radius: var(--r-lg) !important;
+  }
+
+  /* ── How it works: copy over panel ── */
+  .how-wrapper {
+    grid-template-columns: 1fr !important;
+    gap: 40px !important;
+  }
+
+  .how-content {
+    gap: 36px !important;
+  }
+
+  .how-panel {
+    min-height: 0 !important;
+    padding: 24px !important;
+  }
+
+  .how-panel-inner {
+    max-width: none !important;
+    padding: 22px !important;
+  }
+
+  /* ── Feature cards: one per row, every card full width ── */
+  .feature-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .feature-card-wide {
+    grid-column: span 1 !important;
+  }
+
+  .feature-card-title {
+    font-size: 21px !important;
+  }
+
+  /* Reserved line counts are a desktop alignment trick; on one column they
+     only add dead space. */
+  .feature-card-body {
+    min-height: 0 !important;
+  }
+
+  .feature-media {
+    min-height: 0 !important;
+    padding: 24px 20px !important;
   }
 
   /* ── CTA ── */

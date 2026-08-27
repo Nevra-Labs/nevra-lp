@@ -45,14 +45,18 @@ export default function App() {
     <BrowserRouter>
       <SmoothScroll />
       <ScrollToTop />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/blog" element={<Blog />} />
-        <Route path="/blog/:id" element={<ArticlePage />} />
-        <Route path="/apply" element={<Apply />} />
-        <Route path="/design" element={<DesignSystem />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
+      {/* Every route renders inside the screen frame — the 8px gutter and the
+          12px page corners APX floats its whole site in. */}
+      <div className="screen">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/blog" element={<Blog />} />
+          <Route path="/blog/:id" element={<ArticlePage />} />
+          <Route path="/apply" element={<Apply />} />
+          <Route path="/design" element={<DesignSystem />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </div>
     </BrowserRouter>
   )
 }

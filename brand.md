@@ -44,6 +44,15 @@ and tracking at roughly zero. The weight carries the headline, not the tracking.
 - Navbar is a solid white 64px bar with no bottom border. Like APX, it sits above the
   dark hero rather than floating over it.
 
+## Screen frame
+
+The whole site floats in an 8px `--frame` (`#F5F5F5`) gutter with 12px corners,
+measured off apxlending.com. APX uses a fixed-height scroll container; `.screen`
+in `src/App.jsx` gets the same look on normal document scroll, so anchors and
+sticky behaviour are untouched. The fixed navbar is inset by hand (`.nav-bar`)
+and rounds off with the frame's top corners. The hero is
+`calc(100svh - var(--frame-gap) * 2)` so it ends on the frame's bottom edge.
+
 ## Depth
 
 APX buys its consumer warmth with saturated blue gradient panels. Nevra stays
@@ -102,6 +111,30 @@ size that keeps it on one line inside the shell. Balancing it across two lines o
 Pills are `vertical-align: middle` so the selectable one and the static one share an
 optical centre. The body sits on a `--panel` field with the Loan Overview card lifted
 off it.
+
+## How it works
+
+apxlending.com's block, measured at 1440x900: a 408px copy column beside the
+panel, 20px apart, heading and accordion 56px apart. Each step is a 1px
+`#EFEFEF` rule with a progress line that fills over a 9s dwell before advancing.
+APX swaps a screenshot of its app per step; ours swaps the live surface that
+step produces (`SourcesSurface` → `ScoreSurface` → `CreditLineSurface`). Paused
+until the block is on screen, and disabled under `prefers-reduced-motion`.
+
+## Feature cards
+
+APX's "Why APX Lending?" grid: 3 columns at 20px, card padded `0 4px 4px` so the
+media sits 4px inside the card edge and rounds off with it. Copy block padded
+24px, title 24px/500, body 16px at `--ink-60`. Titles stay to one line and bodies
+reserve three, so every media panel in a row starts at the same y.
+
+Their media is a saturated blue gradient behind an app screenshot. Ours is the
+same gradient in near-black with a hand-drawn diagonal beam, and the live
+product surface floating on it — the one place a surface sits on dark, so it
+takes `--lift-lg` on white.
+
+Surfaces live in `src/components/surfaces.jsx` and carry no chrome of their own.
+The host owns the border, radius and padding; the surface owns the content.
 
 ## Buttons
 
