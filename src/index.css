@@ -1408,10 +1408,23 @@ a {
 /* APX renders a different crop of its gradient behind every card. Same idea:
    one photograph, framed somewhere different in each panel, so the four read
    as a set rather than a repeat. */
-.feature-card:nth-of-type(1) .feature-media { background-position: 50% 34%; }
-.feature-card:nth-of-type(2) .feature-media { background-position: 16% 50%; }
-.feature-card:nth-of-type(3) .feature-media { background-position: 54% 46%; }
-.feature-card:nth-of-type(4) .feature-media { background-position: 88% 52%; }
+.feature-card:nth-of-type(1) .feature-media {
+  background-position: 50% 30%;
+}
+/* The narrow panels are a third of the wide one, so matching crops on them
+   land on the same curve. Zoom as well as pan to pull them apart. */
+.feature-card:nth-of-type(2) .feature-media {
+  background-position: 6% 18%;
+  background-size: 210%;
+}
+.feature-card:nth-of-type(3) .feature-media {
+  background-position: 66% 84%;
+  background-size: 165%;
+}
+.feature-card:nth-of-type(4) .feature-media {
+  background-position: 97% 24%;
+  background-size: 255%;
+}
 
 .feature-surface {
   position: relative;
