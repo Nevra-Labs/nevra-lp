@@ -45,8 +45,10 @@ export default function App() {
     <BrowserRouter>
       <SmoothScroll />
       <ScrollToTop />
-      {/* Every route renders inside the screen frame — the 8px gutter and the
-          12px page corners APX floats its whole site in. */}
+      {/* The gutter APX floats its whole site in, painted over the page so it
+          survives scrolling. Purely decorative — the page itself is .screen. */}
+      <div className="screen-frame" aria-hidden />
+
       <div className="screen">
         <Routes>
           <Route path="/" element={<Home />} />

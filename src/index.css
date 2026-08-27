@@ -58,6 +58,7 @@
      every side, page corners rounded to 12px. */
   --frame: #F5F5F5;
   --frame-gap: 8px;
+  --nav-h: 64px;
   --lift: 0 1px 2px rgba(14, 15, 18, 0.04), 0 12px 28px -14px rgba(14, 15, 18, 0.18);
   --lift-lg: 0 1px 3px rgba(14, 15, 18, 0.05), 0 26px 56px -26px rgba(14, 15, 18, 0.28);
 }
@@ -90,32 +91,50 @@ a {
 }
 
 /* ── Screen frame ─────────────────────────────────────────────────────────
-   apxlending.com floats its entire page in an 8px #F5F5F5 gutter with 12px
-   corners. Theirs is a fixed-height scroll container; this is the same look
-   on normal document scroll, so sticky/anchor behaviour is untouched. */
+   apxlending.com floats its page in an 8px #F5F5F5 gutter with 12px corners,
+   with the header sitting ABOVE the frame — full width, on the same grey, so
+   the bar and the gutter read as one surround. Their frame is a fixed-height
+   scroll container, which is how their gutter stays visible on all four sides
+   at every scroll position. Reproducing that container would cost us document
+   scroll, so the gutter is painted by a fixed overlay instead (.screen-frame)
+   and the page below scrolls normally. */
 .screen {
   background: var(--paper);
-  margin: var(--frame-gap);
+  margin: var(--nav-h) var(--frame-gap) var(--frame-gap);
   border-radius: var(--r);
   overflow: hidden;
-  min-height: calc(100svh - var(--frame-gap) * 2);
+  min-height: calc(100svh - var(--nav-h) - var(--frame-gap));
 }
 
-/* The navbar is fixed, so it has to be inset by hand to stay inside the
-   frame, and to round off with it. */
+/* The gutter, painted over the content on every side but the top. The
+   spotlight trick: a rounded window the exact size of the visible page, with
+   a shadow spread wide enough to flood everything outside it. That keeps the
+   left, right and bottom gutters — and the frame's top corners — on screen at
+   any scroll position, which margins alone can only do at the end of the
+   page. */
+.screen-frame {
+  position: fixed;
+  inset: var(--nav-h) var(--frame-gap) var(--frame-gap);
+  z-index: 60;
+  pointer-events: none;
+  border-radius: var(--r);
+  box-shadow: 0 0 0 100vmax var(--frame);
+}
+
+/* Full width and on the frame's own grey, like APX's .header-content. It
+   outranks the gutter overlay so the bar stays clean across the top. */
 .nav-bar {
   position: fixed;
-  top: var(--frame-gap);
-  left: var(--frame-gap);
-  right: var(--frame-gap);
-  z-index: 50;
-  height: 64px;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 70;
+  height: var(--nav-h);
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 0 24px;
-  background: var(--paper);
-  border-radius: var(--r) var(--r) 0 0;
+  background: var(--frame);
 }
 
 /* ── Shared primitives ─────────────────────────────────────────────────── */
@@ -139,9 +158,9 @@ a {
   background: var(--panel);
 }
 
-/* Anchor targets clear the 64px fixed navbar. */
+/* Anchor targets clear the fixed navbar and the frame's top edge. */
 [id] {
-  scroll-margin-top: 88px;
+  scroll-margin-top: calc(var(--nav-h) + 24px);
 }
 
 /* Mono micro-label. Retired from the landing page — the headline carries the
@@ -343,7 +362,7 @@ a {
 .hero-dark {
   position: relative;
   background: #17181C;
-  min-height: calc(100svh - var(--frame-gap) * 2);
+  min-height: calc(100svh - var(--nav-h) - var(--frame-gap));
   display: flex;
   flex-direction: column;
   isolation: isolate;
@@ -395,14 +414,15 @@ a {
   background: radial-gradient(118% 88% at 50% 46%, transparent 42%, rgba(0, 0, 0, 0.46) 100%);
 }
 
-/* Announcement strip. Clears the fixed 64px navbar. */
+/* Announcement strip, sitting flush at the top of the frame. The navbar no
+   longer overlaps the hero — it lives above the frame — so this no longer
+   needs to clear it. */
 .announce {
   flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 10px;
-  margin-top: 64px;
   height: 55px;
   padding: 0 24px;
   font-size: 15px;
@@ -1378,25 +1398,20 @@ a {
   justify-content: center;
   padding: 32px;
   border-radius: 0 0 var(--r) var(--r);
-  background: linear-gradient(142deg, #0B0C0F 0%, #212430 44%, #0E0F13 100%);
+  /* Colour under the photo, so the card never flashes white while it loads. */
+  background-color: #0B0C0F;
+  background-image: url('/img/panel.jpg');
+  background-size: cover;
   overflow: hidden;
 }
 
-/* The diagonal beam APX gets from its gradient render, drawn by hand. */
-.feature-media::after {
-  content: '';
-  position: absolute;
-  inset: -40% -12%;
-  pointer-events: none;
-  background: linear-gradient(
-    114deg,
-    transparent 36%,
-    rgba(255, 255, 255, 0.06) 44%,
-    rgba(255, 255, 255, 0.22) 49%,
-    rgba(255, 255, 255, 0.05) 54%,
-    transparent 62%
-  );
-}
+/* APX renders a different crop of its gradient behind every card. Same idea:
+   one photograph, framed somewhere different in each panel, so the four read
+   as a set rather than a repeat. */
+.feature-card:nth-of-type(1) .feature-media { background-position: 50% 34%; }
+.feature-card:nth-of-type(2) .feature-media { background-position: 16% 50%; }
+.feature-card:nth-of-type(3) .feature-media { background-position: 54% 46%; }
+.feature-card:nth-of-type(4) .feature-media { background-position: 88% 52%; }
 
 .feature-surface {
   position: relative;
