@@ -257,7 +257,8 @@ export default function Home() {
       </section>
 
       {/* ── How it works ─────────────────────────────────────────────── */}
-      <section id="how-it-works" className="section shell">
+      <section id="how-it-works" className="section section-band">
+        <div className="shell">
         <Reveal style={{ maxWidth: 620, marginBottom: 72 }}>
           <h2 className="display-sm">
             From wallet to credit line{' '}
@@ -280,6 +281,7 @@ export default function Home() {
               </p>
             </Reveal>
           ))}
+        </div>
         </div>
       </section>
 

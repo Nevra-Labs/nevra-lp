@@ -53,7 +53,7 @@ function TokenSelect({ selected, onSelect }) {
   }, [open])
 
   return (
-    <span ref={ref} style={{ position: 'relative', display: 'inline-block', verticalAlign: 'middle' }}>
+    <span ref={ref} style={{ position: 'relative', display: 'inline-flex', verticalAlign: 'middle' }}>
       <button
         type="button"
         className="calc-token focus-ring"
@@ -166,57 +166,64 @@ export default function LoanCalculator() {
         </h2>
       </div>
 
-      <div className="calc-body">
-        <div className="calc-sliders">
-          <SliderRow
-            label="Your onchain credit score"
-            display={score}
-            unit="SCORE"
-            min={SCORE_MIN}
-            max={SCORE_MAX}
-            step={1}
-            value={score}
-            onChange={setScore}
-            ariaLabel="Your Nevra credit score"
-            note={eligible
-              ? 'Every repayment moves this. Your rate and collateral follow it down.'
-              : `Not scored for credit yet. A score of ${SCORE_FLOOR} opens your first line.`}
-          />
-          <SliderRow
-            label="Amount you can borrow"
-            display={money(borrow)}
-            unit={token.code}
-            max={maxBorrow || 1}
-            step={(maxBorrow || 1) / 500}
-            value={borrow}
-            disabled={!eligible}
-            onChange={amount => setDrawRatio(maxBorrow ? amount / maxBorrow : 0)}
-            ariaLabel={`Amount to borrow in ${token.code}`}
-          />
-        </div>
+      {/* APX anchors this section with a saturated gradient panel and floats the
+          quote card on it. Same structure, monochrome: a soft grey panel gives
+          the section an edge, and the Loan Overview card lifts off it on a
+          shadow instead of a colour change. */}
+      <div className="calc-panel">
+        <div className="calc-body">
+          <div className="calc-sliders">
+            <SliderRow
+              label="Your onchain credit score"
+              display={score}
+              unit="SCORE"
+              min={SCORE_MIN}
+              max={SCORE_MAX}
+              step={1}
+              value={score}
+              onChange={setScore}
+              ariaLabel="Your Nevra credit score"
+              note={eligible
+                ? 'Every repayment moves this. Your rate and collateral follow it down.'
+                : `Not scored for credit yet. A score of ${SCORE_FLOOR} opens your first line.`}
+            />
+            <SliderRow
+              label="Amount you can borrow"
+              display={money(borrow)}
+              unit={token.code}
+              max={maxBorrow || 1}
+              step={(maxBorrow || 1) / 500}
+              value={borrow}
+              disabled={!eligible}
+              onChange={amount => setDrawRatio(maxBorrow ? amount / maxBorrow : 0)}
+              ariaLabel={`Amount to borrow in ${token.code}`}
+            />
+          </div>
 
-        <div className="calc-overview">
-          <p className="calc-overview-title">Loan Overview</p>
-          <dl className="calc-terms">
-            {terms.map(({ icon: Icon, label, value }) => (
-              <div key={label} className="calc-term">
-                <dt>
-                  <Icon size={16} strokeWidth={1.6} />
-                  {label}
-                </dt>
-                <dd>{value}</dd>
-              </div>
-            ))}
-          </dl>
-          <Link to="/apply" className="calc-cta btn-hover focus-ring-light">
-            Start my loan
-            <ArrowRight size={16} strokeWidth={1.8} />
-          </Link>
-          <p className="calc-fineprint">
-            Illustrative. Your rate and line are set after verification.
-          </p>
+          <div className="calc-overview">
+            <p className="calc-overview-title">Loan Overview</p>
+            <dl className="calc-terms">
+              {terms.map(({ icon: Icon, label, value }) => (
+                <div key={label} className="calc-term">
+                  <dt>
+                    <Icon size={16} strokeWidth={1.6} />
+                    {label}
+                  </dt>
+                  <dd>{value}</dd>
+                </div>
+              ))}
+            </dl>
+            <Link to="/apply" className="calc-cta btn-hover focus-ring-light">
+              Start my loan
+              <ArrowRight size={16} strokeWidth={1.8} />
+            </Link>
+            <p className="calc-fineprint">
+              Illustrative. Your rate and line are set after verification.
+            </p>
+          </div>
         </div>
       </div>
+
     </section>
   )
 }

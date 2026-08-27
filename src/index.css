@@ -45,9 +45,17 @@
   --r-xl: 24px;
   --r-pill: 999px;
 
-  /* Section rhythm — the only thing separating sections is space. */
+  /* Section rhythm — the only thing separating sections is space.
+     This is the gap BETWEEN two sections; .section contributes half of it at
+     each edge so adjacent sections don't double it. */
   --gap-section: 112px;
   --shell: 1120px;
+
+  /* Depth. APX buys its consumer warmth with saturated gradient panels; we
+     stay monochrome and buy it with a recessed panel plus one lift instead. */
+  --panel: #F6F6F7;
+  --lift: 0 1px 2px rgba(14, 15, 18, 0.04), 0 12px 28px -14px rgba(14, 15, 18, 0.18);
+  --lift-lg: 0 1px 3px rgba(14, 15, 18, 0.05), 0 26px 56px -26px rgba(14, 15, 18, 0.28);
 }
 
 * {
@@ -88,7 +96,14 @@ a {
 }
 
 .section {
-  padding-block: var(--gap-section);
+  padding-block: calc(var(--gap-section) / 2);
+}
+
+/* Full-bleed tint band. APX alternates white and a near-white grey down the
+   page so a long run of sections doesn't read as one flat sheet; this is that,
+   monochrome. Use it on a bare <section> and put .shell inside. */
+.section-band {
+  background: var(--panel);
 }
 
 /* Anchor targets clear the 64px fixed navbar. */
@@ -199,6 +214,7 @@ a {
   border: 1px solid var(--hairline);
   border-radius: var(--r-lg);
   padding: 26px;
+  box-shadow: var(--lift);
 }
 
 /* ── Motion ────────────────────────────────────────────────────────────── */
@@ -520,6 +536,7 @@ a {
   display: flex;
   flex-direction: column;
   min-width: 0;
+  box-shadow: var(--lift);
 }
 
 .bento-card-wide {
@@ -711,6 +728,7 @@ a {
   padding: 24px;
   display: flex;
   flex-direction: column;
+  box-shadow: var(--lift);
 }
 
 .stack-logo {
@@ -857,20 +875,30 @@ a {
    Centered headline with inline token pills, linked sliders, terms card. */
 .calc-section {
   background: var(--paper);
-  padding: 0 24px var(--gap-section);
+  padding: 84px 24px calc(var(--gap-section) / 2);
+}
+
+/* The panel is the section's anchor: a recessed grey field that gives the
+   calculator an edge on the white canvas, with the quote card lifted off it. */
+.calc-panel {
+  max-width: var(--shell);
+  margin: 0 auto;
+  background: var(--panel);
+  border-radius: var(--r-xl);
+  padding: 56px 56px 60px;
 }
 
 .calc-headline-band {
   max-width: var(--shell);
-  margin: 0 auto 80px;
+  margin: 0 auto 72px;
   padding: 0 0 8px;
   text-align: center;
 }
 
 .calc-headline {
   font-weight: 700;
-  font-size: clamp(30px, 3.7vw, 52px);
-  line-height: 1.3;
+  font-size: clamp(27px, 2.85vw, 40px);
+  line-height: 1.32;
   letter-spacing: -0.004em;
   color: var(--ink);
   margin: 0;
@@ -891,6 +919,7 @@ a {
   border-radius: 9999px;
   padding: 0.16em 0.44em 0.16em 0.24em;
   margin: 0 0.06em;
+  vertical-align: middle;
   cursor: pointer;
   font: inherit;
   color: inherit;
@@ -1045,13 +1074,13 @@ a {
 .calc-range::-webkit-slider-runnable-track {
   height: 4px;
   border-radius: 9999px;
-  background: var(--hairline);
+  background: rgba(14, 15, 18, 0.12);
 }
 
 .calc-range::-moz-range-track {
   height: 4px;
   border-radius: 9999px;
-  background: var(--hairline);
+  background: rgba(14, 15, 18, 0.12);
 }
 
 .calc-range::-webkit-slider-thumb {
@@ -1109,9 +1138,10 @@ a {
 
 .calc-overview {
   background: var(--surface);
-  border: 1px solid var(--hairline);
+  border: 1px solid rgba(14, 15, 18, 0.06);
   border-radius: var(--r-lg);
   padding: 24px 26px 26px;
+  box-shadow: var(--lift-lg);
 }
 
 .calc-overview-title {

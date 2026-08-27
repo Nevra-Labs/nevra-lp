@@ -105,6 +105,12 @@
     gap: 44px !important;
   }
 
+  /* The panel keeps its edge on phones, but 56px of inset eats the column. */
+  .calc-panel {
+    padding: 32px 20px 36px !important;
+    border-radius: var(--r-lg) !important;
+  }
+
   /* ── CTA ── */
   .cta-block {
     padding: 64px 24px !important;

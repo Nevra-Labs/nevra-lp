@@ -28,6 +28,7 @@ const SURFACE = [
   { name: 'Sunk', token: '--ds-sunk', hex: '#F5F5F5', use: 'Neutral badges' },
   { name: 'Hairline', token: '--hairline', hex: '#EAEAEA', use: 'Card borders and FAQ rules only' },
   { name: 'Hairline soft', token: '--hairline-soft', hex: '#F1F1F1', use: 'The lightest card border' },
+  { name: 'Panel', token: '--panel', hex: '#F6F6F7', use: 'Recessed fields: the calculator panel, .section-band tints' },
   { name: 'Dark', token: '--dark', hex: '#0E0F12', use: 'The inset CTA block' },
 ]
 
@@ -219,7 +220,7 @@ export default function DesignSystem() {
             </p>
           </Section>
 
-          <Section id="surfaces" title="Surfaces & badges" blurb="Cards are white on white, separated by a hairline. Shadows are for things that float, and almost nothing floats.">
+          <Section id="surfaces" title="Surfaces & badges" blurb="Cards are white on white, separated by a hairline and a shallow --lift. Only a card sitting on a --panel takes the deeper --lift-lg, and almost nothing does.">
             <div className="ds-grid-2" style={{ marginBottom: 20 }}>
               <div className="ds-card">
                 <h4>Loan overview</h4>

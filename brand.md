@@ -38,10 +38,28 @@ and tracking at roughly zero. The weight carries the headline, not the tracking.
 ## Layout
 
 - **No frames.** No side rails, no full-width section rules, no shared cell dividers.
-  Sections are separated by `--gap-section` (112px) of white space.
+- `--gap-section` (112px) is the space **between** two sections. `.section` pays half of
+  it at each edge, so adjacent sections add up to 112px rather than doubling to 224px.
 - Content sits in `.shell` (1120px, centered).
 - Navbar is a solid white 64px bar with no bottom border. Like APX, it sits above the
   dark hero rather than floating over it.
+
+## Depth
+
+APX buys its consumer warmth with saturated blue gradient panels. Nevra stays
+monochrome and buys it with recessed grey and one degree of lift instead:
+
+| Token | Value | Use |
+|---|---|---|
+| `--panel` | `#F6F6F7` | Recessed fields: the calculator panel, full-bleed tint bands |
+| `--lift` | shallow | Every `.card`, `.bento-card`, `.stack-card` |
+| `--lift-lg` | deeper | The one card that floats on a panel (calculator's Loan Overview) |
+
+- `.section-band` is a full-bleed `--panel` tint. APX alternates white and near-white
+  down the page so a long run of sections doesn't read as one flat sheet. Put it on a
+  bare `<section>` with `.shell` inside; the landing page uses it once, on How it works.
+- Only one thing lifts per panel. Cards on white take `--lift`; a card sitting **on** a
+  panel takes `--lift-lg` so the separation reads.
 
 ## Hero
 
@@ -74,6 +92,16 @@ ships no third-party assets:
 Graphics that appear on dark get `.viz-dark`, which remaps `--ink`, `--surface` and
 `--hairline` on the wrapper instead of branching every fill. Anything drawn on `--ink`
 must take its contrasting colour from `--surface`, never a hardcoded `#FFFFFF`.
+
+## Calculator
+
+Structure mirrors APX's: centred question, then the interactive quote. The question
+carries two inline pills (settlement token, SCORE) and is capped at 40px — the largest
+size that keeps it on one line inside the shell. Balancing it across two lines orphans
+"unlock?" and opens gaps around the pills, so it does not wrap by design at desktop.
+Pills are `vertical-align: middle` so the selectable one and the static one share an
+optical centre. The body sits on a `--panel` field with the Loan Overview card lifted
+off it.
 
 ## Buttons
 
