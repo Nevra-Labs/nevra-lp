@@ -87,14 +87,11 @@ Proportions measured off apxlending.com at 1440x900 and matched exactly:
 Badge is a soft rectangle (`--r-sm`), not a pill. Primary CTA is a white fill; secondary
 is glass — `rgba(255,255,255,.10)` on a `rgba(255,255,255,.45)` border.
 
-Three things are deliberately ours rather than theirs, so the page reads consumer and
-ships no third-party assets:
+Two things are deliberately ours rather than theirs, so the page reads consumer:
 
-- **No photograph.** APX darkens a city at dusk. The backdrop here is `HeroBackdrop` —
-  an oversized echo of the score arc over a warm dark (`#17181C`), with a dot field and a
-  hand-built vignette standing in for the depth a photo would give.
-- **The visual is the product.** The score gauge gets its own section below the hero
-  rather than competing with the headline.
+- **Moving backdrop.** APX darkens a still of a city at dusk. The hero here runs
+  `public/hero.mp4` over a warm dark (`#17181C`) via `HeroVideo`, with the same
+  darkening so the headline keeps its contrast.
 - **Plain-English copy.** APX leads on regulator language; this leads on what the
   borrower gets.
 
@@ -128,10 +125,16 @@ media sits 4px inside the card edge and rounds off with it. Copy block padded
 24px, title 24px/500, body 16px at `--ink-60`. Titles stay to one line and bodies
 reserve three, so every media panel in a row starts at the same y.
 
-Their media is a saturated blue gradient behind an app screenshot. Ours is the
-same gradient in near-black with a hand-drawn diagonal beam, and the live
-product surface floating on it — the one place a surface sits on dark, so it
-takes `--lift-lg` on white.
+Their media is a saturated blue gradient behind an app screenshot. Ours is one
+photograph — `public/img/panel.jpg`, a black abstract curve — behind the live
+product surface. It is the one place a surface sits on dark, so it takes
+`--lift-lg` on white.
+
+The four panels share that single file and are pulled apart by crop alone: each
+sets its own `background-position`, and the three narrow ones set a
+`background-size` above 100% as well. Panning without zooming is not enough —
+they are a third the width of the wide panel, so equal-scale crops all land on
+the same curve and the row reads as a repeat.
 
 Surfaces live in `src/components/surfaces.jsx` and carry no chrome of their own.
 The host owns the border, radius and padding; the surface owns the content.
