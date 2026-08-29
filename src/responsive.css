@@ -18,7 +18,7 @@
   }
 
   :root {
-    --gap-section: 104px;
+    --gap-section: 128px;
     --shell-pad: 48px;
   }
 
@@ -35,9 +35,52 @@
   }
 }
 
+/* Hero stacks to a single column below the desktop range: text on top,
+   product image below, both centred. */
+@media (max-width: 980px) {
+  .hero-grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .hero-stack {
+    max-width: 640px;
+    text-align: center;
+    margin: 0 auto;
+  }
+
+  .hero-sub {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .hero-body {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .hero-ctas {
+    justify-content: center;
+  }
+
+  .hero-visual {
+    order: 2;
+  }
+
+  .hero-visual-img {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .compare {
+    grid-template-columns: 1fr;
+  }
+}
+
 @media (max-width: 768px) {
   :root {
-    --gap-section: 80px;
+    --gap-section: 96px;
     --shell-pad: 24px;
   }
 
@@ -92,7 +135,8 @@
   /* ── Stacked grids ── */
   .steps,
   .usecases,
-  .principles {
+  .principles,
+  .stack-grid {
     grid-template-columns: 1fr !important;
   }
 
@@ -111,7 +155,7 @@
   }
 
   .calc-headline {
-    line-height: 1.5 !important;
+    line-height: 1.16 !important;
   }
 
   .calc-body {
@@ -121,8 +165,22 @@
 
   /* The panel keeps its edge on phones, but 56px of inset eats the column. */
   .calc-panel {
-    padding: 32px 20px 36px !important;
-    border-radius: var(--r-lg) !important;
+    padding: 44px 16px !important;
+    border-radius: var(--r) !important;
+  }
+
+  /* Three columns collide under ~300px of card. Each becomes its own row,
+     label left and value right, so nothing has to shrink. */
+  .calc-output-row {
+    flex-direction: column !important;
+    gap: 14px !important;
+  }
+
+  .calc-output-box {
+    flex-direction: row !important;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px !important;
   }
 
   /* ── How it works: copy over panel ── */

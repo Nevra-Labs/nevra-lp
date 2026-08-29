@@ -15,19 +15,14 @@ export default function Blog() {
     <div style={{ background: 'var(--paper)', minHeight: '100vh', color: 'var(--ink)' }}>
       <Nav />
 
-      <main className="page-main" style={{ maxWidth: 960, margin: '0 auto', padding: '128px 32px 140px' }}>
-        {/* Header */}
-        <div style={{ marginBottom: 72, maxWidth: 640 }}>
-          <h1 className="enter-up" style={{
-            fontWeight: 300,
-            fontSize: 'clamp(34px, 4.4vw, 54px)',
-            letterSpacing: '-0.025em',
-            lineHeight: 1.06,
-            marginBottom: 22,
-          }}>
-            <span style={{ display: 'block' }}>Notes on credit, collateral,</span>
-            <span style={{ display: 'block', color: 'var(--ink-45)' }}>and the crypto economy.</span>
-          </h1>
+      <main className="page-main shell" style={{ paddingTop: 'calc(var(--nav-h) + 80px)', paddingBottom: 'calc(var(--gap-section) / 2)' }}>
+        {/* Header. Single-colour heading at the site's h2 scale, like every
+            other section title on the page. */}
+        <div style={{ marginBottom: 56, maxWidth: 720 }}>
+          <h1 className="display-sm enter-up">Notes on credit and collateral</h1>
+          <p className="lede enter-up enter-delay-1" style={{ marginTop: 14 }}>
+            What we are reading, building, and arguing about while we underwrite payroll onchain.
+          </p>
         </div>
 
         {/* Article grid */}
@@ -37,7 +32,7 @@ export default function Blog() {
           margin: 0,
           display: 'grid',
           gridTemplateColumns: 'repeat(2, 1fr)',
-          gap: '56px 32px',
+          gap: '48px 20px',
         }}>
           {articles.map((article, i) => (
             <li
@@ -52,12 +47,10 @@ export default function Blog() {
               >
                 <div className="blog-card-cover card-cover" style={{
                   width: '100%',
-                  aspectRatio: i === 0 ? '21 / 9' : '16 / 10',
-                  borderRadius: 12,
+                  aspectRatio: i === 0 ? '32 / 9' : '16 / 10',
+                  borderRadius: 'var(--r)',
                   overflow: 'hidden',
-                  marginBottom: 24,
-                  border: '1px solid var(--hairline)',
-                  boxShadow: '0 1px 3px rgba(0,55,112,0.08)',
+                  marginBottom: 20,
                 }}>
                   {article.cover ? (
                     <img
@@ -76,37 +69,30 @@ export default function Blog() {
                   gap: 10,
                   marginBottom: 14,
                 }}>
-                  <span className="eyebrow" style={{
-                    display: 'inline-block',
-                    fontSize: 10,
-                    color: 'var(--ink-60)',
-                    border: '1px solid var(--hairline)',
-                    padding: '5px 10px',
-                    borderRadius: 99,
-                  }}>
-                    {article.category}
-                  </span>
+                  <span style={{ fontSize: 13, color: 'var(--ink)' }}>{article.category}</span>
+                  <span style={{ fontSize: 13, color: 'var(--ink-30)' }}>·</span>
                   <span style={{ fontSize: 13, color: 'var(--ink-45)' }}>{article.date}</span>
                   <span style={{ fontSize: 13, color: 'var(--ink-30)' }}>·</span>
                   <span style={{ fontSize: 13, color: 'var(--ink-45)' }}>{article.readTime}</span>
                 </div>
 
                 <h2 className="blog-card-title" style={{
-                  fontWeight: 500,
-                  fontSize: i === 0 ? 'clamp(24px, 3vw, 32px)' : 'clamp(19px, 2vw, 22px)',
-                  letterSpacing: '-0.02em',
-                  lineHeight: 1.2,
-                  margin: '0 0 12px',
+                  fontWeight: 400,
+                  fontSize: i === 0 ? 28 : 24,
+                  letterSpacing: '-0.008em',
+                  lineHeight: 1.3,
+                  margin: '0 0 10px',
                   color: 'var(--ink)',
                 }}>
                   {article.title}
                 </h2>
 
                 <p style={{
-                  fontSize: 15,
-                  lineHeight: 1.6,
+                  fontSize: 16,
+                  lineHeight: 1.5,
                   color: 'var(--ink-60)',
                   margin: 0,
+                  maxWidth: '62ch',
                 }}>
                   {article.excerpt}
                 </p>

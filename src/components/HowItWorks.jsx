@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
-import { ScoreSurface, CreditLineSurface, SourcesSurface } from './surfaces'
+import { ScoreSurface, CreditLineSurface, SourcesSurface, VerifySurface } from './surfaces'
 
 /* apxlending.com's "How it works?" block, measured at 1440x900:
    a 408px copy column beside an 834px panel, 20px apart, the copy column
@@ -13,18 +13,23 @@ import { ScoreSurface, CreditLineSurface, SourcesSurface } from './surfaces'
 
 const STEPS = [
   {
-    title: 'Connect your wallets and bank',
-    body: 'Link as many wallets as you want in one click, then connect your bank through Plaid. Read-only, and never your keys.',
+    title: 'Connect your payroll wallet',
+    body: 'Link the wallet your USDC or USDT salary arrives in. Read-only and non-custodial: we never hold your keys.',
     Surface: SourcesSurface,
   },
   {
-    title: 'Get your Nevra score',
-    body: 'We read your onchain history and your cash flow together, and resolve both into one number a lender can act on.',
+    title: 'Clear KYC and AML checks',
+    body: 'Verify your identity once and pass sanctions screening. No line is opened before those checks clear, and you only do it the first time.',
+    Surface: VerifySurface,
+  },
+  {
+    title: 'Get scored on recurring inflows',
+    body: 'We read steady payroll, its amount, frequency and consistency, and resolve it into one underwritable number. No FICO file.',
     Surface: ScoreSurface,
   },
   {
-    title: 'Draw on your credit line',
-    body: 'Your score sets your limit and your rate. Draw any part of it, any time, and post a fraction of what you take out.',
+    title: 'Draw and repay from payday',
+    body: 'Your score sets your limit and rate. Draw against it anytime and settle from your next onchain paycheck.',
     Surface: CreditLineSurface,
   },
 ]
@@ -56,7 +61,7 @@ export default function HowItWorks() {
   const ActiveSurface = STEPS[active].Surface
 
   return (
-    <section id="how-it-works" className="section section-band">
+    <section id="how-it-works" className="section">
       <div className="shell">
         <div className="how-wrapper" ref={wrapRef}>
           <div className="how-content">

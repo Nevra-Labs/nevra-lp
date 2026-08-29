@@ -37,15 +37,15 @@ export function CreditLineSurface() {
   return (
     <div ref={ref} className="surface">
       <div className="bento-figure">
-        <span className="bento-figure-value">$6,000</span>
+        <span className="bento-figure-value">$2,730</span>
         <span className="bento-figure-unit">limit</span>
       </div>
       <div className="bento-bar">
-        <div className="bento-bar-fill" style={{ width: shown ? '21%' : '0%' }} />
+        <div className="bento-bar-fill" style={{ width: shown ? '31%' : '0%' }} />
       </div>
       <div className="bento-row">
-        <span>$1,250 drawn</span>
-        <span>$4,750 available</span>
+        <span>$850 drawn</span>
+        <span>$1,880 available</span>
       </div>
     </div>
   )
@@ -53,9 +53,9 @@ export function CreditLineSurface() {
 
 /* Repayments: the rate stepping down as the score climbs. */
 const RATE_STEPS = [
-  { label: 'On signup', score: 690, apr: '10.4%' },
-  { label: 'After 3 on-time', score: 718, apr: '8.9%' },
-  { label: 'Today', score: 742, apr: '7.25%', now: true },
+  { label: 'On signup', score: 42, apr: '8.6%' },
+  { label: 'After 3 on-time', score: 61, apr: '7.1%' },
+  { label: 'Today', score: 78, apr: '5.8%', now: true },
 ]
 
 export function RateSurface() {
@@ -78,10 +78,47 @@ export function RateSurface() {
   )
 }
 
+/* Compliance gate. A line is not opened until identity and screening clear,
+   so the step gets its own surface rather than a footnote on another one. */
+const CHECKS = [
+  { name: 'Identity verified', detail: 'Government ID · KYC', done: true },
+  { name: 'Sanctions and PEP screening', detail: 'AML · cleared', done: true },
+  { name: 'Credit line opened', detail: 'Unlocked on approval', done: false },
+]
+
+export function VerifySurface() {
+  const [ref, shown] = useReveal()
+  return (
+    <ul ref={ref} className="surface bento-sources">
+      {CHECKS.map((c, i) => (
+        <li
+          key={c.name}
+          className={`bento-source ${shown ? 'is-shown' : ''}`}
+          style={{ transitionDelay: `${i * 110}ms` }}
+        >
+          <span className={`bento-check ${c.done ? 'is-on' : 'is-pending'}`} aria-hidden>
+            {c.done ? (
+              <svg viewBox="0 0 14 14" width="11" height="11">
+                <path d="M3 7.2 L6 10.2 L11 4.4" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            ) : (
+              <svg viewBox="0 0 14 14" width="11" height="11">
+                <circle cx="7" cy="7" r="3" fill="currentColor" />
+              </svg>
+            )}
+          </span>
+          <span className="bento-source-name">{c.name}</span>
+          <span className="bento-source-detail">{c.detail}</span>
+        </li>
+      ))}
+    </ul>
+  )
+}
+
 /* What Nevra reads, and what it never touches. */
 const SOURCES = [
-  { name: 'Wallets', detail: '0x4f8a…9e2 + 3 more', on: true },
-  { name: 'Bank account', detail: 'Checking ••4821', on: true },
+  { name: 'Payroll wallet', detail: '0x4f8a…9e2', on: true },
+  { name: 'USDC salary', detail: 'Recurring · verified', on: true },
   { name: 'Custody of funds', detail: 'Never taken', on: false },
 ]
 

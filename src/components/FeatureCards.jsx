@@ -12,24 +12,24 @@ import { ScoreSurface, CreditLineSurface, RateSurface, SourcesSurface } from './
 
 const CARDS = [
   {
-    title: 'One score, from two histories.',
-    body: 'Your wallet history and your bank cash flow, read together and resolved into a single number. Both sides count, so a thin file on one can be carried by the other.',
+    title: 'One payroll score.',
+    body: 'Your recurring USDC and USDT inflows resolve into a single number a lender can act on. No FICO file, no bank history.',
     Surface: ScoreSurface,
     wide: true,
   },
   {
     title: 'A line you can draw on.',
-    body: 'Not a loan you take once. Draw any part of your limit, any time, and repay on your own schedule.',
+    body: 'Not a loan you take once. Draw any part of your limit, any time, and repay from your next paycheck.',
     Surface: CreditLineSurface,
   },
   {
-    title: 'Your rate falls as you repay.',
-    body: 'Every on-time repayment moves your score, and your score sets your rate. Borrowing well makes borrowing cheaper.',
+    title: 'Your score rises as you repay.',
+    body: 'Every on-time repayment from your salary moves your score up, and your score sets your rate. Borrowing well makes it cheaper.',
     Surface: RateSurface,
   },
   {
     title: 'Your keys stay yours.',
-    body: 'Bank access is read-only and runs through Plaid. We never see your credentials, and never take custody.',
+    body: 'You connect read-only and stay non-custodial. We never take your keys or your funds.',
     Surface: SourcesSurface,
   },
 ]

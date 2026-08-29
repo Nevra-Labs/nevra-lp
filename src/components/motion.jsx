@@ -51,13 +51,18 @@ function useCountUp(to, active, duration = 1400) {
   return value
 }
 
-/* ── Hero: the Nevra score gauge ───────────────────────────────────────────
-   A semicircular arc that draws to 742/850 while two feeder curves pull a dot
-   in from the wallet chip and the bank chip. Arc geometry: centre (360, 250),
-   r = 150, so the半 length is π·150 ≈ 471. */
-const ARC_LEN = 471
-const SCORE = 742
-const SCORE_MAX = 850
+/* ── The Nevra score gauge ─────────────────────────────────────────────────
+   A dial, not a diagram. The earlier version pulled dots along two feeder
+   curves into a haloed, gradient-filled arc, which is the house style of
+   every generative-AI product shot; it said "data flowing" without saying
+   anything true. What is true is the reading, so this is the reading: one
+   flat track, one solid arc that draws to it once, the number, and what it
+   opens. The viewBox crops to the dial now that the side chips are gone.
+   Arc: centre (360, 190), r = 130, half length pi*130 = 408. The end
+   marker sits at (360 + 130*cos(pi*(1-f)), 190 - 130*sin(pi*(1-f))). */
+const ARC_LEN = 408
+const SCORE = 78
+const SCORE_MAX = 100
 const FRACTION = SCORE / SCORE_MAX
 
 export function ScoreGauge({ tone = 'light' }) {
@@ -71,113 +76,53 @@ export function ScoreGauge({ tone = 'light' }) {
       style={{ width: '100%' }}
     >
       <svg
-        viewBox="0 0 720 330"
+        viewBox="180 0 360 268"
         role="img"
         aria-labelledby="gauge-title gauge-desc"
         style={{ width: '100%', height: 'auto', display: 'block', overflow: 'visible' }}
       >
-        <title id="gauge-title">Nevra score gauge reading 742 out of 850</title>
+        <title id="gauge-title">Nevra score gauge reading 78 out of 100</title>
         <desc id="gauge-desc">
-          A wallet and a bank account feed into a single credit score of 742, which opens a
-          $6,000 credit line.
+          An onchain payroll score of 78 out of 100, which opens a $2,730 credit line.
         </desc>
 
-        <defs>
-          <radialGradient id="gauge-halo" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="var(--ink)" stopOpacity="0.09" />
-            <stop offset="100%" stopColor="var(--ink)" stopOpacity="0" />
-          </radialGradient>
-          <linearGradient id="gauge-arc" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="var(--ink)" stopOpacity="0.35" />
-            <stop offset="100%" stopColor="var(--ink)" stopOpacity="1" />
-          </linearGradient>
-          {/* Feeder curves double as motion paths for the travelling dots. */}
-          <path id="feed-left" d="M 96 96 C 186 96, 250 140, 300 206" />
-          <path id="feed-right" d="M 624 96 C 534 96, 470 140, 420 206" />
-        </defs>
-
-        <circle className="halo" cx="360" cy="250" r="168" fill="url(#gauge-halo)" />
-
-        {/* Feeder curves */}
-        <use href="#feed-left" fill="none" stroke="var(--hairline)" strokeWidth="1.5" />
-        <use href="#feed-right" fill="none" stroke="var(--hairline)" strokeWidth="1.5" />
-        <use
-          href="#feed-left"
-          className="draw"
-          style={{ '--len': 260, '--delay': '0.15s' }}
+        <path
+          d="M 230 190 A 130 130 0 0 1 490 190"
           fill="none"
-          stroke="var(--ink-30)"
-          strokeWidth="1.5"
+          stroke="var(--hairline)"
+          strokeWidth="10"
           strokeLinecap="round"
         />
-        <use
-          href="#feed-right"
-          className="draw"
-          style={{ '--len': 260, '--delay': '0.28s' }}
-          fill="none"
-          stroke="var(--ink-30)"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-        />
-
-        {/* Dots riding the feeder curves. SMIL keeps them independent of React. */}
-        <circle r="4" fill="var(--ink)">
-          <animateMotion dur="2.6s" begin="1.1s" repeatCount="indefinite" keyPoints="0;1" keyTimes="0;1" calcMode="spline" keySplines="0.4 0 0.2 1">
-            <mpath href="#feed-left" />
-          </animateMotion>
-          <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.12;0.8;1" dur="2.6s" begin="1.1s" repeatCount="indefinite" />
-        </circle>
-        <circle r="4" fill="var(--ink)">
-          <animateMotion dur="2.6s" begin="1.7s" repeatCount="indefinite" keyPoints="0;1" keyTimes="0;1" calcMode="spline" keySplines="0.4 0 0.2 1">
-            <mpath href="#feed-right" />
-          </animateMotion>
-          <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.12;0.8;1" dur="2.6s" begin="1.7s" repeatCount="indefinite" />
-        </circle>
-
-        {/* Source chips */}
-        <g className="pop" style={{ '--delay': '0.05s' }}>
-          <rect x="24" y="74" width="144" height="44" rx="12" fill="var(--surface)" stroke="var(--hairline)" />
-          <circle cx="48" cy="96" r="4" fill="var(--ink-30)" />
-          <text x="64" y="101" fontFamily="var(--font-sans)" fontSize="14" fontWeight="500" fill="var(--ink-60)">Wallets</text>
-        </g>
-        <g className="pop" style={{ '--delay': '0.18s' }}>
-          <rect x="552" y="74" width="144" height="44" rx="12" fill="var(--surface)" stroke="var(--hairline)" />
-          <circle cx="576" cy="96" r="4" fill="var(--ink-30)" />
-          <text x="592" y="101" fontFamily="var(--font-sans)" fontSize="14" fontWeight="500" fill="var(--ink-60)">Bank</text>
-        </g>
-
-        {/* Gauge track + drawn value arc */}
-        <path d="M 210 250 A 150 150 0 0 1 510 250" fill="none" stroke="var(--hairline)" strokeWidth="10" strokeLinecap="round" />
         <path
           className="draw-arc"
-          style={{ '--len': ARC_LEN, '--end': ARC_LEN * (1 - FRACTION), '--delay': '0.25s' }}
-          d="M 210 250 A 150 150 0 0 1 510 250"
+          style={{ '--len': ARC_LEN, '--end': ARC_LEN * (1 - FRACTION), '--delay': '0.15s' }}
+          d="M 230 190 A 130 130 0 0 1 490 190"
           fill="none"
-          stroke="url(#gauge-arc)"
+          stroke="var(--ink)"
           strokeWidth="10"
           strokeLinecap="round"
         />
 
         {/* Marker at the end of the value arc. The arc already carries the
             reading, so a needle would only duplicate it and cross the label. */}
-        <g className="pop" style={{ '--delay': '1.35s' }}>
-          <circle cx="498" cy="192" r="9" fill="var(--surface)" />
-          <circle cx="498" cy="192" r="5.5" fill="var(--ink)" />
+        <g className="pop" style={{ '--delay': '1.05s' }}>
+          <circle cx="460" cy="107" r="9" fill="var(--surface)" />
+          <circle cx="460" cy="107" r="5.5" fill="var(--ink)" />
         </g>
 
         {/* Readout, centred in the dial. */}
-        <text x="360" y="228" textAnchor="middle" fontFamily="var(--font-sans)" fontSize="76" fontWeight="700" letterSpacing="-0.015em" fill="var(--ink)">
+        <text x="360" y="172" textAnchor="middle" fontFamily="var(--font-sans)" fontSize="68" fontWeight="600" letterSpacing="-0.02em" fill="var(--ink)">
           {score}
         </text>
-        <text x="360" y="254" textAnchor="middle" fontFamily="var(--font-sans)" fontSize="15" fill="var(--ink-45)">
+        <text x="360" y="198" textAnchor="middle" fontFamily="var(--font-sans)" fontSize="14" fill="var(--ink-45)">
           Nevra score
         </text>
 
-        {/* Outcome chip under the dial */}
-        <g className="pop" style={{ '--delay': '1.15s' }}>
-          <rect x="252" y="286" width="216" height="40" rx="12" fill="var(--ink)" />
-          <text x="360" y="311" textAnchor="middle" fontFamily="var(--font-sans)" fontSize="15" fontWeight="600" fill="var(--surface)">
-            $6,000 credit line
+        {/* What the reading opens. */}
+        <g className="pop" style={{ '--delay': '0.9s' }}>
+          <rect x="252" y="222" width="216" height="38" rx="12" fill="var(--ink)" />
+          <text x="360" y="246" textAnchor="middle" fontFamily="var(--font-sans)" fontSize="14" fontWeight="500" fill="var(--surface)">
+            $2,730 credit line
           </text>
         </g>
       </svg>

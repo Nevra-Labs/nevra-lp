@@ -6,7 +6,6 @@ import Blog from './pages/Blog'
 import ArticlePage from './pages/ArticlePage'
 import Apply from './pages/Apply'
 import NotFound from './pages/NotFound'
-import DesignSystem from './pages/DesignSystem'
 
 // Lenis smooth scrolling (odyssey.finance-style inertia). Skipped entirely for
 // prefers-reduced-motion users, who get native scrolling.
@@ -55,7 +54,6 @@ export default function App() {
           <Route path="/blog" element={<Blog />} />
           <Route path="/blog/:id" element={<ArticlePage />} />
           <Route path="/apply" element={<Apply />} />
-          <Route path="/design" element={<DesignSystem />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </div>

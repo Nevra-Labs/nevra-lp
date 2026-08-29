@@ -1,9 +1,8 @@
 import { Link, useLocation } from 'react-router-dom'
 import { useState, useEffect, useRef } from 'react'
-import { ShieldCheck, KeyRound, TrendingUp, Umbrella, ArrowRight } from 'lucide-react'
+import { ArrowRight } from 'lucide-react'
 import Nav from '../components/Nav'
 import LoanCalculator from '../components/LoanCalculator'
-import { CollateralCompare } from '../components/motion'
 import HeroVideo from '../components/HeroVideo'
 import HowItWorks from '../components/HowItWorks'
 import FeatureCards from '../components/FeatureCards'
@@ -40,74 +39,42 @@ function Reveal({ children, delay = 0, className = '', style }) {
   )
 }
 
+/* Onchain infrastructure only: the hero path is wallet/payroll, so no Plaid. */
 const PARTNER_LOGOS = [
-  { name: 'Plaid', src: '/logos/plaid_logo.svg' },
   { name: 'Alchemy', src: '/logos/alchemy_logo.svg' },
   { name: 'Helius', src: '/logos/helius_logo.svg' },
   { name: 'FairScale', src: '/logos/fairscale_logo.svg' },
 ]
 
-const PRINCIPLES = [
-  { icon: ShieldCheck, tag: 'READ-ONLY', title: 'Bank data stays private', body: 'We read balances and cash flow to score you. Nothing else, and never your credentials.' },
-  { icon: KeyRound, tag: 'NON-CUSTODIAL', title: 'Your keys, your wallet', body: 'Nevra never takes custody. Your wallet stays yours the entire time.' },
-  { icon: TrendingUp, tag: 'LIVE SCORE', title: 'Rates improve as you repay', body: 'Every repayment moves your score, and your score sets your rate.' },
-  { icon: Umbrella, tag: 'SOFT LANDINGS', title: 'Liquidation is the last step', body: 'Your rate and limit adjust first. Selling your collateral is never the opening move.' },
-]
-
-const USE_CASES = [
-  { tag: 'EVERYDAY', title: 'Living expenses', description: 'Cover rent and day-to-day spending without selling your stack.' },
-  { tag: 'BUSINESS', title: 'Start something', description: 'Fund your company or side project while your portfolio keeps working.' },
-  { tag: 'INVESTING', title: 'Stay in the market', description: 'Seize opportunities without triggering a taxable sale.' },
-  { tag: 'MILESTONES', title: 'Big moments', description: 'Finance a car, a move, or a wedding at a rate your score earned.' },
-]
-
-const STACK = [
-  {
-    name: 'Plaid',
-    src: '/logos/plaid_logo.svg',
-    role: 'Bank connections',
-    detail: 'Read-only access to balances and cash flow. Your credentials go to Plaid, never to us.',
-  },
-  {
-    name: 'Alchemy',
-    src: '/logos/alchemy_logo.svg',
-    role: 'Onchain data',
-    detail: 'Wallet history across chains: positions, repayments, liquidations, read at archive depth.',
-  },
-  {
-    name: 'Helius',
-    src: '/logos/helius_logo.svg',
-    role: 'Solana infrastructure',
-    detail: 'Transaction indexing and settlement for draws and repayments on Solana.',
-  },
-  {
-    name: 'FairScale',
-    src: '/logos/fairscale_logo.svg',
-    role: 'Scoring models',
-    detail: 'The modelling layer that turns two histories into one number you can be lent against.',
-  },
-]
+/* Each half of the marquee has to fill the mask exactly for the loop to be
+   seamless, so the set repeats until it does. Three logos across a 1400px
+   half leaves 470px between them; three repeats brings the pitch to ~155px. */
+const MARQUEE_REPEATS = 3
+const MARQUEE_LOGOS = Array.from(
+  { length: MARQUEE_REPEATS },
+  () => PARTNER_LOGOS
+).flat()
 
 const FAQS = [
   {
-    question: 'How is my credit score calculated?',
-    answer: 'Your score blends your onchain history (wallet age, repayment behavior, protocol activity) with offchain signals from your linked bank account. Both sides count, so a thin file on one can be carried by the other.',
+    question: 'How is my payroll score calculated?',
+    answer: 'Your score reads recurring USDC and USDT inflows to your connected wallets: frequency, amount, and consistency of payroll. No FICO file and no bank history required.',
   },
   {
     question: 'Do I really borrow more than I post?',
-    answer: 'Yes. That is the whole point. Instead of locking 150% collateral to borrow 100, your score qualifies you for a credit line where the collateral you post is a fraction of what you can draw.',
+    answer: 'Yes. Your verified payroll qualifies you for a line where the collateral you post is a fraction of what you draw, not 150% of it.',
   },
   {
-    question: 'What do you do with my bank data?',
-    answer: 'We read balances and cash-flow history to score you, nothing else. Bank access is read-only, handled through Plaid, and we never see your credentials. Your keys stay yours; we never take custody of your wallet.',
+    question: 'What do I connect?',
+    answer: 'The wallets that receive your stablecoin salary. The connection is read-only and non-custodial: we never take your keys or your funds.',
   },
   {
     question: 'What happens if I miss a payment?',
-    answer: 'Your rate and available credit adjust before anything drastic happens. Missed payments lower your Nevra score first; liquidation of posted collateral is the last resort, not the first.',
+    answer: 'Your rate and available credit adjust first. You repay from your next payday; liquidation of posted collateral is the last resort, not the first.',
   },
   {
     question: 'When can I get access?',
-    answer: 'We are onboarding in cohorts. Apply now, finish verification, and you will be scored and placed in the next cohort. Early applicants get priority.',
+    answer: 'We are onboarding stablecoin earners in cohorts. Connect your payroll wallet, finish verification, and you will be scored and placed in the next cohort.',
   },
 ]
 
@@ -118,7 +85,6 @@ export default function Home() {
     if (!hash) return
     const el = document.getElementById(hash.slice(1))
     if (!el) return
-    // One frame so the section has laid out before we measure it.
     const raf = requestAnimationFrame(() => el.scrollIntoView({ behavior: 'smooth', block: 'start' }))
     return () => cancelAnimationFrame(raf)
   }, [hash])
@@ -128,63 +94,74 @@ export default function Home() {
       <Nav />
 
       {/* ── Announcement + hero ──────────────────────────────────────────
-          apxlending.com's hero, measured: 100vh block, announcement strip on
-          top, content stack centred at 12 / 16 / 48px gaps, 48px CTAs, and a
-          partner marquee pinned to the bottom edge. Their depth comes from a
-          darkened photograph; ours comes from an oversized echo of the score
-          arc, so the backdrop is the product rather than stock imagery. */}
+          Dark cinematic NYC hero. The left copy sits on a gradient scrim so
+          the skyline never fights the type; the product image carries the
+          right column. */}
       <div className="hero-dark">
         <HeroVideo />
 
-        <a href="/blog/why-crypto-never-solved-credit" className="announce">
+        <a href="/#calculator" className="announce">
           <span className="announce-tag">New</span>
-          Why crypto never solved credit
+          Your paycheck is onchain. Your credit should be too.
           <ArrowRight size={14} strokeWidth={2} />
         </a>
 
         <section className="hero">
-          <div className="hero-stack">
-            <p className="hero-badge enter-up enter-delay-1">
-              <span className="pill-dot" aria-hidden />
-              No credit checks. Your keys stay yours.
-            </p>
+          <div className="hero-grid">
+            <div className="hero-stack">
+              <p className="hero-badge enter-up enter-delay-1">
+                <span className="pill-dot" aria-hidden />
+                Credit underwritten on your onchain paycheck
+              </p>
 
-            <h1 className="hero-title enter-up enter-delay-2">
-              <span style={{ display: 'block' }}>Money when you need it.</span>
-              <span style={{ display: 'block', color: 'rgba(255,255,255,0.5)' }}>
-                Without selling a thing.
-              </span>
-            </h1>
+              <h1 className="hero-title enter-up enter-delay-2">
+                <span style={{ display: 'block' }}>Paid in stablecoins.</span>
+                <span style={{ display: 'block', color: 'rgba(255,255,255,0.62)' }}>
+                  Cash before payday.
+                </span>
+              </h1>
 
-            <p className="hero-sub enter-up enter-delay-3">
-              Connect your bank and wallets once. Nevra turns your whole financial life into
-              one real credit score, and lends against it from 7.25% APR.
-            </p>
+              <p className="hero-sub enter-up enter-delay-3">
+                Payroll-backed credit from 4.0% APR.
+                <br />
+                No credit checks, no selling, keys stay yours.
+              </p>
 
-            <div className="hero-ctas enter-up enter-delay-4">
-              <Link to="/apply" className="btn-hero btn-hero-light focus-ring-light">
-                Apply now <ArrowRight size={16} strokeWidth={2} />
-              </Link>
-              <a href="/pdf/whitepaper.pdf" target="_blank" rel="noopener noreferrer" className="btn-hero btn-hero-glass focus-ring-light">
-                Read the whitepaper
-              </a>
+              <div className="hero-ctas enter-up enter-delay-4">
+                <Link to="/apply" className="btn-hero btn-hero-light focus-ring-light">
+                  Apply now <ArrowRight size={16} strokeWidth={2} />
+                </Link>
+                <a href="/pdf/whitepaper.pdf" target="_blank" rel="noopener noreferrer" className="btn-hero btn-hero-glass focus-ring-light">
+                  Read the whitepaper
+                </a>
+              </div>
+            </div>
+
+            <div className="hero-visual">
+              <img
+                src="/img/hero-image.png"
+                alt="Your onchain paycheck, scored into a credit line you can draw."
+                className="hero-visual-img"
+              />
             </div>
           </div>
         </section>
 
-        {/* Partner marquee, pinned to the hero's bottom edge like APX. */}
+        {/* Partner marquee, pinned to the hero's bottom edge. */}
         <div className="hero-logos">
           <div className="logo-mask">
             <div className="logo-track">
-              {[...PARTNER_LOGOS, ...PARTNER_LOGOS, ...PARTNER_LOGOS, ...PARTNER_LOGOS].map((logo, i) => (
-                <img
-                  key={`${logo.name}-${i}`}
-                  src={logo.src}
-                  alt={i < PARTNER_LOGOS.length ? logo.name : ''}
-                  aria-hidden={i >= PARTNER_LOGOS.length}
-                  className="partner-logo partner-logo-dark"
-                  style={{ height: 24, margin: '0 40px', flexShrink: 0 }}
-                />
+              {[0, 1].map(half => (
+                <div className="logo-group" key={half} aria-hidden={half === 1}>
+                  {MARQUEE_LOGOS.map((logo, i) => (
+                    <img
+                      key={`${logo.name}-${half}-${i}`}
+                      src={logo.src}
+                      alt={half === 0 && i < PARTNER_LOGOS.length ? logo.name : ''}
+                      className="partner-logo partner-logo-dark"
+                    />
+                  ))}
+                </div>
               ))}
             </div>
           </div>
@@ -192,140 +169,42 @@ export default function Home() {
       </div>
 
       {/* ── Calculator ─────────────────────────────────────────────────
-          APX puts its loan calculator immediately below the hero: the
-          interactive thing that quotes you is the product demo, so it goes
-          first rather than fourth. */}
+          The marketing demo of the product: a real-looking payroll line,
+          labelled as a demo so it never reads as a broken dev state. */}
       <LoanCalculator />
 
-      {/* ── How it works ─────────────────────────────────────────────
-          apxlending.com's block, in the slot the score-showcase used to hold:
-          the steps carry the explanation, and the panel beside them shows the
-          surface each step actually produces. */}
-      <HowItWorks />
-
-      {/* ── Why Nevra ────────────────────────────────────────────────── */}
-      <section className="section shell">
-        <div className="split" style={{ display: 'grid', gridTemplateColumns: '0.85fr 1.15fr', gap: 72, alignItems: 'center' }}>
+      {/* ── Why Nevra ──────────────────────────────────────────────────
+          APX's why-section, 1:1: 80px padding on a near-white band, the h2
+          and its one-line sub on the left, Apply now pinned right, then the
+          card grid 40px below. */}
+      <section id="why-nevra" className="section-band">
+        <div className="section shell">
           <Reveal>
-              <h2 className="display-sm">
-              Same collateral.{' '}
-              <span className="dim">Very different loan.</span>
-            </h2>
-            <p className="lede" style={{ marginTop: 22, maxWidth: 400 }}>
-              Overcollateralized lending gives everyone the same deal: lock up more than you take
-              out. Your Nevra score reads your wallet and bank history, so your collateral goes
-              further.
-            </p>
-          </Reveal>
-
-          <Reveal delay={120}>
-            <CollateralCompare />
-          </Reveal>
-        </div>
-      </section>
-
-      {/* ── Why Nevra: feature cards ─────────────────────────────────
-          APX's "Why APX Lending?" grid: a headline, a one-line reason, then
-          cards that show the surface rather than describe it. */}
-      <section className="section shell">
-        <Reveal style={{ marginBottom: 48 }}>
-          <h2 className="display-sm">Why Nevra?</h2>
-          <p className="lede" style={{ marginTop: 18, maxWidth: 640 }}>
-            One score, a line you can draw on, a rate that falls as you repay, and read-only
-            access to the data behind it. Here is each of them, working.
-          </p>
-        </Reveal>
-
-        <Reveal delay={100}>
-          <FeatureCards />
-        </Reveal>
-      </section>
-
-      {/* ── Use cases ────────────────────────────────────────────────── */}
-      <section id="use-cases" className="section shell">
-        <Reveal style={{ maxWidth: 620, marginBottom: 56 }}>
-          <h2 className="display-sm">
-            Real money,{' '}
-            <span className="dim">for real life.</span>
-          </h2>
-          <p className="lede" style={{ marginTop: 22, maxWidth: 430 }}>
-            Draw USDC against your score and put it to work. No selling, no taxable event, no
-            waiting.
-          </p>
-        </Reveal>
-
-        <div className="usecases" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 20 }}>
-          {USE_CASES.map((uc, i) => (
-            <Reveal key={uc.tag} delay={i * 70}>
-              <div className="card usecase-card" style={{ height: '100%' }}>
-                <h3 style={{ fontSize: 17, fontWeight: 600, letterSpacing: '-0.005em', margin: '0 0 8px' }}>
-                  {uc.title}
-                </h3>
-                <p style={{ fontSize: 14, color: 'var(--ink-60)', lineHeight: 1.6, margin: 0 }}>
-                  {uc.description}
+            <div className="why-head">
+              <div className="why-head-text">
+                <h2 className="display-sm">Why Nevra?</h2>
+                <p className="why-head-sub">
+                  One payroll score, a line you can draw on, a rate that falls as you repay,
+                  and read-only access to the data behind it.
                 </p>
               </div>
-            </Reveal>
-          ))}
+              <Link to="/apply" className="btn-apx focus-ring">Apply now</Link>
+            </div>
+          </Reveal>
+
+          <Reveal delay={100} style={{ marginTop: 40 }}>
+            <FeatureCards />
+          </Reveal>
         </div>
       </section>
 
-      {/* ── Principles ───────────────────────────────────────────────── */}
-      <section className="section shell">
-        <Reveal style={{ maxWidth: 620, marginBottom: 56 }}>
-          <h2 className="display-sm">
-            Boring credit,{' '}
-            <span className="dim">done right.</span>
-          </h2>
-        </Reveal>
-
-        <div className="principles" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 44 }}>
-          {PRINCIPLES.map(({ icon: Icon, tag, title, body }, i) => (
-            <Reveal key={tag} delay={i * 70}>
-              <Icon size={22} strokeWidth={1.6} color="var(--ink)" aria-hidden />
-              <h3 style={{ fontSize: 16, fontWeight: 600, letterSpacing: '-0.005em', lineHeight: 1.35, margin: '0 0 8px' }}>
-                {title}
-              </h3>
-              <p style={{ fontSize: 14, color: 'var(--ink-60)', lineHeight: 1.6, margin: 0 }}>{body}</p>
-            </Reveal>
-          ))}
-        </div>
-      </section>
-
-      {/* ── Infrastructure ────────────────────────────────────────────
-          APX gives its infrastructure a section of its own rather than a
-          logo strip. A logo proves nothing until you say what it does. */}
-      <section className="section shell">
-        <Reveal style={{ maxWidth: 680, marginBottom: 56 }}>
-          <h2 className="display-sm">
-            <span style={{ display: 'block' }}>Built on infrastructure</span>
-            <span className="dim" style={{ display: 'block' }}>banks already trust.</span>
-          </h2>
-          <p className="lede" style={{ marginTop: 22, maxWidth: 520 }}>
-            Nothing about your score is a black box we invented. Here is what reads what.
-          </p>
-        </Reveal>
-
-        <div className="stack-grid">
-          {STACK.map((item, i) => (
-            <Reveal key={item.name} delay={i * 70}>
-              <div className="stack-card">
-                <img src={item.src} alt={item.name} className="stack-logo" />
-                <p className="stack-role">{item.role}</p>
-                <p className="stack-detail">{item.detail}</p>
-              </div>
-            </Reveal>
-          ))}
-        </div>
-      </section>
+      {/* ── How payroll credit works ─────────────────────────────────── */}
+      <HowItWorks />
 
       {/* ── FAQ ──────────────────────────────────────────────────────── */}
       <section className="section shell">
         <Reveal style={{ textAlign: 'center', maxWidth: 560, margin: '0 auto 48px' }}>
-          <h2 className="display-sm">
-            Frequently asked{' '}
-            <span className="dim">questions.</span>
-          </h2>
+          <h2 className="display-sm">Questions, answered.</h2>
         </Reveal>
 
         <Reveal delay={80} style={{ maxWidth: 720, margin: '0 auto' }}>
@@ -335,9 +214,7 @@ export default function Home() {
         </Reveal>
       </section>
 
-      {/* ── CTA ──────────────────────────────────────────────────────────
-          Inset rounded dark block rather than a full-bleed band, so the white
-          canvas still frames it. */}
+      {/* ── CTA ────────────────────────────────────────────────────────── */}
       <section style={{ padding: '0 var(--shell-pad) 112px' }}>
         <Reveal>
           <div className="cta-block" style={{
@@ -356,14 +233,14 @@ export default function Home() {
             }} />
             <div style={{ position: 'relative' }}>
               <h2 className="display-sm" style={{ color: 'var(--dark-ink)' }}>
-                Your history is your collateral.{' '}
+                Your paycheck is collateral enough.{' '}
                 <span style={{ display: 'block', color: 'var(--dark-ink-38)' }}>
                   Borrow like it counts.
                 </span>
               </h2>
-              <p style={{ fontSize: 16, color: 'var(--dark-ink-60)', lineHeight: 1.65, maxWidth: 440, margin: '24px auto 36px' }}>
-                Stop locking up more than you borrow. Verify once, link your accounts, and open a
-                credit line backed by your real score.
+              <p style={{ fontSize: 16, color: 'var(--dark-ink-60)', lineHeight: 1.65, maxWidth: 460, margin: '24px auto 36px' }}>
+                Connect the wallet your salary lands in, get scored on real income, and open a
+                credit line you can draw without selling.
               </p>
               <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
                 <Link to="/apply" className="btn btn-light focus-ring-light">
@@ -462,9 +339,7 @@ function FooterCol({ title, links }) {
 }
 
 /* Large-name footer, the pattern from 21st.dev: brand block and link columns
-   on top, then the wordmark set to the full content width to close the page.
-   Their source is Tailwind on shadcn primitives, so this is the layout rebuilt
-   on our own tokens rather than the component dropped in. */
+   on top, then the wordmark set to the full content width to close the page. */
 function Footer() {
   return (
     <footer className="footer shell">
@@ -472,7 +347,8 @@ function Footer() {
         <div className="footer-brand">
           <img src="/logo.png" alt="Nevra" className="footer-logo" />
           <p className="footer-tagline">
-            One real credit score from your whole financial life, onchain and off.
+            Real credit for people paid in stablecoins. Your paycheck is the
+            underwriting: onchain, non-custodial, yours.
           </p>
           <p className="footer-copy">&copy; Nevra Inc. 2026. All rights reserved.</p>
         </div>
@@ -482,18 +358,19 @@ function Footer() {
             { label: 'Apply', href: '/apply', internal: true },
             { label: 'Calculator', href: '/#calculator', internal: true },
             { label: 'How it works', href: '/#how-it-works', internal: true },
-            { label: 'Use cases', href: '/#use-cases', internal: true },
+            { label: 'Why Nevra', href: '/#why-nevra', internal: true },
           ]} />
           <FooterCol title="Resources" links={[
             { label: 'Whitepaper', href: '/pdf/whitepaper.pdf' },
             { label: 'Blog', href: '/blog', internal: true },
-            { label: 'Design system', href: '/design', internal: true },
+            { label: 'Terms of Service', href: '/pdf/Nevra_Terms_of_Service.pdf' },
+            { label: 'Privacy Policy', href: '/pdf/Nevra_Privacy_Policy.pdf' },
           ]} />
           <FooterCol title="Socials" links={[
             { label: 'Twitter', href: 'https://x.com/nevralabs' },
             { label: 'LinkedIn', href: 'https://www.linkedin.com/company/nevralabs' },
             { label: 'Telegram', href: 'https://t.me/nevragenesis' },
-            { label: 'Discord', href: 'https://discord.gg/XYfzRs9PM' },
+            { label: 'Discord', href: 'https://discord.gg/6TfjWus8C' },
           ]} />
         </div>
       </div>

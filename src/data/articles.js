@@ -3,7 +3,6 @@ export const articles = [
     id: 'why-crypto-never-solved-credit',
     title: 'Why crypto never solved credit',
     category: 'Perspective',
-    cover: '/blog/why-crypto-never-solved-credit.png',
     date: 'July 7, 2026',
     readTime: '5 min read',
     excerpt:

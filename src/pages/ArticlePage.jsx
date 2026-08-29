@@ -34,7 +34,7 @@ export default function ArticlePage() {
     return (
       <div style={{ background: 'var(--paper)', minHeight: '100vh', color: 'var(--ink)' }}>
         <Nav />
-        <main style={{ maxWidth: 720, margin: '0 auto', padding: '128px 32px' }}>
+        <main style={{ maxWidth: 720, margin: '0 auto', padding: 'calc(var(--nav-h) + 72px) 32px' }}>
           <p>Article not found.</p>
           <Link to="/blog">← Back to blog</Link>
         </main>
@@ -49,7 +49,7 @@ export default function ArticlePage() {
       <div className="reading-progress" style={{ width: `${progress}%` }} />
       <Nav />
 
-      <main className="page-main" style={{ maxWidth: 720, margin: '0 auto', padding: '110px 32px 120px' }}>
+      <main className="page-main" style={{ maxWidth: 720, margin: '0 auto', padding: 'calc(var(--nav-h) + 64px) 32px 120px' }}>
         <Link to="/blog" className="enter-up focus-ring" style={{
           fontSize: 13,
           fontWeight: 400,
@@ -65,16 +65,8 @@ export default function ArticlePage() {
 
         {/* Meta */}
         <div className="enter-up enter-delay-1" style={{ display: 'flex', gap: 10, alignItems: 'center', marginBottom: 18, flexWrap: 'wrap' }}>
-          <span className="eyebrow" style={{
-            display: 'inline-block',
-            fontSize: 10,
-            color: 'var(--ink-60)',
-            border: '1px solid var(--hairline)',
-            padding: '5px 10px',
-            borderRadius: 99,
-          }}>
-            {article.category}
-          </span>
+          <span style={{ fontSize: 13, color: 'var(--ink)' }}>{article.category}</span>
+          <span style={{ fontSize: 13, color: 'var(--ink-30)' }}>·</span>
           <span style={{ fontSize: 13, color: 'var(--ink-45)' }}>{article.date}</span>
           <span style={{ fontSize: 13, color: 'var(--ink-30)' }}>·</span>
           <span style={{ fontSize: 13, color: 'var(--ink-45)' }}>{article.readTime}</span>
@@ -82,22 +74,22 @@ export default function ArticlePage() {
 
         {/* Title */}
         <h1 className="enter-up enter-delay-2" style={{
-          fontWeight: 300,
-          fontSize: 'clamp(30px, 4.6vw, 46px)',
-          letterSpacing: '-0.025em',
-          lineHeight: 1.08,
-          marginBottom: 22,
+          fontWeight: 400,
+          fontSize: 'clamp(30px, 3.4vw, 44px)',
+          letterSpacing: '-0.012em',
+          lineHeight: 1.2,
+          marginBottom: 18,
         }}>
           {article.title}
         </h1>
 
         {/* Excerpt / lede */}
         <p className="enter-up enter-delay-3" style={{
-          fontSize: 18,
-          lineHeight: 1.6,
+          fontSize: 16,
+          lineHeight: 1.5,
           color: 'var(--ink-60)',
           margin: '0 0 40px',
-          fontWeight: 300,
+          fontWeight: 400,
         }}>
           {article.excerpt}
         </p>
@@ -106,11 +98,9 @@ export default function ArticlePage() {
         <div className="enter-cover enter-delay-3" style={{
           width: '100%',
           aspectRatio: '16 / 8',
-          borderRadius: 12,
+          borderRadius: 'var(--r)',
           overflow: 'hidden',
           marginBottom: 56,
-          border: '1px solid var(--hairline)',
-          boxShadow: '0 1px 3px rgba(0,55,112,0.08)',
         }}>
           {article.cover ? (
             <img
@@ -133,7 +123,7 @@ export default function ArticlePage() {
           marginTop: 80,
           padding: '40px 36px',
           borderRadius: 12,
-          background: '#0D1738',
+          background: 'var(--dark)',
           color: 'var(--dark-ink)',
           display: 'flex',
           flexDirection: 'column',
@@ -147,7 +137,7 @@ export default function ArticlePage() {
           </p>
           <h2 style={{
             fontSize: 'clamp(22px, 3vw, 28px)',
-            fontWeight: 300,
+            fontWeight: 400,
             letterSpacing: '-0.025em',
             margin: 0,
             lineHeight: 1.2,

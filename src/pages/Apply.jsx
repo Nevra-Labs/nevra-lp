@@ -165,7 +165,6 @@ export default function Apply() {
 
         {phase === 'landing' && (
           <div key="landing" className="fade-up" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 16, padding: '0 24px', textAlign: 'center' }}>
-            <p className="eyebrow" style={{ color: 'var(--ink-45)', margin: 0 }}>[ Closed beta ]</p>
             <h1 style={{
               fontWeight: 300,
               fontSize: 'clamp(32px, 4vw, 44px)',
