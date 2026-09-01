@@ -27,7 +27,6 @@ const GROUPS = [
     status: 'next',
     label: 'Next',
     items: [
-      { title: 'KYC and AML, once', area: 'Compliance', when: 'Q4 2026' },
       { title: 'Bank linking to score income the chain cannot see', area: 'Underwriting', when: 'Q4 2026' },
       { title: 'A revolving line you draw against anytime', area: 'Borrow', when: 'Q4 2026' },
       { title: 'APR that falls after on-time repayments', area: 'Pricing', when: 'Q4 2026' },
@@ -53,6 +52,7 @@ const GROUPS = [
     status: 'shipped',
     label: 'Shipped',
     items: [
+      { title: 'KYC and AML, once', area: 'Compliance', when: 'Q3 2026' },
       { title: 'Onchain score v0, from wallet history in seconds', area: 'Underwriting', when: 'Q2 2026' },
       { title: 'Read-only wallet connection, Phantom and Solflare', area: 'App', when: 'Q2 2026' },
       { title: 'Email onboarding', area: 'App', when: 'Q2 2026' },
