@@ -244,6 +244,22 @@
     flex-wrap: wrap;
   }
 
+  /* ── Roadmap: the updated pill drops under the heading ── */
+  .roadmap {
+    padding-top: calc(var(--nav-h) + 48px) !important;
+    padding-bottom: 80px !important;
+  }
+
+  .roadmap-head {
+    flex-direction: column !important;
+    gap: 20px !important;
+  }
+
+  .roadmap-row {
+    padding: 20px 0 !important;
+    gap: 8px 10px !important;
+  }
+
   /* ── Blog / Article pages ── */
   .blog-nav {
     padding-left: 20px !important;

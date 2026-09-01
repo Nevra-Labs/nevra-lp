@@ -171,6 +171,204 @@ a {
   gap: 8px;
 }
 
+/* ── Dark theme ───────────────────────────────────────────────────────────
+   One class on <body>, so the fixed navbar and the gutter overlay flip with
+   the page instead of leaving a light frame around a dark sheet. Only the
+   tokens change; every component keeps its own rules. */
+body.theme-dark {
+  --paper: #0A0B0D;
+  --paper-soft: #131418;
+  --surface: #131418;
+
+  --ink: #FFFFFF;
+  --ink-60: rgba(255, 255, 255, 0.62);
+  --ink-45: rgba(255, 255, 255, 0.45);
+  --ink-30: rgba(255, 255, 255, 0.30);
+
+  --hairline: rgba(255, 255, 255, 0.12);
+  --hairline-soft: rgba(255, 255, 255, 0.07);
+
+  --frame: #000000;
+  --panel: #0F1013;
+}
+
+/* The solid button inverts: it hardcodes white text, which would vanish on
+   the now-white --ink fill. */
+body.theme-dark .nav-btn-solid {
+  background: #FFFFFF;
+  color: #0A0B0D;
+}
+
+/* The wordmark is a near-black glyph on transparent: it disappears on the
+   dark bar unless it is flipped. */
+body.theme-dark .nav-brand img,
+body.theme-dark .footer-logo {
+  filter: invert(1);
+}
+
+@media (hover: hover) {
+  body.theme-dark .nav-btn-solid:hover   { background: rgba(255, 255, 255, 0.88); }
+  body.theme-dark .nav-btn-outline:hover { background: rgba(255, 255, 255, 0.14); }
+  body.theme-dark .nav-item:hover        { background: rgba(255, 255, 255, 0.09); }
+}
+
+/* ── Roadmap ──────────────────────────────────────────────────────────────
+   Rows carry everything on one line: title, status, area, target. No row
+   opens, so nothing here is a button and nothing gets a hover state that
+   would imply one. */
+.roadmap-page {
+  background: var(--paper);
+  color: var(--ink);
+  min-height: 100vh;
+}
+
+.roadmap {
+  width: 100%;
+  padding: calc(var(--nav-h) + 72px) var(--shell-pad) 120px;
+}
+
+.roadmap-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 40px;
+  padding-bottom: 48px;
+}
+
+.roadmap-title {
+  font-size: clamp(28px, 2.9vw, 40px);
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: -0.022em;
+  margin: 0;
+}
+
+.roadmap-lede {
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--ink-60);
+  max-width: 56ch;
+  margin: 12px 0 0;
+}
+
+.roadmap-updated {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  height: 36px;
+  padding: 0 16px;
+  border-radius: var(--r-pill);
+  border: 1px solid var(--hairline);
+  font-size: 13px;
+  color: var(--ink-60);
+  white-space: nowrap;
+}
+
+.roadmap-group {
+  padding-top: 40px;
+}
+
+.roadmap-group-head {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding-bottom: 4px;
+}
+
+.roadmap-group-title {
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-45);
+  margin: 0;
+}
+
+.roadmap-count {
+  font-size: 13px;
+  color: var(--ink-30);
+  font-variant-numeric: tabular-nums;
+}
+
+.roadmap-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.roadmap-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px 14px;
+  padding: 26px 0;
+  border-top: 1px solid var(--hairline-soft);
+}
+
+.roadmap-row-title {
+  font-size: clamp(20px, 2vw, 27px);
+  font-weight: 400;
+  line-height: 1.25;
+  letter-spacing: -0.018em;
+  color: var(--ink);
+  margin: 0 4px 0 0;
+}
+
+.roadmap-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 32px;
+  padding: 0 14px;
+  border-radius: var(--r-pill);
+  background: var(--surface);
+  border: 1px solid var(--hairline-soft);
+  font-size: 13px;
+  color: var(--ink-60);
+  white-space: nowrap;
+}
+
+.roadmap-when {
+  color: var(--ink-45);
+  font-variant-numeric: tabular-nums;
+}
+
+.roadmap-status {
+  font-size: 11.5px;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+.roadmap-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* The one accent the brand already carries, used only for what is live. */
+.roadmap-status.is-progress .roadmap-dot { background: #16A34A; }
+.roadmap-status.is-next .roadmap-dot     { background: transparent; box-shadow: inset 0 0 0 1.5px var(--ink-45); }
+.roadmap-status.is-later .roadmap-dot    { background: transparent; box-shadow: inset 0 0 0 1.5px var(--ink-30); }
+.roadmap-status.is-shipped .roadmap-dot  { background: var(--ink-45); }
+
+.roadmap-status.is-shipped { color: var(--ink-60); }
+
+/* Later is designed, not committed. It reads one step quieter than the rest
+   so the page never promises it at the same volume as what is live. */
+.roadmap-status.is-later { color: var(--ink-45); }
+.roadmap-group:has(.is-later) .roadmap-row-title { color: var(--ink-60); }
+
+.roadmap-note {
+  border-top: 1px solid var(--hairline-soft);
+  padding-top: 28px;
+  margin: 40px 0 0;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--ink-30);
+}
+
 /* ── Shared primitives ─────────────────────────────────────────────────── */
 
 /* Page shell: full width with a fixed gutter, no centred column and no cap. */

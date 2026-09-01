@@ -359,6 +359,7 @@ function Footer() {
             { label: 'Calculator', href: '/#calculator', internal: true },
             { label: 'How it works', href: '/#how-it-works', internal: true },
             { label: 'Why Nevra', href: '/#why-nevra', internal: true },
+            { label: 'Roadmap', href: '/roadmap', internal: true },
           ]} />
           <FooterCol title="Resources" links={[
             { label: 'Whitepaper', href: '/pdf/whitepaper.pdf' },

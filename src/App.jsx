@@ -5,6 +5,7 @@ import Home from './pages/Home'
 import Blog from './pages/Blog'
 import ArticlePage from './pages/ArticlePage'
 import Apply from './pages/Apply'
+import Roadmap from './pages/Roadmap'
 import NotFound from './pages/NotFound'
 
 // Lenis smooth scrolling (odyssey.finance-style inertia). Skipped entirely for
@@ -54,6 +55,7 @@ export default function App() {
           <Route path="/blog" element={<Blog />} />
           <Route path="/blog/:id" element={<ArticlePage />} />
           <Route path="/apply" element={<Apply />} />
+          <Route path="/roadmap" element={<Roadmap />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
