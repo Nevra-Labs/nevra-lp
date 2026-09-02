@@ -3,8 +3,8 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 /* Measured off apxlending.com's .header-new: a 56px bar on the frame's own
    grey, inset 24px on the left and 8px on the right so the primary button
    hugs the gutter. Logo left, everything else right: four 14px text links in
-   12px-radius hit areas (4px apart), then 32px, then a white secondary and a
-   black primary pill. */
+   12px-radius hit areas (4px apart), then 32px, then the black primary pill.
+   APX runs a secondary next to it; we have one destination, so one button. */
 
 const SECTION_LINKS = [
   { label: 'How it works', id: 'how-it-works' },
@@ -43,7 +43,6 @@ export default function Nav({ rightExtra = null }) {
 
         <div className="nav-actions">
           {rightExtra}
-          <Link to="/apply" className="nav-btn nav-btn-outline focus-ring">Log in</Link>
           <Link to="/apply" className="nav-btn nav-btn-solid focus-ring">Apply now</Link>
         </div>
       </div>

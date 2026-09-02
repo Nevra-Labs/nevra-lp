@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react'
-import { usePrivy } from '@privy-io/react-auth'
+import { useState, useEffect, useRef } from 'react'
+import { usePrivy, useLogin } from '@privy-io/react-auth'
 import { supabase } from '../lib/supabase'
 import Nav from '../components/Nav'
 import '../responsive.css'
@@ -64,26 +64,47 @@ const optionBtnHover = {
 }
 
 export default function Apply() {
+  // PRIVY_ENABLED is a build-time constant, so the branch is stable for the
+  // life of the app and these hooks always run in the same order.
   const privy = PRIVY_ENABLED
     ? usePrivy()
-    : { ready: true, authenticated: false, user: null, login: () => alert('Set VITE_PRIVY_APP_ID and VITE_PRIVY_CLIENT_ID in .env') }
-  const { ready, authenticated, user, login } = privy
+    : { ready: true, authenticated: false, user: null }
+  const { ready, authenticated, user } = privy
 
   const [answers, setAnswers] = useState({})
   const [step, setStep] = useState(0)
   const [animKey, setAnimKey] = useState(0)
-  const [phase, setPhase] = useState('loading') // loading | landing | questionnaire | done
+  // signin is a recovery state, not a landing page: it only appears if the
+  // Privy modal was dismissed, so the visitor has a way back in.
+  const [phase, setPhase] = useState('loading') // loading | signin | questionnaire | done
+
+  const loginHook = PRIVY_ENABLED
+    ? useLogin({ onError: () => setPhase('signin') })
+    : { login: () => alert('Set VITE_PRIVY_APP_ID and VITE_PRIVY_CLIENT_ID in .env') }
+  const { login } = loginHook
+
+  // Opening the modal is a side effect with no idempotence of its own, so it
+  // fires once per mount rather than on every pass of the effect.
+  const promptedRef = useRef(false)
 
   useEffect(() => {
     document.title = 'Apply | Nevra'
     return () => { document.title = 'Nevra | Real credit for crypto-native people' }
   }, [])
 
-  // Once Privy is ready, show landing or check existing submission
+  // Apply has one job, so there is nothing to land on: go straight to Privy,
+  // then straight to the questions.
   useEffect(() => {
     if (!ready) return
     if (!authenticated) {
-      setPhase('landing')
+      if (!PRIVY_ENABLED) {
+        setPhase('signin')
+        return
+      }
+      if (promptedRef.current) return
+      promptedRef.current = true
+      setPhase('loading')
+      login()
       return
     }
     if (!supabase || !user) {
@@ -101,6 +122,7 @@ export default function Apply() {
   }, [ready, authenticated, user])
 
   const handleLogin = async () => {
+    setPhase('loading')
     await login()
   }
 
@@ -163,20 +185,10 @@ export default function Apply() {
           </div>
         )}
 
-        {phase === 'landing' && (
-          <div key="landing" className="fade-up" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 16, padding: '0 24px', textAlign: 'center' }}>
-            <h1 style={{
-              fontWeight: 300,
-              fontSize: 'clamp(32px, 4vw, 44px)',
-              letterSpacing: '-0.025em',
-              lineHeight: 1.08,
-              color: 'var(--ink)',
-              margin: 0,
-            }}>
-              Apply for the closed beta
-            </h1>
-            <p style={{ fontSize: 16, color: 'var(--ink-60)', lineHeight: 1.6, maxWidth: 400, margin: '0 0 12px' }}>
-              A few quick questions, then you're in line for the next cohort.
+        {phase === 'signin' && (
+          <div key="signin" className="fade-up" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 14, padding: '0 24px', textAlign: 'center' }}>
+            <p style={{ fontSize: 15, color: 'var(--ink-60)', lineHeight: 1.6, margin: 0 }}>
+              Sign in to pick up your application.
             </p>
             <button
               onClick={handleLogin}
@@ -194,7 +206,7 @@ export default function Apply() {
                 cursor: 'pointer',
               }}
             >
-              Apply now →
+              Continue
             </button>
           </div>
         )}
