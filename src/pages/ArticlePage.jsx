@@ -182,13 +182,36 @@ export default function ArticlePage() {
   )
 }
 
+/* Bold, italic and links, in that order so the bold pattern claims its
+   asterisks before the italic one sees them. Anything else falls through as
+   text: the renderer stays a reader for the subset we actually write in. */
 function renderInline(text) {
-  const parts = text.split(/(\*\*[^*]+\*\*)/g)
-  return parts.map((part, i) =>
-    part.startsWith('**') && part.endsWith('**')
-      ? <strong key={i}>{part.slice(2, -2)}</strong>
-      : <span key={i}>{part}</span>
-  )
+  const parts = text.split(/(\*\*[^*]+\*\*|\*[^*]+\*|\[[^\]]+\]\([^)]+\))/g)
+  return parts.map((part, i) => {
+    // Emphasis recurses: the sign-off is a whole italic paragraph with a link
+    // inside it, so the inner text has to be read again rather than printed.
+    if (part.startsWith('**') && part.endsWith('**')) {
+      return <strong key={i}>{renderInline(part.slice(2, -2))}</strong>
+    }
+    if (part.startsWith('*') && part.endsWith('*') && part.length > 2) {
+      return <em key={i}>{renderInline(part.slice(1, -1))}</em>
+    }
+    const link = part.match(/^\[([^\]]+)\]\(([^)]+)\)$/)
+    if (link) {
+      const [, label, href] = link
+      // Internal hrefs go through the router, so /apply does not reload the
+      // app and drop straight back into the Privy handoff cold.
+      if (href.startsWith('/')) {
+        return <Link key={i} to={href} className="focus-ring">{label}</Link>
+      }
+      return (
+        <a key={i} href={href} className="focus-ring" target="_blank" rel="noopener noreferrer">
+          {label}
+        </a>
+      )
+    }
+    return <span key={i}>{part}</span>
+  })
 }
 
 function ArticleBody({ content }) {
@@ -197,6 +220,18 @@ function ArticleBody({ content }) {
   let i = 0
   while (i < blocks.length) {
     const block = blocks[i]
+
+    if (/^-{3,}$/.test(block.trim())) {
+      out.push(
+        <hr key={i} style={{
+          border: 0,
+          borderTop: '1px solid var(--hairline)',
+          margin: '44px 0 28px',
+        }} />
+      )
+      i++
+      continue
+    }
 
     if (block.startsWith('## ')) {
       out.push(

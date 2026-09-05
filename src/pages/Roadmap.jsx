@@ -27,7 +27,7 @@ const GROUPS = [
     status: 'next',
     label: 'Next',
     items: [
-      { title: 'Bank linking to score income the chain cannot see', area: 'Underwriting', when: 'Q4 2026' },
+      { title: 'Neobank integrations, to read income once it leaves the chain', area: 'Underwriting', when: 'Q4 2026' },
       { title: 'A revolving line you draw against anytime', area: 'Borrow', when: 'Q4 2026' },
       { title: 'APR that falls after on-time repayments', area: 'Pricing', when: 'Q4 2026' },
       { title: 'Larger limits once default rates are observed', area: 'Risk', when: 'Q1 2027' },
@@ -86,9 +86,10 @@ export default function Roadmap() {
             <h1 className="roadmap-title">Nevra Roadmap</h1>
             <p className="roadmap-lede">
               Stablecoin payroll already works. Credit against that income does not:
-              banks cannot see it, and DeFi asks you to post more than you borrow.
-              Here is what we are building to close that gap. {total} items, updated
-              as they move.
+              banks cannot see it, and DeFi asks you to post more than you borrow. We
+              underwrite on verified identity and onchain history alone, no credit
+              score and no bank login. Here is what we are building next. {total} items,
+              updated as they move.
             </p>
           </div>
           <span className="roadmap-updated">{UPDATED}</span>

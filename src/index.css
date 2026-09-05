@@ -638,6 +638,22 @@ body.theme-dark .footer-logo {
 .article-prose li { margin-bottom: 8px; line-height: 1.75; }
 .article-prose li::marker { color: var(--ink-30); }
 .article-prose strong { color: var(--ink); font-weight: 600; }
+.article-prose em { font-style: italic; color: var(--ink-60); }
+
+/* The global reset strips anchors bare, which is right in a navbar and wrong
+   in running prose, where a link has to be findable without a hover. */
+.article-prose a {
+  color: var(--ink);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+  text-decoration-color: var(--ink-30);
+  transition: text-decoration-color 0.15s ease;
+}
+
+@media (hover: hover) {
+  .article-prose a:hover { text-decoration-color: var(--ink); }
+}
 
 /* ── Dark hero ─────────────────────────────────────────────────────────────
    Proportions measured off apxlending.com at 1440x900: hero exactly one
@@ -1242,16 +1258,21 @@ body.theme-dark .footer-logo {
   margin: 0 0 16px;
 }
 
+/* The gap moved into the links themselves. The rhythm is unchanged (3 + 4 +
+   4 = the old 11px), but each target is now 21px tall instead of hugging the
+   text at 15px, which is what made these easy to click past. */
 .footer-col-list {
   list-style: none;
   padding: 0;
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 11px;
+  gap: 3px;
 }
 
 .footer-link {
+  display: inline-block;
+  padding: 4px 0;
   font-size: 12.5px;
   font-weight: 400;
   color: var(--ink-60);
