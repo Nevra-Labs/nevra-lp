@@ -3,6 +3,7 @@ export const articles = [
     id: 'your-bank-cannot-read-your-paycheck',
     title: 'Your bank cannot read your paycheck',
     category: 'Perspective',
+    cover: '/blog/nevra-wordmark.png',
     date: 'September 5, 2026',
     readTime: '7 min read',
     excerpt:
