@@ -1,6 +1,20 @@
 {
   "rewrites": [
-    { "source": "/roadmap", "destination": "/roadmap.html" },
-    { "source": "/(.*)", "destination": "/index.html" }
+    {
+      "source": "/roadmap",
+      "destination": "/roadmap.html"
+    },
+    {
+      "source": "/blog/why-crypto-never-solved-credit",
+      "destination": "/blog/why-crypto-never-solved-credit.html"
+    },
+    {
+      "source": "/blog/your-bank-cannot-read-your-paycheck",
+      "destination": "/blog/your-bank-cannot-read-your-paycheck.html"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
   ]
 }
