@@ -371,7 +371,7 @@ function Footer() {
             { label: 'Twitter', href: 'https://x.com/nevralabs' },
             { label: 'LinkedIn', href: 'https://www.linkedin.com/company/nevralabs' },
             { label: 'Telegram', href: 'https://t.me/nevragenesis' },
-            { label: 'Discord', href: 'https://discord.gg/6TfjWus8C' },
+            { label: 'Discord', href: 'https://discord.gg/JAGwmhsAU' },
           ]} />
         </div>
       </div>
