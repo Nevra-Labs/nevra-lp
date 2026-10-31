@@ -41,7 +41,7 @@ export default function Nav({ rightExtra = null }) {
       {pathname === '/' && <a href="#main-content" className="site-skip">Skip to content</a>}
       <header className="site-header">
         <div className="site-nav">
-          <Link to="/" className="site-brand" aria-label="Nevra home"><img src="/logo.png" alt="" /><span>Nevra</span></Link>
+          <Link to="/" className="site-brand" aria-label="Nevra home"><img src="/logo.png" alt="" width="29" height="29" /><span>Nevra</span></Link>
           <nav className="site-desktop-links" aria-label="Main navigation">{LINKS.map(link => <Link key={link.to} to={link.to} onClick={() => followLink(link.to)}>{link.label}</Link>)}</nav>
           <div className="site-nav-actions">{rightExtra}<Link to="/apply" className="lp-button site-nav-cta">Get early access <ArrowRight size={14} /></Link><button ref={toggle} className="site-menu-toggle" type="button" aria-label={open ? 'Close navigation' : 'Open navigation'} aria-expanded={open} aria-controls="mobile-navigation" onClick={() => setOpen(value => !value)}>{open ? <X size={22} /> : <Menu size={22} />}</button></div>
         </div>

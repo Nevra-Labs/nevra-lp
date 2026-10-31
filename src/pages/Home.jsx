@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { ArrowDown, ArrowRight, Check, Plus } from 'lucide-react'
+import { ArrowRight, Check, Plus } from 'lucide-react'
 import Nav from '../components/Nav'
 import '../responsive.css'
 
@@ -17,54 +17,11 @@ const FAQS = [
   { question: 'What will my rate and limit be?', answer: 'Your offer depends on your individual assessment. Any approved limit, rate, fees, and repayment schedule will be shown before you accept. The product preview on this page is illustrative, not a credit offer.' },
 ]
 
-function Orbit() {
-  return (
-    <div className="lp-orbit" aria-hidden="true">
-      <svg viewBox="0 0 600 600" fill="none" className="lp-orbit-art">
-        <defs>
-          <radialGradient id="orbit-paper">
-            <stop stopColor="#e2e6de" />
-            <stop offset="1" stopColor="#f5f6f2" />
-          </radialGradient>
-          <linearGradient id="orbit-line" x1="100" y1="100" x2="490" y2="500" gradientUnits="userSpaceOnUse">
-            <stop stopColor="#a1aaa0" stopOpacity=".2" />
-            <stop offset=".5" stopColor="#566350" />
-            <stop offset="1" stopColor="#b8c1b1" stopOpacity=".3" />
-          </linearGradient>
-          <filter id="orbit-grain">
-            <feTurbulence type="fractalNoise" baseFrequency=".7" numOctaves="3" stitchTiles="stitch" />
-            <feColorMatrix type="saturate" values="0" />
-            <feComponentTransfer><feFuncA type="linear" slope=".07" /></feComponentTransfer>
-          </filter>
-        </defs>
-        <rect width="600" height="600" fill="url(#orbit-paper)" />
-        <g stroke="url(#orbit-line)" strokeWidth=".8">
-          {[0, 30, 60, 90, 120, 150].map(angle => (
-            <ellipse key={angle} cx="300" cy="300" rx="220" ry="82" transform={`rotate(${angle} 300 300)`} />
-          ))}
-          <circle cx="300" cy="300" r="220" strokeDasharray="1 7" />
-          <circle cx="300" cy="300" r="165" strokeOpacity=".35" />
-        </g>
-        <g fill="#596650">
-          <circle cx="490" cy="190" r="4" />
-          <circle cx="110" cy="410" r="4" />
-          <circle cx="300" cy="80" r="3" />
-        </g>
-        <path d="M300 40v12m0 496v12M40 300h12m496 0h12" stroke="#899480" />
-        <rect width="600" height="600" filter="url(#orbit-grain)" opacity=".8" />
-      </svg>
-      <div className="lp-orbit-core"><img src="/logo.png" alt="" /></div>
-      <div className="lp-orbit-label"><span className="lp-status-dot" /> A clearer picture of you.</div>
-      <span className="lp-orbit-index">NEVRA / 001</span>
-    </div>
-  )
-}
-
 function ProductPreview({ step }) {
   return (
     <div className="lp-product-stage">
       <div className="lp-product-window" role="tabpanel" id="income-preview" aria-labelledby={`income-step-${step}`} tabIndex={0}>
-        <div className="lp-window-bar"><span><img src="/logo.png" alt="" /> Nevra</span><span>Product preview</span></div>
+        <div className="lp-window-bar"><span><img src="/logo.png" alt="" width="16" height="16" /> Nevra</span><span>Product preview</span></div>
         <div className="lp-product-content" key={step}>
           {step === 0 && <>
             <span className="lp-product-icon">↗</span>
@@ -102,7 +59,7 @@ export default function Home() {
   const { hash } = useLocation()
   const [step, setStep] = useState(0)
 
-  useEffect(() => { document.title = 'Nevra | Your income. Your credit.' }, [])
+  useEffect(() => { document.title = 'Nevra | Credit' }, [])
 
   useEffect(() => {
     if (!hash) return
@@ -129,22 +86,14 @@ export default function Home() {
       <main id="main-content">
         <section className="lp-hero lp-shell" aria-labelledby="hero-heading">
           <div className="lp-hero-copy">
-            <Link to="/apply" className="lp-announcement"><span className="lp-status-dot" /> Now welcoming our early cohort <ArrowRight size={13} /></Link>
-            <h1 id="hero-heading">Your income.<br /><span>Your credit.</span></h1>
-            <p className="lp-hero-description">You earn onchain. We think that should count.<br className="lp-desktop-break" /> Credit for people paid in stablecoins, built around the way you earn.</p>
-            <div className="lp-actions">
-              <Link to="/apply" className="lp-button">Get early access <ArrowRight size={15} /></Link>
-              <a href="#how-it-works" className="lp-text-link">Meet Nevra <ArrowDown size={14} /></a>
-            </div>
-            <p className="lp-hero-footnote">Your history, not just your credit file.</p>
+            <h1 id="hero-heading">Credit</h1>
+            <p className="lp-hero-description">For people paid in stablecoins.</p>
+            <Link to="/apply" className="lp-button">Get early access</Link>
           </div>
-          <Orbit />
         </section>
 
-        <div className="lp-intro lp-shell"><span>Built for a different way of earning.</span><p>Stablecoin income is real income.<br />It’s time credit caught up.</p><span className="lp-intro-end">Starting on Solana <span aria-hidden="true">↗</span></span></div>
-
         <section id="how-it-works" className="lp-section lp-shell" aria-labelledby="how-heading">
-          <div className="lp-section-heading"><span className="lp-kicker">01 / THE PRODUCT</span><h2 id="how-heading">A little context.<br /><span>A lot more possibility.</span></h2></div>
+          <div className="lp-section-heading"><span className="lp-kicker">How it works</span><h2 id="how-heading">From income to credit.</h2></div>
           <div className="lp-product-layout">
             <div className="lp-steps" role="tablist" aria-label="Explore how Nevra works" aria-orientation="vertical" onKeyDown={handleStepKey}>
               {STEPS.map((item, i) => (
@@ -158,24 +107,24 @@ export default function Home() {
         </section>
 
         <section id="why-nevra" className="lp-belief" aria-labelledby="belief-heading">
-          <div className="lp-shell lp-belief-layout"><span className="lp-kicker">02 / THE IDEA</span><div><h2 id="belief-heading">The way we earn changed.<br /><span>Credit hasn’t. Yet.</span></h2><p>A steady onchain paycheck tells a story that a traditional credit file can miss. We’re building Nevra to read that story, and help more people access credit that makes sense for them.</p><Link to="/blog" className="lp-text-link">Our thinking <ArrowRight size={15} /></Link></div></div>
+          <div className="lp-shell lp-belief-layout"><span className="lp-kicker">Why Nevra</span><div><h2 id="belief-heading">Your income should count.</h2><p>A steady onchain paycheck tells a story that a traditional credit file can miss. We’re building Nevra to read that story, and help more people access credit that makes sense for them.</p><Link to="/blog" className="lp-text-link">Our thinking <ArrowRight size={15} /></Link></div></div>
         </section>
 
         <section id="for-builders" className="lp-builders lp-shell" aria-labelledby="builders-heading">
-          <div><span className="lp-kicker">03 / FOR BUILDERS</span><h2 id="builders-heading">Your users.<br /><span>A new possibility.</span></h2></div>
+          <div><span className="lp-kicker">For builders</span><h2 id="builders-heading">Credit for your users.</h2></div>
           <div><p>Building a wallet or neobank? Let’s bring consumer credit to the place your users already call home.</p><a href="mailto:hugo@nevralabs.com?subject=Nevra%20integration" className="lp-text-link">Build with Nevra <ArrowRight size={15} /></a></div>
-          <div className="lp-builder-mark" aria-hidden="true"><span>YOUR APP</span><Plus size={18} /><img src="/logo.png" alt="" /></div>
+          <div className="lp-builder-mark" aria-hidden="true"><span>Your app</span><Plus size={18} /><img src="/logo.png" alt="" width="40" height="40" loading="lazy" /></div>
         </section>
 
         <section className="lp-faq lp-shell" aria-labelledby="faq-heading">
-          <div><span className="lp-kicker">A FEW DETAILS</span><h2 id="faq-heading">Good questions.</h2><a className="lp-text-link" href="mailto:hugo@nevralabs.com">Ask us anything <ArrowRight size={15} /></a></div>
+          <div><h2 id="faq-heading">Questions?</h2><a className="lp-text-link" href="mailto:hugo@nevralabs.com">Ask us anything <ArrowRight size={15} /></a></div>
           <div>{FAQS.map(faq => <details className="lp-faq-item" key={faq.question}><summary>{faq.question}<Plus size={17} aria-hidden="true" /></summary><p>{faq.answer}</p></details>)}</div>
         </section>
 
-        <section className="lp-final lp-shell"><span className="lp-kicker">A NEW STARTING POINT</span><h2>Make your income<br /><span>count for more.</span></h2><Link to="/apply" className="lp-button">Get early access <ArrowRight size={15} /></Link><p>Early access. Individual assessment. Clear terms.</p></section>
+        <section className="lp-final lp-shell"><h2>Credit that starts<br />with your income.</h2><Link to="/apply" className="lp-button">Get early access <ArrowRight size={15} /></Link><p>Subject to eligibility and approval.</p></section>
       </main>
       <footer className="lp-footer lp-shell">
-        <div className="lp-footer-top"><Link to="/" className="site-brand" aria-label="Nevra home"><img src="/logo.png" alt="" /><span>Nevra</span></Link><div><Link to="/blog">Journal</Link><Link to="/roadmap">Roadmap</Link><a href="/pdf/whitepaper.pdf" target="_blank" rel="noopener noreferrer">Whitepaper</a><a href="https://x.com/nevralabs" target="_blank" rel="noopener noreferrer">X ↗</a><a href="mailto:hugo@nevralabs.com">Contact</a></div></div>
+        <div className="lp-footer-top"><Link to="/" className="site-brand" aria-label="Nevra home"><img src="/logo.png" alt="" width="29" height="29" loading="lazy" /><span>Nevra</span></Link><div><Link to="/blog">Journal</Link><Link to="/roadmap">Roadmap</Link><a href="/pdf/whitepaper.pdf" target="_blank" rel="noopener noreferrer">Whitepaper</a><a href="https://x.com/nevralabs" target="_blank" rel="noopener noreferrer">X ↗</a><a href="mailto:hugo@nevralabs.com">Contact</a></div></div>
         <div className="lp-footer-bottom"><p>© {new Date().getFullYear()} Nevra Inc.</p><p>Nevra is not a bank. Credit is subject to eligibility and approval.</p><div><a href="/pdf/Nevra_Terms_of_Service.pdf" target="_blank" rel="noopener noreferrer">Terms</a><a href="/pdf/Nevra_Privacy_Policy.pdf" target="_blank" rel="noopener noreferrer">Privacy</a></div></div>
         <div className="lp-wordmark" aria-hidden="true">Nevra</div>
       </footer>

@@ -2,8 +2,8 @@
 
 ## Direction
 
-A small, focused technology company building consumer credit for people paid in
-stablecoins. Calm, clear, and human. Natural is a reference for restraint and
+A company building consumer credit for people paid in stablecoins.
+Calm, clear, and human. Natural is a reference for restraint and
 product storytelling, not a template to reproduce or a reason to claim AI features.
 
 The homepage lives in `src/pages/Home.jsx`, with its styles and the shared navigation
@@ -16,22 +16,24 @@ uses `site-`. There is no viewport frame or JavaScript scroll interception.
 - White canvas, near-black text, muted olive-grey secondary text.
 - Pale mineral backgrounds for product illustrations. Sage is a quiet accent,
   not a primary action color.
-- Inter for the landing and navigation. Regular weight, close tracking, generous
-  whitespace. No heavy lending-style display headings.
-- Small mono labels identify real sections and product metadata.
+- Inter for the landing and navigation, with regular Inter Tight for the single-word
+  hero. Close tracking and generous whitespace. No heavy lending-style headings.
+- Plain section labels. Mono numbers only where they explain the product steps.
 - Primary actions are compact near-black pills. Text links use a small arrow.
 - Hairlines separate steps, FAQ entries, and footer content. No boxed page frame.
 
 ## Story
 
-1. Your income. Your credit. One message, one primary action.
+1. Credit. A single-word headline, “For people paid in stablecoins.”, and one
+   “Get early access” action. Left aligned on white, with no supporting illustration.
 2. An interactive, explicitly illustrative walkthrough: connect, understand, access.
 3. Why onchain income deserves context beyond a traditional credit file.
 4. A quiet invitation to wallets and neobanks, still serving consumer borrowers.
 5. Honest answers about eligibility, verification, rates, and wallet access.
 
-The hero orbit is an original SVG built around the existing Nevra symbol. No
-stock skyline, autoplay video, partner carousel, or borrowed brand assets.
+No hero orbit, decorative gradients, status badges, serial numbers, footnotes,
+secondary action, stock skyline, autoplay video, partner carousel, or borrowed
+brand assets. Do not replace removed decoration with generic AI imagery.
 
 ## Voice and claims
 
