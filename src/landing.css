@@ -118,6 +118,7 @@ body.theme-dark .site-nav-cta { background: #fff; color: #0e0f12; }
 .lp-faq-item:first-child { border-top: 1px solid var(--lp-line); }
 .lp-faq-item summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 20px; padding-block: 23px; font-size: 14px; letter-spacing: -.02em; }
 .lp-faq-item summary::-webkit-details-marker { display: none; }
+.lp-faq-item summary:focus-visible { outline-offset: -2px; }
 .lp-faq-item summary > svg { color: #73786b; transition: transform .2s; }
 .lp-faq-item[open] summary > svg { transform: rotate(45deg); }
 .lp-faq-item p { color: #676d5f; font-size: 12px; line-height: 1.9; padding: 0 34px 24px 0; }

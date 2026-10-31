@@ -8,11 +8,11 @@ import Roadmap from './pages/Roadmap'
 import NotFound from './pages/NotFound'
 
 function ScrollToTop() {
-  const { pathname, hash } = useLocation()
+  const { pathname, hash, key } = useLocation()
   useEffect(() => {
     if (hash) return
     window.scrollTo({ top: 0, behavior: 'instant' })
-  }, [pathname, hash])
+  }, [pathname, hash, key])
   return null
 }
 
