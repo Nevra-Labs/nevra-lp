@@ -1,51 +1,52 @@
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { useEffect, useRef, useState } from 'react'
+import { Link, useLocation } from 'react-router-dom'
+import { ArrowRight, Menu, X } from 'lucide-react'
 
-/* Measured off apxlending.com's .header-new: a 56px bar on the frame's own
-   grey, inset 24px on the left and 8px on the right so the primary button
-   hugs the gutter. Logo left, everything else right: four 14px text links in
-   12px-radius hit areas (4px apart), then 32px, then the black primary pill.
-   APX runs a secondary next to it; we have one destination, so one button. */
-
-const SECTION_LINKS = [
-  { label: 'How it works', id: 'how-it-works' },
-  { label: 'Calculator', id: 'calculator' },
-  { label: 'Why Nevra', id: 'why-nevra' },
+const LINKS = [
+  { label: 'How it works', to: '/#how-it-works' },
+  { label: 'For builders', to: '/#for-builders' },
+  { label: 'Journal', to: '/blog' },
 ]
 
 export default function Nav({ rightExtra = null }) {
-  const { pathname } = useLocation()
-  const navigate = useNavigate()
+  const [open, setOpen] = useState(false)
+  const { pathname, hash } = useLocation()
+  const toggle = useRef(null)
 
-  const goToSection = (e, id) => {
-    e.preventDefault()
-    if (pathname === '/') {
-      document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-    } else {
-      navigate(`/#${id}`)
-    }
+  function followLink(to) {
+    setOpen(false)
+    if (pathname !== '/' || !to.includes('#')) return
+    document.getElementById(to.split('#')[1])?.scrollIntoView({
+      behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth',
+      block: 'start',
+    })
   }
 
+  useEffect(() => { setOpen(false) }, [pathname, hash])
+
+  useEffect(() => {
+    if (!open) return
+    const dismiss = event => {
+      if (event.key === 'Escape') {
+        setOpen(false)
+        toggle.current?.focus()
+      }
+    }
+    window.addEventListener('keydown', dismiss)
+    return () => window.removeEventListener('keydown', dismiss)
+  }, [open])
+
   return (
-    <header className="nav-bar">
-      <Link to="/" className="nav-brand" aria-label="Nevra home">
-        <img src="/logo.png" alt="Nevra" />
-      </Link>
-
-      <div className="nav-right">
-        <nav className="nav-links nav-text-links">
-          {SECTION_LINKS.map(({ label, id }) => (
-            <a key={id} href={`/#${id}`} onClick={e => goToSection(e, id)} className="nav-item focus-ring">
-              {label}
-            </a>
-          ))}
-          <Link to="/blog" className="nav-item focus-ring">Blog</Link>
-        </nav>
-
-        <div className="nav-actions">
-          {rightExtra}
-          <Link to="/apply" className="nav-btn nav-btn-solid focus-ring">Apply now</Link>
+    <>
+      {pathname === '/' && <a href="#main-content" className="site-skip">Skip to content</a>}
+      <header className="site-header">
+        <div className="site-nav">
+          <Link to="/" className="site-brand" aria-label="Nevra home"><img src="/logo.png" alt="" width="29" height="29" /><span>Nevra</span></Link>
+          <nav className="site-desktop-links" aria-label="Main navigation">{LINKS.map(link => <Link key={link.to} to={link.to} onClick={() => followLink(link.to)}>{link.label}</Link>)}</nav>
+          <div className="site-nav-actions">{rightExtra}<Link to="/apply" className="lp-button site-nav-cta">Get early access <ArrowRight size={14} /></Link><button ref={toggle} className="site-menu-toggle" type="button" aria-label={open ? 'Close navigation' : 'Open navigation'} aria-expanded={open} aria-controls="mobile-navigation" onClick={() => setOpen(value => !value)}>{open ? <X size={22} /> : <Menu size={22} />}</button></div>
         </div>
-      </div>
-    </header>
+        <nav id="mobile-navigation" className="site-mobile-links" aria-label="Mobile navigation" hidden={!open}>{LINKS.map(link => <Link key={link.to} to={link.to} onClick={() => followLink(link.to)}>{link.label}<ArrowRight size={15} /></Link>)}</nav>
+      </header>
+    </>
   )
 }

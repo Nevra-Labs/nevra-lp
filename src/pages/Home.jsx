@@ -1,388 +1,133 @@
+import { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { useState, useEffect, useRef } from 'react'
-import { ArrowRight } from 'lucide-react'
+import { ArrowRight, Check, Plus } from 'lucide-react'
 import Nav from '../components/Nav'
-import LoanCalculator from '../components/LoanCalculator'
-import HeroVideo from '../components/HeroVideo'
-import HowItWorks from '../components/HowItWorks'
-import FeatureCards from '../components/FeatureCards'
 import '../responsive.css'
 
-function Reveal({ children, delay = 0, className = '', style }) {
-  const ref = useRef(null)
-  const [visible, setVisible] = useState(false)
+const STEPS = [
+  { title: 'Connect your income', text: 'Start with the wallet your stablecoin income arrives in. Read-only access. Your keys stay yours.' },
+  { title: 'Let your history speak', text: 'Recurring income, consistency, and wallet activity help us understand the person behind the address.' },
+  { title: 'Find your line', text: 'Complete identity verification. If eligible, review your credit offer and its terms before you decide.' },
+]
 
-  useEffect(() => {
-    const el = ref.current
-    if (!el) return
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setVisible(true)
-          observer.disconnect()
-        }
-      },
-      { threshold: 0.15, rootMargin: '0px 0px -40px 0px' }
-    )
-    observer.observe(el)
-    return () => observer.disconnect()
-  }, [])
+const FAQS = [
+  { question: 'Who is Nevra for?', answer: 'Nevra is built for people who earn in stablecoins and want access to consumer credit. We are onboarding a limited early cohort. Availability depends on your location, identity verification, and eligibility.' },
+  { question: 'How does Nevra assess my application?', answer: 'We look at onchain activity, including recurring stablecoin income and its consistency, alongside identity verification and compliance checks. Connecting a wallet does not guarantee approval.' },
+  { question: 'Do you control my wallet?', answer: 'No. Connecting your wallet gives us read-only access to its public history. We do not ask for your private keys or seed phrase. You review and authorize any transaction separately.' },
+  { question: 'What will my rate and limit be?', answer: 'Your offer depends on your individual assessment. Any approved limit, rate, fees, and repayment schedule will be shown before you accept. The product preview on this page is illustrative, not a credit offer.' },
+]
 
+function ProductPreview({ step }) {
   return (
-    <div
-      ref={ref}
-      className={`reveal ${visible ? 'is-visible' : ''} ${className}`}
-      style={{ ...style, transitionDelay: visible ? `${delay}ms` : '0ms' }}
-    >
-      {children}
+    <div className="lp-product-stage">
+      <div className="lp-product-window" role="tabpanel" id="income-preview" aria-labelledby={`income-step-${step}`} tabIndex={0}>
+        <div className="lp-window-bar"><span><img src="/logo.png" alt="" width="16" height="16" /> Nevra</span><span>Product preview</span></div>
+        <div className="lp-product-content" key={step}>
+          {step === 0 && <>
+            <span className="lp-product-icon">↗</span>
+            <h3>Your income starts here.</h3>
+            <p>A wallet. A history. A starting point.</p>
+            <div className="lp-wallet-row"><span className="lp-wallet-avatar">◎</span><div>Income wallet<small>7xKp…4nVq</small></div><span className="lp-connected"><Check size={12} /> Connected</span></div>
+            <div className="lp-preview-note"><Check size={14} /> Read-only connection. No access to funds.</div>
+          </>}
+          {step === 1 && <>
+            <span className="lp-product-eyebrow">THE BIGGER PICTURE</span>
+            <h3>More than an address.</h3>
+            <p>Your income history, in context.</p>
+            <div className="lp-income-chart" aria-label="Illustrative recurring income over six months">
+              {[48, 65, 56, 80, 73, 94].map((height, i) => <div key={i}><span style={{ height: `${height}%` }} /><small>{['May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'][i]}</small></div>)}
+            </div>
+            <div className="lp-signal-row"><span>Recurring income</span><span><span className="lp-status-dot" /> Identified</span></div>
+          </>}
+          {step === 2 && <>
+            <span className="lp-product-eyebrow">ON YOUR TERMS</span>
+            <h3>A line to move forward.</h3>
+            <p>Know where you stand before you commit.</p>
+            <div className="lp-offer-row"><span>Credit limit</span><span>Personal to you</span></div>
+            <div className="lp-offer-row"><span>Rate & repayment</span><span>Upfront, in your offer</span></div>
+            <div className="lp-review-label">Review. Then decide.<ArrowRight size={15} /></div>
+            <div className="lp-preview-note">Subject to verification and approval.</div>
+          </>}
+        </div>
+      </div>
+      <p className="lp-demo-disclaimer">Illustrative product preview. No wallet connection or credit assessment is performed here.</p>
     </div>
   )
 }
-
-/* Onchain infrastructure only: the hero path is wallet/payroll, so no Plaid. */
-const PARTNER_LOGOS = [
-  { name: 'Alchemy', src: '/logos/alchemy_logo.svg' },
-  { name: 'Helius', src: '/logos/helius_logo.svg' },
-  { name: 'FairScale', src: '/logos/fairscale_logo.svg' },
-]
-
-/* Each half of the marquee has to fill the mask exactly for the loop to be
-   seamless, so the set repeats until it does. Three logos across a 1400px
-   half leaves 470px between them; three repeats brings the pitch to ~155px. */
-const MARQUEE_REPEATS = 3
-const MARQUEE_LOGOS = Array.from(
-  { length: MARQUEE_REPEATS },
-  () => PARTNER_LOGOS
-).flat()
-
-const FAQS = [
-  {
-    question: 'How is my payroll score calculated?',
-    answer: 'Your score reads recurring USDC and USDT inflows to your connected wallets: frequency, amount, and consistency of payroll. No FICO file and no bank history required.',
-  },
-  {
-    question: 'Do I really borrow more than I post?',
-    answer: 'Yes. Your verified payroll qualifies you for a line where the collateral you post is a fraction of what you draw, not 150% of it.',
-  },
-  {
-    question: 'What do I connect?',
-    answer: 'The wallets that receive your stablecoin salary. The connection is read-only and non-custodial: we never take your keys or your funds.',
-  },
-  {
-    question: 'What happens if I miss a payment?',
-    answer: 'Your rate and available credit adjust first. You repay from your next payday; liquidation of posted collateral is the last resort, not the first.',
-  },
-  {
-    question: 'When can I get access?',
-    answer: 'We are onboarding stablecoin earners in cohorts. Connect your payroll wallet, finish verification, and you will be scored and placed in the next cohort.',
-  },
-]
 
 export default function Home() {
   const { hash } = useLocation()
+  const [step, setStep] = useState(0)
+
+  useEffect(() => { document.title = 'Nevra | Credit' }, [])
 
   useEffect(() => {
     if (!hash) return
-    const el = document.getElementById(hash.slice(1))
-    if (!el) return
-    const raf = requestAnimationFrame(() => el.scrollIntoView({ behavior: 'smooth', block: 'start' }))
-    return () => cancelAnimationFrame(raf)
+    const id = hash.slice(1) === 'calculator' ? 'how-it-works' : hash.slice(1)
+    const frame = requestAnimationFrame(() => document.getElementById(id)?.scrollIntoView({
+      behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth',
+      block: 'start',
+    }))
+    return () => cancelAnimationFrame(frame)
   }, [hash])
 
+  function handleStepKey(event) {
+    if (!['ArrowDown', 'ArrowRight', 'ArrowUp', 'ArrowLeft', 'Home', 'End'].includes(event.key)) return
+    event.preventDefault()
+    const next = event.key === 'Home' ? 0 : event.key === 'End' ? STEPS.length - 1
+      : (step + (['ArrowDown', 'ArrowRight'].includes(event.key) ? 1 : -1) + STEPS.length) % STEPS.length
+    setStep(next)
+    document.getElementById(`income-step-${next}`)?.focus()
+  }
+
   return (
-    <div>
+    <div className="lp">
       <Nav />
-
-      {/* ── Announcement + hero ──────────────────────────────────────────
-          Dark cinematic NYC hero. The left copy sits on a gradient scrim so
-          the skyline never fights the type; the product image carries the
-          right column. */}
-      <div className="hero-dark">
-        <HeroVideo />
-
-        <a href="/#calculator" className="announce">
-          <span className="announce-tag">New</span>
-          Your paycheck is onchain. Your credit should be too.
-          <ArrowRight size={14} strokeWidth={2} />
-        </a>
-
-        <section className="hero">
-          <div className="hero-grid">
-            <div className="hero-stack">
-              <p className="hero-badge enter-up enter-delay-1">
-                <span className="pill-dot" aria-hidden />
-                Credit underwritten on your onchain paycheck
-              </p>
-
-              <h1 className="hero-title enter-up enter-delay-2">
-                <span style={{ display: 'block' }}>Paid in stablecoins.</span>
-                <span style={{ display: 'block', color: 'rgba(255,255,255,0.62)' }}>
-                  Cash before payday.
-                </span>
-              </h1>
-
-              <p className="hero-sub enter-up enter-delay-3">
-                Payroll-backed credit from 4.0% APR.
-                <br />
-                No credit checks, no selling, keys stay yours.
-              </p>
-
-              <div className="hero-ctas enter-up enter-delay-4">
-                <Link to="/apply" className="btn-hero btn-hero-light focus-ring-light">
-                  Apply now <ArrowRight size={16} strokeWidth={2} />
-                </Link>
-                <a href="/pdf/whitepaper.pdf" target="_blank" rel="noopener noreferrer" className="btn-hero btn-hero-glass focus-ring-light">
-                  Read the whitepaper
-                </a>
-              </div>
-            </div>
-
-            <div className="hero-visual">
-              <img
-                src="/img/hero-image.png"
-                alt="Your onchain paycheck, scored into a credit line you can draw."
-                className="hero-visual-img"
-              />
-            </div>
+      <main id="main-content">
+        <section className="lp-hero lp-shell" aria-labelledby="hero-heading">
+          <div className="lp-hero-copy">
+            <h1 id="hero-heading">Credit</h1>
+            <p className="lp-hero-description">For people paid in stablecoins.</p>
+            <Link to="/apply" className="lp-button">Get early access</Link>
           </div>
         </section>
 
-        {/* Partner marquee, pinned to the hero's bottom edge. */}
-        <div className="hero-logos">
-          <div className="logo-mask">
-            <div className="logo-track">
-              {[0, 1].map(half => (
-                <div className="logo-group" key={half} aria-hidden={half === 1}>
-                  {MARQUEE_LOGOS.map((logo, i) => (
-                    <img
-                      key={`${logo.name}-${half}-${i}`}
-                      src={logo.src}
-                      alt={half === 0 && i < PARTNER_LOGOS.length ? logo.name : ''}
-                      className="partner-logo partner-logo-dark"
-                    />
-                  ))}
-                </div>
+        <section id="how-it-works" className="lp-section lp-shell" aria-labelledby="how-heading">
+          <div className="lp-section-heading"><span className="lp-kicker">How it works</span><h2 id="how-heading">From income to credit.</h2></div>
+          <div className="lp-product-layout">
+            <div className="lp-steps" role="tablist" aria-label="Explore how Nevra works" aria-orientation="vertical" onKeyDown={handleStepKey}>
+              {STEPS.map((item, i) => (
+                <button key={item.title} id={`income-step-${i}`} type="button" role="tab" aria-selected={step === i} aria-controls="income-preview" tabIndex={step === i ? 0 : -1} onClick={() => setStep(i)} className={`lp-step ${step === i ? 'is-active' : ''}`}>
+                  <span className="lp-step-number">0{i + 1}</span><span><span className="lp-step-title">{item.title}</span><span className="lp-step-description">{item.text}</span></span><ArrowRight size={17} aria-hidden="true" />
+                </button>
               ))}
             </div>
+            <ProductPreview step={step} />
           </div>
-        </div>
-      </div>
+        </section>
 
-      {/* ── Calculator ─────────────────────────────────────────────────
-          The marketing demo of the product: a real-looking payroll line,
-          labelled as a demo so it never reads as a broken dev state. */}
-      <LoanCalculator />
+        <section id="why-nevra" className="lp-belief" aria-labelledby="belief-heading">
+          <div className="lp-shell lp-belief-layout"><span className="lp-kicker">Why Nevra</span><div><h2 id="belief-heading">Your income should count.</h2><p>A steady onchain paycheck tells a story that a traditional credit file can miss. We’re building Nevra to read that story, and help more people access credit that makes sense for them.</p><Link to="/blog" className="lp-text-link">Our thinking <ArrowRight size={15} /></Link></div></div>
+        </section>
 
-      {/* ── Why Nevra ──────────────────────────────────────────────────
-          APX's why-section, 1:1: 80px padding on a near-white band, the h2
-          and its one-line sub on the left, Apply now pinned right, then the
-          card grid 40px below. */}
-      <section id="why-nevra" className="section-band">
-        <div className="section shell">
-          <Reveal>
-            <div className="why-head">
-              <div className="why-head-text">
-                <h2 className="display-sm">Why Nevra?</h2>
-                <p className="why-head-sub">
-                  One payroll score, a line you can draw on, a rate that falls as you repay,
-                  and read-only access to the data behind it.
-                </p>
-              </div>
-              <Link to="/apply" className="btn-apx focus-ring">Apply now</Link>
-            </div>
-          </Reveal>
+        <section id="for-builders" className="lp-builders lp-shell" aria-labelledby="builders-heading">
+          <div><span className="lp-kicker">For builders</span><h2 id="builders-heading">Credit for your users.</h2></div>
+          <div><p>Building a wallet or neobank? Let’s bring consumer credit to the place your users already call home.</p><a href="mailto:hugo@nevralabs.com?subject=Nevra%20integration" className="lp-text-link">Build with Nevra <ArrowRight size={15} /></a></div>
+          <div className="lp-builder-mark" aria-hidden="true"><span>Your app</span><Plus size={18} /><img src="/logo.png" alt="" width="40" height="40" loading="lazy" /></div>
+        </section>
 
-          <Reveal delay={100} style={{ marginTop: 40 }}>
-            <FeatureCards />
-          </Reveal>
-        </div>
-      </section>
+        <section className="lp-faq lp-shell" aria-labelledby="faq-heading">
+          <div><h2 id="faq-heading">Questions?</h2><a className="lp-text-link" href="mailto:hugo@nevralabs.com">Ask us anything <ArrowRight size={15} /></a></div>
+          <div>{FAQS.map(faq => <details className="lp-faq-item" key={faq.question}><summary>{faq.question}<Plus size={17} aria-hidden="true" /></summary><p>{faq.answer}</p></details>)}</div>
+        </section>
 
-      {/* ── How payroll credit works ─────────────────────────────────── */}
-      <HowItWorks />
-
-      {/* ── FAQ ──────────────────────────────────────────────────────── */}
-      <section className="section shell">
-        <Reveal style={{ textAlign: 'center', maxWidth: 560, margin: '0 auto 48px' }}>
-          <h2 className="display-sm">Questions, answered.</h2>
-        </Reveal>
-
-        <Reveal delay={80} style={{ maxWidth: 720, margin: '0 auto' }}>
-          {FAQS.map((faq, i) => (
-            <FaqItem key={faq.question} faq={faq} index={i} />
-          ))}
-        </Reveal>
-      </section>
-
-      {/* ── CTA ────────────────────────────────────────────────────────── */}
-      <section style={{ padding: '0 var(--shell-pad) 112px' }}>
-        <Reveal>
-          <div className="cta-block" style={{
-            background: 'var(--dark)',
-            borderRadius: 'var(--r-xl)',
-            padding: '104px 40px',
-            textAlign: 'center',
-            position: 'relative',
-            overflow: 'hidden',
-          }}>
-            <div aria-hidden style={{
-              position: 'absolute',
-              inset: 0,
-              background: 'radial-gradient(ellipse 60% 80% at 50% 120%, rgba(255,255,255,0.14) 0%, transparent 62%)',
-              pointerEvents: 'none',
-            }} />
-            <div style={{ position: 'relative' }}>
-              <h2 className="display-sm" style={{ color: 'var(--dark-ink)' }}>
-                Your paycheck is collateral enough.{' '}
-                <span style={{ display: 'block', color: 'var(--dark-ink-38)' }}>
-                  Borrow like it counts.
-                </span>
-              </h2>
-              <p style={{ fontSize: 16, color: 'var(--dark-ink-60)', lineHeight: 1.65, maxWidth: 460, margin: '24px auto 36px' }}>
-                Connect the wallet your salary lands in, get scored on real income, and open a
-                credit line you can draw without selling.
-              </p>
-              <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
-                <Link to="/apply" className="btn btn-light focus-ring-light">
-                  Apply now <ArrowRight size={16} strokeWidth={2} />
-                </Link>
-                <a href="/pdf/whitepaper.pdf" target="_blank" rel="noopener noreferrer" className="btn btn-onDark focus-ring-light">
-                  Read the whitepaper
-                </a>
-              </div>
-            </div>
-          </div>
-        </Reveal>
-      </section>
-
-      <Footer />
+        <section className="lp-final lp-shell"><h2>Credit that starts<br />with your income.</h2><Link to="/apply" className="lp-button">Get early access <ArrowRight size={15} /></Link><p>Subject to eligibility and approval.</p></section>
+      </main>
+      <footer className="lp-footer lp-shell">
+        <div className="lp-footer-top"><Link to="/" className="site-brand" aria-label="Nevra home"><img src="/logo.png" alt="" width="29" height="29" loading="lazy" /><span>Nevra</span></Link><div><Link to="/blog">Journal</Link><Link to="/roadmap">Roadmap</Link><a href="/pdf/whitepaper.pdf" target="_blank" rel="noopener noreferrer">Whitepaper</a><a href="https://x.com/nevralabs" target="_blank" rel="noopener noreferrer">X ↗</a><a href="mailto:hugo@nevralabs.com">Contact</a></div></div>
+        <div className="lp-footer-bottom"><p>© {new Date().getFullYear()} Nevra Inc.</p><p>Nevra is not a bank. Credit is subject to eligibility and approval.</p><div><a href="/pdf/Nevra_Terms_of_Service.pdf" target="_blank" rel="noopener noreferrer">Terms</a><a href="/pdf/Nevra_Privacy_Policy.pdf" target="_blank" rel="noopener noreferrer">Privacy</a></div></div>
+        <div className="lp-wordmark" aria-hidden="true">Nevra</div>
+      </footer>
     </div>
-  )
-}
-
-function FaqItem({ faq, index }) {
-  const [open, setOpen] = useState(false)
-  const contentId = `faq-answer-${index}`
-
-  return (
-    <div style={{ borderBottom: '1px solid var(--hairline)' }}>
-      <button
-        type="button"
-        className="focus-ring faq-toggle"
-        onClick={() => setOpen(v => !v)}
-        aria-expanded={open}
-        aria-controls={contentId}
-        style={{
-          width: '100%',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          gap: 16,
-          padding: '24px 4px',
-          background: 'none',
-          border: 'none',
-          cursor: 'pointer',
-          textAlign: 'left',
-          fontFamily: 'inherit',
-          color: 'var(--ink)',
-          transition: 'color 0.2s ease',
-        }}
-      >
-        <span style={{ fontSize: 16, fontWeight: 600, letterSpacing: '-0.005em', lineHeight: 1.45 }}>
-          {faq.question}
-        </span>
-        <span aria-hidden style={{
-          fontFamily: 'var(--font-mono)',
-          fontSize: 18,
-          color: 'var(--ink-45)',
-          lineHeight: 1,
-          flexShrink: 0,
-          transform: open ? 'rotate(45deg)' : 'none',
-          transition: 'transform 0.25s cubic-bezier(0.22, 1, 0.36, 1)',
-        }}>
-          +
-        </span>
-      </button>
-      <div
-        id={contentId}
-        style={{
-          display: 'grid',
-          gridTemplateRows: open ? '1fr' : '0fr',
-          transition: 'grid-template-rows 0.32s cubic-bezier(0.22, 1, 0.36, 1)',
-        }}
-      >
-        <div style={{ overflow: 'hidden' }}>
-          <p style={{ fontSize: 15, color: 'var(--ink-60)', lineHeight: 1.7, padding: '0 4px 26px', maxWidth: 620, margin: 0 }}>
-            {faq.answer}
-          </p>
-        </div>
-      </div>
-    </div>
-  )
-}
-
-function FooterCol({ title, links }) {
-  return (
-    <div>
-      <p className="footer-col-title">{title}</p>
-      <ul className="footer-col-list">
-        {links.map(({ label, href, internal }) => (
-          <li key={label}>
-            {internal
-              ? <Link to={href} className="footer-link">{label}</Link>
-              : <a href={href} target="_blank" rel="noopener noreferrer" className="footer-link">{label}</a>}
-          </li>
-        ))}
-      </ul>
-    </div>
-  )
-}
-
-/* Large-name footer, the pattern from 21st.dev: brand block and link columns
-   on top, then the wordmark set to the full content width to close the page. */
-function Footer() {
-  return (
-    <footer className="footer shell">
-      <div className="footer-top">
-        <div className="footer-brand">
-          <img src="/logo.png" alt="Nevra" className="footer-logo" />
-          <p className="footer-tagline">
-            Real credit for people paid in stablecoins. Your paycheck is the
-            underwriting: onchain, non-custodial, yours.
-          </p>
-          <p className="footer-copy">&copy; Nevra Inc. 2026. All rights reserved.</p>
-        </div>
-
-        <div className="footer-cols">
-          <FooterCol title="Product" links={[
-            { label: 'Apply', href: '/apply', internal: true },
-            { label: 'Calculator', href: '/#calculator', internal: true },
-            { label: 'How it works', href: '/#how-it-works', internal: true },
-            { label: 'Why Nevra', href: '/#why-nevra', internal: true },
-            { label: 'Roadmap', href: '/roadmap', internal: true },
-          ]} />
-          <FooterCol title="Resources" links={[
-            { label: 'Whitepaper', href: '/pdf/whitepaper.pdf' },
-            { label: 'Blog', href: '/blog', internal: true },
-            { label: 'Terms of Service', href: '/pdf/Nevra_Terms_of_Service.pdf' },
-            { label: 'Privacy Policy', href: '/pdf/Nevra_Privacy_Policy.pdf' },
-          ]} />
-          <FooterCol title="Socials" links={[
-            { label: 'Twitter', href: 'https://x.com/nevralabs' },
-            { label: 'LinkedIn', href: 'https://www.linkedin.com/company/nevralabs' },
-            { label: 'Telegram', href: 'https://t.me/nevragenesis' },
-            { label: 'Discord', href: 'https://discord.gg/JAGwmhsAU' },
-          ]} />
-        </div>
-      </div>
-
-      <p className="footer-note">
-        Nevra is not a bank. Figures shown on this page are illustrative and do not constitute a
-        credit offer.
-      </p>
-
-      {/* Decorative: the name is already in the logo above and in the page title. */}
-      <div className="footer-wordmark" aria-hidden="true">Nevra</div>
-    </footer>
   )
 }
