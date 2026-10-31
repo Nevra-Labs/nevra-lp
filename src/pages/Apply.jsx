@@ -188,9 +188,9 @@ export default function Apply() {
         {phase === 'signin' && (
           <div key="signin" className="fade-up" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 14, padding: '0 24px', textAlign: 'center' }}>
             <p style={{ fontSize: 15, color: 'var(--ink-60)', lineHeight: 1.6, margin: 0 }}>
-              Sign in to pick up your application.
+              {PRIVY_ENABLED ? 'Sign in to pick up your application.' : 'Applications are not enabled in this preview. Contact us about early access.'}
             </p>
-            <button
+            {PRIVY_ENABLED ? <button
               onClick={handleLogin}
               className="btn-hover focus-ring"
               style={{
@@ -207,7 +207,7 @@ export default function Apply() {
               }}
             >
               Continue
-            </button>
+            </button> : <a className="lp-button" href="mailto:hugo@nevralabs.com?subject=Nevra%20early%20access">Contact Nevra</a>}
           </div>
         )}
 
